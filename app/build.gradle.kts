@@ -47,6 +47,12 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     testImplementation(libs.junit)
+
+    // https://mvnrepository.com/artifact/de.jflex/cup_runtime
+    implementation("de.jflex:cup_runtime:11b-20160615")
+    // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+    implementation("com.itextpdf:itextpdf:5.5.13.3")
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

@@ -1,0 +1,30 @@
+/****************** packages and imports **************/
+
+package com.pablocompany.practicano1_compi1.compiler.logic;
+
+import java_cup.runtime.*;
+import java.util.*;
+
+/*------------------------------------------------------
+                        CUP
+--------------------------------------------------------*/
+parser code {:
+
+    AnalizadorLexico lex;
+
+
+:}
+
+/*----------------------------------------------------------
+                         reglas
+-----------------------------------------------------------*/
+
+/* Terminales: tokens que el parser nos retorna */
+
+
+
+/* no terminales, reglas que nosotros vamos a definir sintacticamente */
+
+
+
+/* Gramatica: reglas para validacion */
