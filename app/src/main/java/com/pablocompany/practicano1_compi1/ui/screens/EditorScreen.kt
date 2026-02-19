@@ -26,6 +26,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.pablocompany.practicano1_compi1.data.repository.RepositorioArchivo
+import com.pablocompany.practicano1_compi1.domain.usecase.AnalizarCodigoUseCase
 import com.pablocompany.practicano1_compi1.domain.usecase.LeerArchivoUseCase
 
 @Composable
@@ -49,6 +50,8 @@ fun EditorScreen(navController: NavController) {
             codeText = text
         }
     }
+
+    val analizarCodigoUseCase = remember { AnalizarCodigoUseCase() }
 
     val gradientBackground = Brush.verticalGradient(
         colors = listOf(
@@ -107,7 +110,7 @@ fun EditorScreen(navController: NavController) {
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFB00020)
+                            containerColor = Color(0xFFF44336)
                         )
                     ) {
                         Text("Limpiar")
@@ -165,7 +168,8 @@ fun EditorScreen(navController: NavController) {
 
                 Button(
                     onClick = {
-                        navController.navigate("success")
+                        val resultado = analizarCodigoUseCase(codeText)
+                        navController.navigate("resultado/$resultado")
                     },
                     modifier = Modifier
                         .fillMaxWidth()
