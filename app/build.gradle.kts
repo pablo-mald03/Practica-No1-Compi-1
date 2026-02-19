@@ -46,12 +46,18 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.compose.foundation.layout)
     testImplementation(libs.junit)
 
     // https://mvnrepository.com/artifact/de.jflex/cup_runtime
     implementation("de.jflex:cup_runtime:11b-20160615")
     // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
     implementation("com.itextpdf:itextpdf:5.5.13.3")
+
+
+    implementation("androidx.navigation:navigation-compose:2.9.7")
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
