@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.pablocompany.practicano1_compi1.ui.screens.EditorScreen
 import com.pablocompany.practicano1_compi1.ui.screens.HomeScreen
 
 @Composable
@@ -20,10 +21,10 @@ fun AppNavigation() {
             HomeScreen(navController)
         }
 
-       /* composable("editor") {
+        composable("editor") {
             EditorScreen(navController)
         }
-
+/*
         composable("success") {
             SuccessScreen()
         }*/
