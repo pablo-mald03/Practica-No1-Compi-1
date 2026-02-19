@@ -1,5 +1,6 @@
 package com.pablocompany.practicano1_compi1.ui.screens
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,16 +17,38 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.compose.foundation.text.BasicTextField
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import com.pablocompany.practicano1_compi1.data.repository.RepositorioArchivo
+import com.pablocompany.practicano1_compi1.domain.usecase.LeerArchivoUseCase
 
 @Composable
 fun EditorScreen(navController: NavController) {
 
     var codeText by remember { mutableStateOf("") }
+
+
+    val context = LocalContext.current
+
+    val leerArchivoUseCase = remember {
+        LeerArchivoUseCase(RepositorioArchivo())
+    }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri: Uri? ->
+
+        uri?.let {
+            val text = leerArchivoUseCase(context, it)
+            codeText = text
+        }
+    }
 
     val gradientBackground = Brush.verticalGradient(
         colors = listOf(
@@ -59,12 +82,38 @@ fun EditorScreen(navController: NavController) {
                     .fillMaxSize()
             ) {
 
-                Button(
-                    onClick = { },
-                    shape = RoundedCornerShape(14.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Text("Importar archivo")
+
+                    Button(
+                        onClick = {
+                            launcher.launch(arrayOf("text/plain"))
+                        },
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF203A43)
+                        )
+                    ) {
+                        Text("Importar archivo")
+                    }
+
+                    Button(
+                        onClick = {
+                            codeText = ""
+                        },
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFB00020)
+                        )
+                    ) {
+                        Text("Limpiar")
+                    }
                 }
+
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -72,7 +121,8 @@ fun EditorScreen(navController: NavController) {
                     text = "Escribe tu código aquí:",
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
