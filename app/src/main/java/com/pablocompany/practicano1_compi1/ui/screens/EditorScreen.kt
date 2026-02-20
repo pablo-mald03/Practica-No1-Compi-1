@@ -25,12 +25,17 @@ import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pablocompany.practicano1_compi1.data.repository.AnalisisViewModel
 import com.pablocompany.practicano1_compi1.data.repository.RepositorioArchivo
 import com.pablocompany.practicano1_compi1.domain.usecase.AnalizarCodigoUseCase
 import com.pablocompany.practicano1_compi1.domain.usecase.LeerArchivoUseCase
 
 @Composable
-fun EditorScreen(navController: NavController) {
+fun EditorScreen(
+    navController: NavController,
+    viewModel: AnalisisViewModel
+){
 
     var codeText by remember { mutableStateOf("") }
 
@@ -50,8 +55,6 @@ fun EditorScreen(navController: NavController) {
             codeText = text
         }
     }
-
-    val analizarCodigoUseCase = remember { AnalizarCodigoUseCase() }
 
     val gradientBackground = Brush.verticalGradient(
         colors = listOf(
@@ -168,8 +171,8 @@ fun EditorScreen(navController: NavController) {
 
                 Button(
                     onClick = {
-                        val resultado = analizarCodigoUseCase(codeText)
-                        navController.navigate("resultado/$resultado")
+                        viewModel.analizarCodigo(codeText)
+                        navController.navigate("resultado")
                     },
                     modifier = Modifier
                         .fillMaxWidth()

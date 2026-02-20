@@ -24,13 +24,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.pablocompany.practicano1_compi1.compiler.backend.ResultadoAnalisis
 
 @Composable
 fun ResultadoScreen(
     navController: NavController,
-    exito: Boolean
-) {
-    val hayErrores = !exito
+    resultado: ResultadoAnalisis
+){
+    val exito = resultado.exito
+
+    val hayErrores = resultado.erroresLexicos.isNotEmpty() ||
+            resultado.erroresSintacticos.isNotEmpty()
+
 
     val gradientBackground = Brush.verticalGradient(
         colors = listOf(
@@ -73,7 +78,9 @@ fun ResultadoScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = { },
+                    onClick = {
+                        navController.navigate("diagrama")
+                    },
                     enabled = exito,
                     modifier = Modifier
                         .fillMaxWidth()
