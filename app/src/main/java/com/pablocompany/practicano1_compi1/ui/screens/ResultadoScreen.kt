@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -34,7 +36,7 @@ fun ResultadoScreen(
     val exito = resultado.exito
 
     val hayErrores = resultado.erroresLexicos.isNotEmpty() ||
-            resultado.erroresSintacticos.isNotEmpty()
+            resultado.erroresLexicos.isNotEmpty()
 
 
     val gradientBackground = Brush.verticalGradient(
@@ -45,11 +47,13 @@ fun ResultadoScreen(
         )
     )
 
+    val scrollState = rememberScrollState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(gradientBackground),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
 
         Card(
@@ -61,12 +65,12 @@ fun ResultadoScreen(
             colors = CardDefaults.cardColors(
                 containerColor = Color.White.copy(alpha = 0.95f)
             )
-        ) {
+        ){
 
             Column(
-                modifier = Modifier.padding(28.dp),
+                modifier = Modifier.padding(28.dp).verticalScroll(scrollState),
                 horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            ){
 
                 Text(
                     text = "DIAGRAMA DE FLUJO",
@@ -110,7 +114,7 @@ fun ResultadoScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = { },
+                    onClick = { navController.navigate("reporte_operadores") },
                     enabled = exito,
                     modifier = Modifier
                         .fillMaxWidth()

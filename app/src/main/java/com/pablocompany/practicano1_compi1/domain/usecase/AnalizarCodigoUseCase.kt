@@ -26,7 +26,7 @@ class AnalizarCodigoUseCase {
         return ResultadoAnalisis(
             exito = exito,
             erroresLexicos = erroresLexicos,
-            erroresSintacticos = erroresSintacticos,
+            listaOperadores = erroresSintacticos,
             codigoProcesado = codigoProcesado
         )
     }

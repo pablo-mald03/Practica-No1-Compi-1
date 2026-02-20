@@ -11,6 +11,7 @@ import com.pablocompany.practicano1_compi1.data.repository.AnalisisViewModel
 import com.pablocompany.practicano1_compi1.ui.screens.DiagramaScreen
 import com.pablocompany.practicano1_compi1.ui.screens.EditorScreen
 import com.pablocompany.practicano1_compi1.ui.screens.HomeScreen
+import com.pablocompany.practicano1_compi1.ui.screens.ReporteOperadoresScreen
 import com.pablocompany.practicano1_compi1.ui.screens.ResultadoScreen
 
 @Composable
@@ -46,6 +47,14 @@ fun AppNavigation() {
             val resultado = viewModel.resultado
             if (resultado != null) {
                 DiagramaScreen(navController, resultado.codigoProcesado)
+            }
+        }
+        //Ruta para la tabla de operadores matematicos
+        composable("reporte_operadores") {
+            val resultado = viewModel.resultado
+
+            if (resultado != null) {
+                ReporteOperadoresScreen(navController, resultado )
             }
         }
 
