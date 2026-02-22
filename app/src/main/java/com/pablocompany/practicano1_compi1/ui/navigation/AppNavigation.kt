@@ -2,11 +2,9 @@ package com.pablocompany.practicano1_compi1.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.pablocompany.practicano1_compi1.data.repository.AnalisisViewModel
 import com.pablocompany.practicano1_compi1.ui.screens.DiagramaScreen
 import com.pablocompany.practicano1_compi1.ui.screens.EditorScreen

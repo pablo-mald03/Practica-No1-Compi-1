@@ -11,6 +11,22 @@ import java.util.*;
 parser code {:
 
     AnalizadorLexico lex;
+    private List<String> syntaxErrors;
+
+    // conexion de parser y lexer
+    public Parser(Lexer lex){
+        super(lex);
+        syntaxErrors = new ArrayList<>();
+    }
+
+    // getters
+    public Lexer getLexer(){
+        return this.lex;
+    }
+
+    public List<String> getSyntaxErrors(){
+        return this.syntaxErrors;
+    }
 
 
 :}
