@@ -3,13 +3,14 @@ package com.pablocompany.practicano1_compi1.compiler.logic;
 
 import java_cup.runtime.*;
 import java.util.*;
+import com.pablocompany.practicano1_compi1.compiler.models.ErrorLexico;
 
 %% //separador de area
 
 /********************* declaraciones de jflex ******************/
 %public
 %unicode
-%class AnalizadorLexico
+%class Lexer
 %cup
 %line
 %column
@@ -21,7 +22,8 @@ import java.util.*;
 
 %init{
     /****************** codigo dentro del constructor ******************/
-
+    errorLexList = new ArrayList<>();
+    string = new StringBuilder();
 
 %init}
 
@@ -31,7 +33,11 @@ LineTerminator = \r|\n|\r\n
 WhiteSpace = [ \t\f]
 Numero = [0-9]+
 Decimal = {Numero}"."{Numero}
+jletter = [:jletter:]
+jletterdigit = [:jletterdigit:]
+
 Id = {jletter}{jletterdigit}*
+
 HexColor = "H"[0-9A-Fa-f]{6}
 
 %{
@@ -41,17 +47,18 @@ HexColor = "H"[0-9A-Fa-f]{6}
     private StringBuilder string;
 
 
- /*---------------------------------------------
-        Codigo para el manejo de errores
-    -----------------------------------------------*/
+ /*-----------------------------------------------
+                   Codigo del lexer
+             -------------------------------------------------*/
 
-    private List<String> errorList;
+    private List<ErrorLexico> errorLexList;
 
-    public List<String> getLexicalErrors(){
-        return this.errorList;
+    public List<ErrorLexico> getLexicalErrors(){
+        return this.errorLexList;
     }
 
     /*-------------------------- Codigo para el parser --------------------------------*/
+
 
      /*-----------------------------------------------
               Codigo para el parser
@@ -65,8 +72,8 @@ HexColor = "H"[0-9A-Fa-f]{6}
         return new Symbol(type, yyline+1, yycolumn+1);
     }
 
-    private void error(String message){
-         errorList.add("Error en la linea: " + (yyline+1) + ", columna: " + (yycolumn+1) + " : " + message);
+    private void reportError(String message, String text){
+         errorLexList.add(new ErrorLexico(text,(yyline+1),(yycolumn+1),"Lexico",message));
     }
 
 
@@ -89,7 +96,9 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 "|"     {return symbol(sym.PLECA);}
 
-"=="    {return symbol(sym.IGUAL);}
+"="    {return symbol(sym.IGUALACION);}
+
+"=="    {return symbol(sym.IGUALDAD);}
 
 "!=" {return symbol(sym.DIFF);}
 
@@ -118,10 +127,6 @@ HexColor = "H"[0-9A-Fa-f]{6}
 /*============CARACTERES ESPECIALES====================*/
 
 "%%%"           {return symbol(sym.SEPARADOR);}
-
-"<"             {return symbol(sym.PARENT_ANGULAR_APERTURA);}
-
-">"             {return symbol(sym.PARENT_ANGULAR_CIERRE);}
 
 ","             {return symbol(sym.COMA);}
 
@@ -203,7 +208,7 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 /*============CONFIGURACIONES====================*/
 
-ELIPSE|CIRCULO|PARALELOGRAMO|RECTANGULO|ROMBO|RECTANGULO_REDONDEADO     {symbol(return sym.FIGURA);}
+ELIPSE|CIRCULO|PARALELOGRAMO|RECTANGULO|ROMBO|RECTANGULO_REDONDEADO     {return symbol(sym.FIGURA);}
 
 ARIAL|TIMES_NEW_ROMAN|COMIC_SANS|VERDANA       {return symbol(sym.FUENTE);}
 
@@ -218,7 +223,7 @@ ARIAL|TIMES_NEW_ROMAN|COMIC_SANS|VERDANA       {return symbol(sym.FUENTE);}
 
 {WhiteSpace} { /* ignorar */ }
 
-\"      { string = new StringBuilder(); yybegin(STRING); }
+\"      { string.setLength(0); yybegin(STRING); }
 
 }
 
@@ -226,7 +231,7 @@ ARIAL|TIMES_NEW_ROMAN|COMIC_SANS|VERDANA       {return symbol(sym.FUENTE);}
 
     \" {
         yybegin(YYINITIAL);
-        return symbol(sym.STRING, string.toString());
+        return symbol(sym.CADENA, string.toString());
     }
 
     [^\n\r\"\\]+ {
@@ -252,7 +257,7 @@ ARIAL|TIMES_NEW_ROMAN|COMIC_SANS|VERDANA       {return symbol(sym.FUENTE);}
 
 
 
-.          {  error("lexema: <" + yytext() + ">"); }
+.          {  reportError("Simbolo no existe en el leguaje", yytext()); }
 
 <<EOF>>    {
                 return symbol(sym.EOF);

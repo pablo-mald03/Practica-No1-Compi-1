@@ -10,7 +10,7 @@ import java.util.*;
 --------------------------------------------------------*/
 parser code {:
 
-    AnalizadorLexico lex;
+    Lexer lex;
     private List<String> syntaxErrors;
 
     // conexion de parser y lexer
@@ -36,11 +36,19 @@ parser code {:
 -----------------------------------------------------------*/
 
 /* Terminales: tokens que el parser nos retorna */
-
+terminal INICIO, FIN, PLECA, IGUALDAD,
+         SALTO, NOT,
+         ID,
+         PARENT_APERTURA, PARENT_CIERRE,
+         MULTIPLICACION, SUMA, ;
 
 
 /* no terminales, reglas que nosotros vamos a definir sintacticamente */
+non terminal programa;
 
+/* Símbolo inicial */
+start with programa;
 
 
 /* Gramatica: reglas para validacion */
+programa ::= INICIO FIN ;
