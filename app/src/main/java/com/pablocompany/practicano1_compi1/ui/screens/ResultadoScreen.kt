@@ -35,8 +35,7 @@ fun ResultadoScreen(
 ){
     val exito = resultado.exito
 
-    val hayErrores = resultado.erroresLexicos.isNotEmpty() ||
-            resultado.erroresLexicos.isNotEmpty()
+    val hayErrores = resultado.erroresDetectados.isNotEmpty()
 
 
     val gradientBackground = Brush.verticalGradient(
@@ -156,7 +155,7 @@ fun ResultadoScreen(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Button(
-                    onClick = { },
+                    onClick = { navController.navigate("reporte-errores") },
                     enabled = hayErrores,
                     modifier = Modifier
                         .fillMaxWidth()

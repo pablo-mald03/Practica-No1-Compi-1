@@ -172,7 +172,7 @@ fun EstructurasControlScreen(
 fun CeldaHeaderControl(texto: String) {
     Box(
         modifier = Modifier
-            .width(200.dp)
+            .width(300.dp)
             .border(
                 width = 1.dp,
                 color = Color(0xFFFFFFFF)
@@ -193,7 +193,7 @@ fun CeldaHeaderControl(texto: String) {
 fun CeldaControl(texto: String) {
     Box(
         modifier = Modifier
-            .width(210.dp)
+            .width(300.dp)
             .border(
                 width = 1.dp,
                 color = Color(0xFFFFFFFF)

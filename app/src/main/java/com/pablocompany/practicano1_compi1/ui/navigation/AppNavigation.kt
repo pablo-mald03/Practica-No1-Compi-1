@@ -12,6 +12,7 @@ import com.pablocompany.practicano1_compi1.ui.screens.DiagramaScreen
 import com.pablocompany.practicano1_compi1.ui.screens.EditorScreen
 import com.pablocompany.practicano1_compi1.ui.screens.EstructurasControlScreen
 import com.pablocompany.practicano1_compi1.ui.screens.HomeScreen
+import com.pablocompany.practicano1_compi1.ui.screens.ReporteErroresScreen
 import com.pablocompany.practicano1_compi1.ui.screens.ReporteOperadoresScreen
 import com.pablocompany.practicano1_compi1.ui.screens.ResultadoScreen
 
@@ -65,6 +66,15 @@ fun AppNavigation() {
 
             if (resultado != null) {
                 EstructurasControlScreen(navController, resultado )
+            }
+        }
+
+        //Ruta para la tabla de estructuras de control
+        composable("reporte-errores") {
+            val resultado = viewModel.resultado
+
+            if (resultado != null) {
+                ReporteErroresScreen(navController, resultado )
             }
         }
 

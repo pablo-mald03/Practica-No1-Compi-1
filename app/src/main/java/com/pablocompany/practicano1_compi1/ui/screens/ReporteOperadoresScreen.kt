@@ -174,7 +174,7 @@ fun ReporteOperadoresScreen(
 fun CeldaHeader(texto: String) {
     Box(
         modifier = Modifier
-            .width(200.dp)
+            .width(300.dp)
             .border(
                 width = 1.dp,
                 color = Color(0xFFFFFFFF)
@@ -195,10 +195,10 @@ fun CeldaHeader(texto: String) {
 fun Celda(texto: String) {
     Box(
         modifier = Modifier
-            .width(210.dp)
+            .width(300.dp)
             .border(
                 width = 1.dp,
-                color = Color(0xFF455A64)
+                color = Color(0xFFFFFFFF)
             )
             .padding(8.dp)
     ) {

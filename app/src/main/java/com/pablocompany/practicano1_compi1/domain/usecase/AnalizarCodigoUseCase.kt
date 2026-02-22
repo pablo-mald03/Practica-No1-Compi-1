@@ -10,10 +10,12 @@ class AnalizarCodigoUseCase {
     operator fun invoke(codigo: String): ResultadoAnalisis {
 
 
-        val erroresLexicos = listOf<String>()
+        //val listaErrores = listOf<String>()
         val erroresSintacticos = listOf<String>()
 
-        val codigoProcesado = listOf(
+        val codigoProcesado = listOf<String>()
+
+        val listaErrores = listOf(
             "INICIO",
             "DECLARACION x = 10",
             "SI x > 5",
@@ -21,11 +23,19 @@ class AnalizarCodigoUseCase {
             "FIN"
         )
 
-        val exito = true
+        /*val codigoProcesado = listOf(
+            "INICIO",
+            "DECLARACION x = 10",
+            "SI x > 5",
+            "IMPRIMIR x",
+            "FIN"
+        )*/
+
+        val exito = false
 
         return ResultadoAnalisis(
             exito = exito,
-            erroresLexicos = erroresLexicos,
+            erroresDetectados = listaErrores,
             listaOperadores = erroresSintacticos,
             codigoProcesado = codigoProcesado
         )
