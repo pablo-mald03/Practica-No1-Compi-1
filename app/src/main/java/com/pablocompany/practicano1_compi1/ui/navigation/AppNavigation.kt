@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.pablocompany.practicano1_compi1.data.repository.AnalisisViewModel
 import com.pablocompany.practicano1_compi1.ui.screens.DiagramaScreen
 import com.pablocompany.practicano1_compi1.ui.screens.EditorScreen
+import com.pablocompany.practicano1_compi1.ui.screens.EstructurasControlScreen
 import com.pablocompany.practicano1_compi1.ui.screens.HomeScreen
 import com.pablocompany.practicano1_compi1.ui.screens.ReporteOperadoresScreen
 import com.pablocompany.practicano1_compi1.ui.screens.ResultadoScreen
@@ -55,6 +56,15 @@ fun AppNavigation() {
 
             if (resultado != null) {
                 ReporteOperadoresScreen(navController, resultado )
+            }
+        }
+
+        //Ruta para la tabla de estructuras de control
+        composable("reporte_estructuras") {
+            val resultado = viewModel.resultado
+
+            if (resultado != null) {
+                EstructurasControlScreen(navController, resultado )
             }
         }
 

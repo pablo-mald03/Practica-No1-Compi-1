@@ -135,7 +135,7 @@ fun ResultadoScreen(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Button(
-                    onClick = { },
+                    onClick = { navController.navigate("reporte_estructuras")},
                     enabled = exito,
                     modifier = Modifier
                         .fillMaxWidth()

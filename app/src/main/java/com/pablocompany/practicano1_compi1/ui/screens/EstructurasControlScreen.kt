@@ -1,5 +1,6 @@
 package com.pablocompany.practicano1_compi1.ui.screens
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
@@ -31,7 +32,7 @@ import androidx.navigation.NavController
 import com.pablocompany.practicano1_compi1.compiler.backend.ResultadoAnalisis
 
 @Composable
-fun ReporteOperadoresScreen(
+fun EstructurasControlScreen(
     navController: NavController,
     resultado: ResultadoAnalisis
 ) {
@@ -58,13 +59,13 @@ fun ReporteOperadoresScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color(0xFF331E28).copy(alpha = 0.95f))
+                .background(Color(0xFF1E3332).copy(alpha = 0.95f))
                 .padding(16.dp)
         ) {
 
 
             Text(
-                text = "Reporte de Ocurrencia de Operadores Matemáticos",
+                text = "Reporte de Estructuras de Control",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge.copy(
@@ -75,6 +76,7 @@ fun ReporteOperadoresScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
+
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 )  {
@@ -83,12 +85,11 @@ fun ReporteOperadoresScreen(
                         Row(
                             modifier = Modifier
                                 .horizontalScroll(horizontalScroll)
-                                .background(Color(0xFF4B4F37))
+                                .background(Color(0xFF3B4F37))
                         ) {
-                            CeldaHeader("Operador")
-                            CeldaHeader("Línea")
-                            CeldaHeader("Columna")
-                            CeldaHeader("Condicion")
+                            CeldaHeaderControl("Objeto")
+                            CeldaHeaderControl("Línea")
+                            CeldaHeaderControl("Condicion")
                         }
                     }
 
@@ -131,17 +132,15 @@ fun ReporteOperadoresScreen(
                                 Color(0xFF24343D)
                             else
                                 Color(0xFF1E2A33)
-
                         Row(
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .horizontalScroll(horizontalScroll)
                                 .background(backgroundColor)
                         ) {
 
-                            Celda("suma")
-                            Celda("1")
-                            Celda("15")
-                            Celda("12 +2")
+                            CeldaControl("If")
+                            CeldaControl("While")
+                            CeldaControl("x > 5")
                         }
                     }*/
 
@@ -151,27 +150,26 @@ fun ReporteOperadoresScreen(
                                 .horizontalScroll(horizontalScroll)
                                 .background(
                                     if (index % 2 == 0)
-                                        Color(0xFF24273D)
+                                        Color(0xFF243D35)
                                     else
-                                        Color(0xFF1E332C)
+                                        Color(0xFF241E33)
                                 )
                         ) {
-                            Celda("suma")
-                            Celda("1")
-                            Celda("15")
-                            Celda("12 +2")
+                            CeldaControl("If")
+                            CeldaControl("While")
+                            CeldaControl("x > 5")
                         }
                     }
 
 
+                }
 
-            }
         }
     }
 }
 
 @Composable
-fun CeldaHeader(texto: String) {
+fun CeldaHeaderControl(texto: String) {
     Box(
         modifier = Modifier
             .width(200.dp)
@@ -192,13 +190,13 @@ fun CeldaHeader(texto: String) {
 }
 
 @Composable
-fun Celda(texto: String) {
+fun CeldaControl(texto: String) {
     Box(
         modifier = Modifier
             .width(210.dp)
             .border(
                 width = 1.dp,
-                color = Color(0xFF455A64)
+                color = Color(0xFFFFFFFF)
             )
             .padding(8.dp)
     ) {
