@@ -90,9 +90,10 @@ fun ReporteOperadoresScreen(
                     stickyHeader {
                         Row(
                             modifier = Modifier
+                                .fillMaxWidth()
                                 .background(Color(0xFF37474F))
-                                .padding(vertical = 14.dp)
-                        ) {
+                        ){
+
                             CeldaHeader("Operador")
                             CeldaHeader("Línea")
                             CeldaHeader("Columna")
@@ -100,8 +101,7 @@ fun ReporteOperadoresScreen(
                         }
                     }
 
-
-
+                    /*
                     itemsIndexed(lista) { index, operador ->
 
                         val backgroundColor =
@@ -130,6 +130,31 @@ fun ReporteOperadoresScreen(
                             */
                         }
                     }
+
+                    */
+
+                    itemsIndexed(lista) { index, operador ->
+
+                        val backgroundColor =
+                            if (index % 2 == 0)
+                                Color(0xFF24343D)
+                            else
+                                Color(0xFF1E2A33)
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(backgroundColor)
+                        ) {
+
+                            Celda("suma")
+                            Celda("1")
+                            Celda("15")
+                            Celda("12 +2")
+                        }
+                    }
+
+
                 }
             }
         }
@@ -143,7 +168,7 @@ fun CeldaHeader(texto: String) {
             .width(200.dp)
             .border(
                 width = 1.dp,
-                color = Color(0xFF455A64)
+                color = Color(0xFFFFFFFF)
             )
             .padding(vertical = 10.dp),
         contentAlignment = Alignment.Center
