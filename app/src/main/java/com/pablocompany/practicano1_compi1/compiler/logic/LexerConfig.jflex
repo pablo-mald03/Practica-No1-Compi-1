@@ -3,7 +3,7 @@ package com.pablocompany.practicano1_compi1.compiler.logic;
 
 import java_cup.runtime.*;
 import java.util.*;
-import com.pablocompany.practicano1_compi1.compiler.models.ErrorLexico;
+import com.pablocompany.practicano1_compi1.compiler.models.ErrorAnalisis;
 
 %% //separador de area
 
@@ -51,9 +51,9 @@ HexColor = "H"[0-9A-Fa-f]{6}
                    Codigo del lexer
              -------------------------------------------------*/
 
-    private List<ErrorLexico> errorLexList;
+    private List<ErrorAnalisis> errorLexList;
 
-    public List<ErrorLexico> getLexicalErrors(){
+    public List<ErrorAnalisis> getLexicalErrors(){
         return this.errorLexList;
     }
 
@@ -73,7 +73,7 @@ HexColor = "H"[0-9A-Fa-f]{6}
     }
 
     private void reportError(String message, String text){
-         errorLexList.add(new ErrorLexico(text,(yyline+1),(yycolumn+1),"Lexico",message));
+         errorLexList.add(new ErrorAnalisis(text,(yyline+1),(yycolumn+1),"Lexico",message));
     }
 
 
@@ -92,7 +92,7 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 "#".*      {/*Ignorado*/}
 
-{HexColor} { return sym.COLOR_HEX; }
+{HexColor} { return symbol(sym.COLOR_HEX); }
 
 "|"     {return symbol(sym.PLECA);}
 
@@ -100,15 +100,15 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 "=="    {return symbol(sym.IGUALDAD);}
 
-"!=" {return symbol(sym.DIFF);}
+"!=" {return symbol(sym.DIFERENTE);}
 
 ">"    {return symbol(sym.MAYOR);}
 
 "<"    {return symbol(sym.MENOR);}
 
-">="    {return symbol(sym.MAYORIGUAL);}
+">="    {return symbol(sym.MAYOR_IGUAL);}
 
-"<="    {return symbol(sym.MENORIGUAL);}
+"<="    {return symbol(sym.MENOR_IGUAL);}
 
 "&&"    {return symbol(sym.AND);}
 

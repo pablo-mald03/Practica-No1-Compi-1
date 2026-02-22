@@ -8,29 +8,119 @@ package com.pablocompany.practicano1_compi1.compiler.logic;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int SUMA = 10;
-  public static final int INICIO = 2;
-  public static final int MULTIPLICACION = 9;
-  public static final int PARENT_CIERRE = 8;
-  public static final int FIN = 3;
+  public static final int COLOR_TEXTO_BLOQUE = 32;
+  public static final int IGUALACION = 5;
+  public static final int ENTERO = 54;
+  public static final int MOSTRAR = 43;
+  public static final int SI = 40;
+  public static final int FIGURA_BLOQUE = 34;
+  public static final int DIFERENTE = 7;
+  public static final int RESTA = 16;
+  public static final int ENTONCES = 41;
+  public static final int LETRA_MIENTRAS = 30;
+  public static final int PARENT_CIERRE = 49;
+  public static final int SEPARADOR = 19;
+  public static final int FIN = 38;
+  public static final int FIN_SI = 47;
+  public static final int NOT = 14;
+  public static final int AND = 12;
+  public static final int IGUALDAD = 6;
+  public static final int OR = 13;
+  public static final int MIENTRAS = 42;
+  public static final int SUMA = 15;
+  public static final int ID = 52;
+  public static final int COLOR_HEX = 3;
+  public static final int LERTA_SIZE_MIENTRAS = 31;
+  public static final int DECIMAL = 53;
   public static final int EOF = 0;
-  public static final int ID = 6;
-  public static final int SALTO = 4;
   public static final int error = 1;
-  public static final int NOT = 5;
-  public static final int PARENT_APERTURA = 7;
+  public static final int COMA = 20;
+  public static final int COLOR_BLOQUE = 33;
+  public static final int CADENA = 55;
+  public static final int LERTA_SIZE_SI = 26;
+  public static final int COLOR_MIENTRAS = 28;
+  public static final int MENOR = 9;
+  public static final int COLOR_TEXTO_MIENTRAS = 27;
+  public static final int PARENT_APERTURA = 48;
+  public static final int LERTA_SIZE_BLOQUE = 36;
+  public static final int FIN_MIENTRAS = 45;
+  public static final int LETRA_BLOQUE = 35;
+  public static final int MAYOR = 8;
+  public static final int PLECA = 4;
+  public static final int FIGURA_MIENTRAS = 29;
+  public static final int DEFAULT = 21;
+  public static final int MAYOR_IGUAL = 10;
+  public static final int LEER = 44;
+  public static final int HACER = 46;
+  public static final int COLOR_SI = 23;
+  public static final int LETRA_SI = 25;
+  public static final int INICIO = 37;
+  public static final int MENOR_IGUAL = 11;
+  public static final int SALTO = 2;
+  public static final int DIVISION = 18;
+  public static final int COLOR_TEXTO_SI = 22;
+  public static final int FIGURA_SI = 24;
+  public static final int VAR = 39;
+  public static final int FIGURA = 50;
+  public static final int MULTIPLICACION = 17;
+  public static final int FUENTE = 51;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
+  "SALTO",
+  "COLOR_HEX",
+  "PLECA",
+  "IGUALACION",
+  "IGUALDAD",
+  "DIFERENTE",
+  "MAYOR",
+  "MENOR",
+  "MAYOR_IGUAL",
+  "MENOR_IGUAL",
+  "AND",
+  "OR",
+  "NOT",
+  "SUMA",
+  "RESTA",
+  "MULTIPLICACION",
+  "DIVISION",
+  "SEPARADOR",
+  "COMA",
+  "DEFAULT",
+  "COLOR_TEXTO_SI",
+  "COLOR_SI",
+  "FIGURA_SI",
+  "LETRA_SI",
+  "LERTA_SIZE_SI",
+  "COLOR_TEXTO_MIENTRAS",
+  "COLOR_MIENTRAS",
+  "FIGURA_MIENTRAS",
+  "LETRA_MIENTRAS",
+  "LERTA_SIZE_MIENTRAS",
+  "COLOR_TEXTO_BLOQUE",
+  "COLOR_BLOQUE",
+  "FIGURA_BLOQUE",
+  "LETRA_BLOQUE",
+  "LERTA_SIZE_BLOQUE",
   "INICIO",
   "FIN",
-  "SALTO",
-  "NOT",
-  "ID",
+  "VAR",
+  "SI",
+  "ENTONCES",
+  "MIENTRAS",
+  "MOSTRAR",
+  "LEER",
+  "FIN_MIENTRAS",
+  "HACER",
+  "FIN_SI",
   "PARENT_APERTURA",
   "PARENT_CIERRE",
-  "MULTIPLICACION",
-  "SUMA"
+  "FIGURA",
+  "FUENTE",
+  "ID",
+  "DECIMAL",
+  "ENTERO",
+  "CADENA"
   };
 }
 

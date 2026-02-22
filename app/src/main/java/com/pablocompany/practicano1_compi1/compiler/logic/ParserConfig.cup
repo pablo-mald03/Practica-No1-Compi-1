@@ -36,11 +36,20 @@ parser code {:
 -----------------------------------------------------------*/
 
 /* Terminales: tokens que el parser nos retorna */
-terminal INICIO, FIN, PLECA, IGUALDAD,
-         SALTO, NOT,
-         ID,
-         PARENT_APERTURA, PARENT_CIERRE,
-         MULTIPLICACION, SUMA, ;
+terminal    SALTO, COLOR_HEX,
+            PLECA, IGUALACION,
+            IGUALDAD, DIFERENTE, MAYOR, MENOR, MAYOR_IGUAL, MENOR_IGUAL,
+            AND, OR, NOT,
+            SUMA, RESTA, MULTIPLICACION, DIVISION,
+            SEPARADOR, COMA, DEFAULT,
+            COLOR_TEXTO_SI, COLOR_SI, FIGURA_SI, LETRA_SI, LERTA_SIZE_SI,
+            COLOR_TEXTO_MIENTRAS, COLOR_MIENTRAS, FIGURA_MIENTRAS, LETRA_MIENTRAS, LERTA_SIZE_MIENTRAS,
+            COLOR_TEXTO_BLOQUE, COLOR_BLOQUE, FIGURA_BLOQUE, LETRA_BLOQUE, LERTA_SIZE_BLOQUE,
+            INICIO, FIN, VAR, SI, ENTONCES, MIENTRAS, MOSTRAR, LEER, FIN_MIENTRAS, HACER, FIN_SI,
+            PARENT_APERTURA, PARENT_CIERRE,
+            FIGURA, FUENTE,
+            ID, DECIMAL, ENTERO, CADENA
+            ;
 
 
 /* no terminales, reglas que nosotros vamos a definir sintacticamente */

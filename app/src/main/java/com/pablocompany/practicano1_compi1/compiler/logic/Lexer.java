@@ -7,7 +7,7 @@ package com.pablocompany.practicano1_compi1.compiler.logic;
 
 import java_cup.runtime.*;
 import java.util.*;
-import com.pablocompany.practicano1_compi1.compiler.models.ErrorLexico;
+import com.pablocompany.practicano1_compi1.compiler.models.ErrorAnalisis;
 
 
 @SuppressWarnings("fallthrough")
@@ -832,9 +832,9 @@ public class Lexer implements java_cup.runtime.Scanner {
                    Codigo del lexer
              -------------------------------------------------*/
 
-    private List<ErrorLexico> errorLexList;
+    private List<ErrorAnalisis> errorLexList;
 
-    public List<ErrorLexico> getLexicalErrors(){
+    public List<ErrorAnalisis> getLexicalErrors(){
         return this.errorLexList;
     }
 
@@ -854,7 +854,7 @@ public class Lexer implements java_cup.runtime.Scanner {
     }
 
     private void reportError(String message, String text){
-         errorLexList.add(new ErrorLexico(text,(yyline+1),(yycolumn+1),"Lexico",message));
+         errorLexList.add(new ErrorAnalisis(text,(yyline+1),(yycolumn+1),"Lexico",message));
     }
 
 
@@ -1401,7 +1401,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 85: break;
           case 23:
-            { return symbol(sym.DIFF);
+            { return symbol(sym.DIFERENTE);
             }
           // fall through
           case 86: break;
@@ -1411,7 +1411,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 87: break;
           case 25:
-            { return symbol(sym.MENORIGUAL);
+            { return symbol(sym.MENOR_IGUAL);
             }
           // fall through
           case 88: break;
@@ -1421,7 +1421,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 89: break;
           case 27:
-            { return symbol(sym.MAYORIGUAL);
+            { return symbol(sym.MAYOR_IGUAL);
             }
           // fall through
           case 90: break;
@@ -1501,7 +1501,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 105: break;
           case 43:
-            { return sym.COLOR_HEX;
+            { return symbol(sym.COLOR_HEX);
             }
           // fall through
           case 106: break;

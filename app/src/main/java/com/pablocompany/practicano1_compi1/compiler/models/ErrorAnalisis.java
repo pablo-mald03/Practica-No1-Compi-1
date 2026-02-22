@@ -1,13 +1,13 @@
 package com.pablocompany.practicano1_compi1.compiler.models;
 
-public class ErrorLexico {
+public class ErrorAnalisis {
     private String lexema;
     private int linea;
     private int columna;
     private String tipo;
     private String descripcion;
 
-    public ErrorLexico(String lexema, int linea, int columna, String tipo, String descripcion) {
+    public ErrorAnalisis(String lexema, int linea, int columna, String tipo, String descripcion) {
         this.lexema = lexema;
         this.linea = linea;
         this.columna = columna;
