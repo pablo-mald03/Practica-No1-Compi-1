@@ -215,11 +215,11 @@ ARIAL|TIMES_NEW_ROMAN|COMIC_SANS|VERDANA       {return symbol(sym.FUENTE);}
 /*============CONFIGURACIONES====================*/
 
 /*==========ER CON CONTEXTO EN EL LENGUAJE============*/
-{Decimal}  {return symbol(sym.DECIMAL);}
+{Decimal}  {return symbol(sym.DECIMAL, Double.parseDouble(yytext()));}
 
-{Numero} {return symbol(sym.ENTERO);}
+{Numero} {return symbol(sym.ENTERO, Integer.parseInt(yytext()));}
 
-{Id} { return symbol(sym.ID); }
+{Id} { return symbol(sym.ID, yytext()); }
 
 {WhiteSpace} { /* ignorar */ }
 

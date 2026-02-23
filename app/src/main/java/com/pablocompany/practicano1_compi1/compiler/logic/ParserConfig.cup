@@ -4,7 +4,7 @@ package com.pablocompany.practicano1_compi1.compiler.logic;
 
 import java_cup.runtime.*;
 import java.util.*;
-import com.pablocompany.practicano1_compi1.compiler.models.ErrorAnalisis;
+import com.pablocompany.practicano1_compi1.compiler.models.*;
 
 /*------------------------------------------------------
                         CUP
@@ -49,25 +49,29 @@ terminal    SALTO, COLOR_HEX,
             COLOR_TEXTO_BLOQUE, COLOR_BLOQUE, FIGURA_BLOQUE, LETRA_BLOQUE, LERTA_SIZE_BLOQUE,
             INICIO, FIN, VAR, SI, ENTONCES, MIENTRAS, MOSTRAR, LEER, FIN_MIENTRAS, HACER, FIN_SI,
             PARENT_APERTURA, PARENT_CIERRE,
-            FIGURA, FUENTE,
-            ID, DECIMAL, ENTERO, CADENA
-            ;
+            FIGURA, FUENTE;
+
+terminal String ID;
+terminal Double DECIMAL;
+terminal Integer ENTERO;
+terminal String CADENA;
+
 
 
 /* no terminales, reglas que nosotros vamos a definir sintacticamente */
-non terminal programa;
-non terminal lista_sentencias;
-non terminal sentencia;
+non terminal List programa;
+non terminal List lista_sentencias;
+non terminal NodoInstruccion sentencia;
 non terminal seccion_configuracion;
 non terminal lista_configuraciones;
 non terminal si_simple;
 non terminal mientras_simple;
-non terminal declaracion;
-non terminal asignacion;
-non terminal mostrar;
+non terminal NodoInstruccion declaracion;
+non terminal NodoInstruccion asignacion;
+non terminal NodoInstruccion mostrar;
 
 /*===Representacion de una expresion matematica===*/
-non terminal expresion;
+non terminal NodoExpresion expresion;
 /*non terminal NodoExpresion expresion;*/
 
 /*no terminales para poder detectar errores*/
@@ -95,11 +99,20 @@ start with programa;
 
 
 /* Gramatica: reglas para validacion */
-programa ::= INICIO lista_sentencias FIN seccion_configuracion
+programa ::= INICIO lista_sentencias:l FIN seccion_configuracion {: RESULT = l; :}
             ;
 
-lista_sentencias ::= lista_sentencias sentencia
-                    | sentencia
+lista_sentencias ::= lista_sentencias:l sentencia:s
+                    {:
+                        l.add(s);
+                        RESULT = l;
+                    :}
+                    | sentencia: s
+                    {:
+                        List lista = new ArrayList();
+                        lista.add(s);
+                        RESULT = lista;
+                    :}
                     ;
 
 sentencia   ::=  declaracion
@@ -109,7 +122,10 @@ sentencia   ::=  declaracion
                 | mostrar
                 ;
 
-declaracion     ::= VAR ID IGUALACION   expresion
+declaracion     ::= VAR ID:id IGUALACION   expresion:e
+                {:
+                    RESULT = new NodoDeclaracion(id.toString(), e);
+                :}
                 ;
 
 asignacion      ::= ID IGUALACION expresion
@@ -125,14 +141,14 @@ condicion ::= expresion IGUALDAD expresion
             ;
 
 
-expresion ::=   expresion:e1 SUMA expresion:e2 {:/*RESULT = new NodoSuma(e1,e2)*/:}
-                | expresion:e1 RESTA expresion:e2 {:/* RESULT = new NodoResta(e1, e2); */:}
-                | expresion:e1 MULTIPLICACION expresion:e2 {:/*RESULT = new NodoMultiplicacion(e1,e2)*/:}
-                | expresion:e1 DIVISION expresion:e2 {:/*RESULT = new NodoDivision(e1,e2)*/:}
+expresion ::=   expresion:e1 SUMA expresion:e2 {:RESULT = new NodoSuma(e1,e2); :}
+                | expresion:e1 RESTA expresion:e2 {:RESULT = new NodoResta(e1, e2); :}
+                | expresion:e1 MULTIPLICACION expresion:e2 {: RESULT = new NodoMultiplicacion(e1,e2); :}
+                | expresion:e1 DIVISION expresion:e2 {: RESULT = new NodoDivision(e1,e2); :}
                 | PARENT_APERTURA expresion PARENT_CIERRE
-                | ENTERO:e {: /*RESULT = new NodoEntero(e); */:}
-                |DECIMAL
-                |ID
+                | ENTERO:e {: RESULT = new NodoEntero(e); :}
+                |DECIMAL:d {: RESULT = new NodoDecimal(d); :}
+                |ID:id {: RESULT = new NodoVariable(id.toString()); :}
                 ;
 
 
@@ -151,7 +167,10 @@ si_simple   ::= SI PARENT_APERTURA condicion PARENT_CIERRE ENTONCES lista_senten
 mientras_simple     ::= MIENTRAS PARENT_APERTURA condicion PARENT_CIERRE HACER lista_sentencias_simples FIN_MIENTRAS
                         ;
 
-mostrar             ::= MOSTRAR expresion
+mostrar             ::= MOSTRAR expresion: e
+                         {:
+                            RESULT = new NodoMostrar(e);
+                        :}
                     | MOSTRAR CADENA
                     ;
 

@@ -1320,7 +1320,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 69: break;
           case 7:
-            { return symbol(sym.ID);
+            { return symbol(sym.ID, yytext());
             }
           // fall through
           case 70: break;
@@ -1360,7 +1360,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 77: break;
           case 15:
-            { return symbol(sym.ENTERO);
+            { return symbol(sym.ENTERO, Integer.parseInt(yytext()));
             }
           // fall through
           case 78: break;
@@ -1456,7 +1456,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 96: break;
           case 34:
-            { return symbol(sym.DECIMAL);
+            { return symbol(sym.DECIMAL, Double.parseDouble(yytext()));
             }
           // fall through
           case 97: break;

@@ -1,6 +1,8 @@
 package com.pablocompany.practicano1_compi1.domain.usecase
 
 import com.pablocompany.practicano1_compi1.compiler.backend.ResultadoAnalisis
+import com.pablocompany.practicano1_compi1.compiler.logic.Lexer
+import com.pablocompany.practicano1_compi1.compiler.logic.Parser
 import java.io.StringReader
 
 class AnalizarCodigoUseCase {
@@ -10,45 +12,11 @@ class AnalizarCodigoUseCase {
     operator fun invoke(codigo: String): ResultadoAnalisis {
 
 
-        //val listaErrores = listOf<String>()
-        val erroresSintacticos = listOf<String>()
-
-        val codigoProcesado = listOf<String>()
-
-        val listaErrores = listOf(
-            "INICIO",
-            "DECLARACION x = 10",
-            "SI x > 5",
-            "IMPRIMIR x",
-            "FIN"
-        )
-
-        /*val codigoProcesado = listOf(
-            "INICIO",
-            "DECLARACION x = 10",
-            "SI x > 5",
-            "IMPRIMIR x",
-            "FIN"
-        )*/
-
-        val exito = false
-
-        return ResultadoAnalisis(
-            exito = exito,
-            erroresDetectados = listaErrores,
-            listaOperadores = erroresSintacticos,
-            codigoProcesado = codigoProcesado
-        )
-    }
-
-
-    //Codigo pendiente CUANDO YA EXISTA UN PARSER Y LEXER
-    /*operator fun invoke(codigo: String): ResultadoAnalisis {
-
         if (codigo.isBlank()) {
             return ResultadoAnalisis(
                 exito = false,
-                erroresLexicos = listOf("El código está vacío"),
+                listaOperadores = emptyList(),
+                erroresLexicos = emptyList(),
                 erroresSintacticos = emptyList(),
                 codigoProcesado = emptyList()
             )
@@ -56,37 +24,40 @@ class AnalizarCodigoUseCase {
 
         return try {
 
-            //Clases java
-            //val lexer = Lexer(StringReader(codigo))
-            //val parser = Parser(lexer)
+            val lexer = Lexer(StringReader(codigo))
+            val parser = Parser(lexer)
 
-           // parser.parse()
+            val parseResult = parser.parse()
 
-            //val erroresLexicos = lexer.lexicalErrors ?: emptyList()
-            //val erroresSintacticos = parser.syntaxErrors ?: emptyList()
+            val erroresLexicosList = lexer.lexicalErrors?: emptyList()
 
-           // val exito = erroresLexicos.isEmpty() && erroresSintacticos.isEmpty()
+            val erroresSintacticosList = parser.syntaxErrorList?: emptyList()
+
+            val exito = erroresLexicosList.isEmpty() && erroresSintacticosList.isEmpty()
+
+            val ast = parseResult.value as? List<*>
 
             ResultadoAnalisis(
-                codigo provisional
-               /* exito = exito,
-                erroresLexicos = erroresLexicos,
-                erroresSintacticos = erroresSintacticos,
-                codigoProcesado = if (exito) {
-                    listOf("CODIGO_TRADUCIDO_TEMPORAL")
+                exito = exito,
+                listaOperadores = emptyList(),
+                erroresLexicos = erroresLexicosList,
+                erroresSintacticos = erroresSintacticosList,
+                codigoProcesado = if (exito && ast != null) {
+                    ast.map { it.toString() }
                 } else {
                     emptyList()
-                }*/
+                }
             )
 
         } catch (e: Exception) {
 
             ResultadoAnalisis(
                 exito = false,
+                listaOperadores = emptyList(),
                 erroresLexicos = emptyList(),
-                erroresSintacticos = listOf("Error inesperado: ${e.message}"),
+                erroresSintacticos = emptyList(),
                 codigoProcesado = emptyList()
             )
         }
-    }*/
+    }
 }

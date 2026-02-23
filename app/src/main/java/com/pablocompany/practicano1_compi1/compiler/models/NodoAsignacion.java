@@ -1,18 +1,17 @@
 package com.pablocompany.practicano1_compi1.compiler.models;
 
-public class NodoDeclaracion extends NodoInstruccion{
-
-    private String nombre;
+public class NodoAsignacion extends NodoInstruccion{
+    private String id;
     private NodoExpresion expresion;
 
-    public NodoDeclaracion(String nombre, NodoExpresion expresion){
-        this.nombre = nombre;
+    public NodoAsignacion(String id, NodoExpresion expresion){
+        this.id = id;
         this.expresion = expresion;
     }
 
     @Override
     public void ejecutar(EntornoValores entorno){
         double valor = expresion.evaluar(entorno);
-        entorno.setVariable(nombre, valor);
+        entorno.setVariable(id, valor);
     }
 }
