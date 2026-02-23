@@ -9,9 +9,9 @@ import java_cup.runtime.*;
 import java.util.*;
 import com.pablocompany.practicano1_compi1.compiler.models.*;
 import com.pablocompany.practicano1_compi1.compiler.models.expresiones.*;
-import com.pablocompany.practicano1_compi1.compiler.models.operadores.*;
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.logicos.*;
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.matematicos.*;
+import com.pablocompany.practicano1_compi1.compiler.models.operadores.relacionales.*;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -507,6 +507,12 @@ class CUP$Parser$actions {
           case 13: // condicion ::= expresion MAYOR expresion 
             {
               NodoExpresion RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
+		NodoExpresion e1 = (NodoExpresion)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
+		int e2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
+		int e2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
+		NodoExpresion e2 = (NodoExpresion)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 RESULT = new NodoMayor(e1,e2); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("condicion",18, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -516,6 +522,12 @@ class CUP$Parser$actions {
           case 14: // condicion ::= expresion MENOR expresion 
             {
               NodoExpresion RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
+		NodoExpresion e1 = (NodoExpresion)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
+		int e2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
+		int e2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
+		NodoExpresion e2 = (NodoExpresion)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 RESULT = new NodoMenor(e1,e2); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("condicion",18, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -525,6 +537,12 @@ class CUP$Parser$actions {
           case 15: // condicion ::= expresion MAYOR_IGUAL expresion 
             {
               NodoExpresion RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
+		NodoExpresion e1 = (NodoExpresion)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
+		int e2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
+		int e2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
+		NodoExpresion e2 = (NodoExpresion)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 RESULT = new NodoMayorIgual(e1,e2); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("condicion",18, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -534,6 +552,12 @@ class CUP$Parser$actions {
           case 16: // condicion ::= expresion MENOR_IGUAL expresion 
             {
               NodoExpresion RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
+		NodoExpresion e1 = (NodoExpresion)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
+		int e2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
+		int e2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
+		NodoExpresion e2 = (NodoExpresion)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 RESULT = new NodoMenorIgual(e1,e2); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("condicion",18, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }

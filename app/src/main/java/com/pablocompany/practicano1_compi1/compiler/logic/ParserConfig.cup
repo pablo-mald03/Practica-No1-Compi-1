@@ -9,6 +9,7 @@ import com.pablocompany.practicano1_compi1.compiler.models.expresiones.*;
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.*;
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.logicos.*;
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.matematicos.*;
+import com.pablocompany.practicano1_compi1.compiler.models.operadores.relacionales.*;
 
 /*------------------------------------------------------
                         CUP
@@ -145,13 +146,13 @@ condicion ::= expresion:e1 IGUALDAD expresion:e2
             {: RESULT = new NodoIgual(e1,e2); :}
             | expresion:e1 DIFERENTE expresion:e2
             {: RESULT = new NodoDiferente(e1,e2); :}
-            | expresion MAYOR expresion
+            | expresion:e1 MAYOR expresion:e2
             {: RESULT = new NodoMayor(e1,e2); :}
-            | expresion MENOR expresion
+            | expresion:e1 MENOR expresion:e2
             {: RESULT = new NodoMenor(e1,e2); :}
-            | expresion MAYOR_IGUAL expresion
+            | expresion:e1 MAYOR_IGUAL expresion:e2
             {: RESULT = new NodoMayorIgual(e1,e2); :}
-            | expresion MENOR_IGUAL expresion
+            | expresion:e1 MENOR_IGUAL expresion:e2
             {: RESULT = new NodoMenorIgual(e1,e2); :}
             ;
 

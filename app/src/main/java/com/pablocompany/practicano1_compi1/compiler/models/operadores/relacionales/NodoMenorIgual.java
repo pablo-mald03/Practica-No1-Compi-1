@@ -3,15 +3,15 @@ package com.pablocompany.practicano1_compi1.compiler.models.operadores.relaciona
 import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 
-public class NodoIgual extends NodoExpresion {
+public class NodoMenorIgual extends NodoExpresion {
     private NodoExpresion izquierda, derecha;
-    public NodoIgual(NodoExpresion izq, NodoExpresion der) {
+    public NodoMenorIgual(NodoExpresion izq, NodoExpresion der) {
         izquierda = izq;
         derecha = der;
     }
 
     @Override
     public double evaluar(EntornoValores entorno) {
-        return izquierda.evaluar(entorno) == derecha.evaluar(entorno) ? 1 : 0;
+        return izquierda.evaluar(entorno) <= derecha.evaluar(entorno) ? 1 : 0;
     }
 }

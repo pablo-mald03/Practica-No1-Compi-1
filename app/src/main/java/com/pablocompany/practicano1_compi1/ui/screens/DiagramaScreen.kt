@@ -41,12 +41,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.navigation.NavController
 import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion
+import com.pablocompany.practicano1_compi1.compiler.models.NodoPrograma
 
 
 @Composable
 fun DiagramaScreen(
     navController: NavController,
-    codigoProcesado: List<NodoInstruccion>
+    codigoProcesado: NodoPrograma
 ) {
 
     var scale by remember { mutableStateOf(1f) }
