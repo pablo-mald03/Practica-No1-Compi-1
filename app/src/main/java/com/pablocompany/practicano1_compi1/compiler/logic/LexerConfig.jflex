@@ -30,7 +30,7 @@ import com.pablocompany.practicano1_compi1.compiler.models.ErrorAnalisis;
 /********************** macros ***********************************/
 /*=======Apartado de macros======*/
 LineTerminator = \r|\n|\r\n
-WhiteSpace = [ \t\f]
+WhiteSpace = [ \t\f]+
 Numero = [0-9]+
 Decimal = {Numero}"."{Numero}
 jletter = [:jletter:]
@@ -88,7 +88,7 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 {WhiteSpace} { /* ignorar */ }
 
-{LineTerminator} { return symbol(sym.SALTO); }
+{LineTerminator} { /*ignorar */ }
 
 "#".*      {/*Ignorado*/}
 

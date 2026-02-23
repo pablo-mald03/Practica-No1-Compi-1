@@ -25,7 +25,9 @@ class AnalizarCodigoUseCase {
 
         return try {
 
-            val lexer = Lexer(StringReader(codigo))
+            val codigoLimpio = codigo.replace(Regex("\\p{C}"), "")
+            
+            val lexer = Lexer(StringReader(codigoLimpio))
             val parser = Parser(lexer)
 
             val parseResult = parser.parse()

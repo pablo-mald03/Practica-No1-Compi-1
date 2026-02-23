@@ -37,7 +37,7 @@ parser code {:
 -----------------------------------------------------------*/
 
 /* Terminales: tokens que el parser nos retorna */
-terminal    SALTO, COLOR_HEX,
+terminal    COLOR_HEX,
             PLECA, IGUALACION,
             IGUALDAD, DIFERENTE, MAYOR, MENOR, MAYOR_IGUAL, MENOR_IGUAL,
             AND, OR, NOT,
@@ -59,13 +59,13 @@ terminal String CADENA;
 
 
 /* no terminales, reglas que nosotros vamos a definir sintacticamente */
-non terminal List programa;
+non terminal NodoPrograma programa;
 non terminal List lista_sentencias;
 non terminal NodoInstruccion sentencia;
-non terminal seccion_configuracion;
-non terminal lista_configuraciones;
-non terminal si_simple;
-non terminal mientras_simple;
+non terminal List seccion_configuracion;
+non terminal List lista_configuraciones;
+non terminal NodoInstruccion si_simple;
+non terminal NodoInstruccion mientras_simple;
 non terminal NodoInstruccion declaracion;
 non terminal NodoInstruccion asignacion;
 non terminal NodoInstruccion mostrar;
@@ -75,20 +75,20 @@ non terminal NodoExpresion expresion;
 /*non terminal NodoExpresion expresion;*/
 
 /*no terminales para poder detectar errores*/
-non terminal lista_sentencias_simples;
-non terminal sentencia_simple;
+non terminal List lista_sentencias_simples;
+non terminal List sentencia_simple;
 
 /*==Gramatica de personalizacion==*/
-non terminal config_estilos;
-non terminal rgb_estado;
-non terminal valor_color;
+non terminal NodoConfiguracion config_estilos;
+non terminal NodoColor valor_color;
+non terminal NodoRgb rgb_estado;
 
 /*====Sun region de estados de personalizacion*/
-non terminal config_color;
-non terminal config_figura;
+non terminal NodoConfiguracion config_color;
+non terminal NodoConfiguracion config_figura;
 
 //Gramatica de condiciones
-non terminal condicion;
+non terminal NodoExpresion condicion;
 
 precedence left SUMA, RESTA;
 precedence left MULTIPLICACION, DIVISION;
@@ -99,7 +99,8 @@ start with programa;
 
 
 /* Gramatica: reglas para validacion */
-programa ::= INICIO lista_sentencias:l FIN seccion_configuracion {: RESULT = l; :}
+programa ::= INICIO lista_sentencias:l FIN seccion_configuracion:c
+            {: RESULT = new NodoPrograma(l, c); :}
             ;
 
 lista_sentencias ::= lista_sentencias:l sentencia:s
@@ -122,18 +123,23 @@ sentencia   ::=  declaracion
                 | mostrar
                 ;
 
-declaracion     ::= VAR ID:id IGUALACION   expresion:e
+declaracion     ::= VAR ID:id IGUALACION expresion:e
                 {:
                     RESULT = new NodoDeclaracion(id.toString(), e);
                 :}
                 ;
 
-asignacion      ::= ID IGUALACION expresion
+asignacion      ::= ID:id IGUALACION expresion:e
+                {:
+                    RESULT = new NodoAsignacion(id.toString(), e);
+                :}
                 ;
 
 
-condicion ::= expresion IGUALDAD expresion
-            | expresion DIFERENTE expresion
+condicion ::= expresion:e1 IGUALDAD expresion:e2
+            {: RESULT = new NodoIgual(e1,e2); :}
+            | expresion:e1 DIFERENTE expresion:e2
+            {: RESULT = new NodoDiferente(e1,e2); :}
             | expresion MAYOR expresion
             | expresion MENOR expresion
             | expresion MAYOR_IGUAL expresion
@@ -152,8 +158,17 @@ expresion ::=   expresion:e1 SUMA expresion:e2 {:RESULT = new NodoSuma(e1,e2); :
                 ;
 
 
-lista_sentencias_simples ::= lista_sentencias_simples sentencia_simple
-                            | sentencia_simple
+lista_sentencias_simples ::= lista_sentencias_simples:l sentencia_simple: s
+                            {:
+                                l.add(s);
+                                RESULT = l;
+                            :}
+                            | sentencia_simple:s
+                            {:
+                                List lista = new ArrayList();
+                                lista.add(s);
+                                RESULT = lista;
+                            :}
                             ;
 
 sentencia_simple        ::= declaracion
@@ -161,49 +176,77 @@ sentencia_simple        ::= declaracion
                         | mostrar
                         ;
 
-si_simple   ::= SI PARENT_APERTURA condicion PARENT_CIERRE ENTONCES lista_sentencias_simples FIN_SI
+si_simple   ::= SI PARENT_APERTURA condicion:c PARENT_CIERRE ENTONCES lista_sentencias_simples:l FIN_SI
+                {:
+                    RESULT = new NodoSi(c, l);
+                :}
                 ;
 
-mientras_simple     ::= MIENTRAS PARENT_APERTURA condicion PARENT_CIERRE HACER lista_sentencias_simples FIN_MIENTRAS
+mientras_simple     ::= MIENTRAS PARENT_APERTURA condicion:c PARENT_CIERRE HACER lista_sentencias_simples:l FIN_MIENTRAS
+                        {:
+                            RESULT = new NodoMientras(c, l);
+                        :}
                         ;
 
-mostrar             ::= MOSTRAR expresion: e
+mostrar             ::=  MOSTRAR expresion: e
                          {:
                             RESULT = new NodoMostrar(e);
                         :}
-                    | MOSTRAR CADENA
-                    ;
+                        | MOSTRAR CADENA:cad
+                        {:
+                            RESULT = new NodoMostrarCadena(cad.toString());
+                        :}
+                        ;
 
 /*=====Apartado de gramatica de las configuraciones=====*/
 
-rgb_estado              ::= expresion COMA expresion COMA expresion
-                            ;
-
-seccion_configuracion   ::= SEPARADOR lista_configuraciones
+seccion_configuracion   ::= SEPARADOR lista_configuraciones: l
+                            {: RESULT = l; :}
                             | /* vacío */
+                            {: RESULT = new ArrayList(); :}
                             ;
 
-lista_configuraciones ::= lista_configuraciones config_estilos
-                        | config_estilos
+lista_configuraciones ::= lista_configuraciones:l config_estilos:c
+                        {:
+                            l.add(c);
+                            RESULT = l;
+                        :}
+                        | config_estilos:c
+                        {:
+                            List lista = new ArrayList();
+                            lista.add(c);
+                            RESULT = lista;
+                        :}
                         ;
 
 
-config_estilos        ::= DEFAULT IGUALACION ENTERO
-                        | config_color
-                        | config_figura
-                        ;
+config_estilos        ::=   DEFAULT IGUALACION ENTERO:e
+                            {: RESULT = new NodoConfigDefault(e); :}
+                            | config_color:c
+                            {: RESULT = c; :}
+                            | config_figura:f
+                            {: RESULT = f; :}
+                            ;
 
 /*======Sub region de configuraciones persionalizables*/
 
-config_color        ::= COLOR_TEXTO_SI IGUALACION valor_color PLECA expresion
-                    | COLOR_TEXTO_MIENTRAS IGUALACION valor_color PLECA expresion
+config_color        ::= COLOR_TEXTO_SI IGUALACION valor_color:v PLECA expresion:n
+                        {: RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_SI, v, n); :}
+                    | COLOR_TEXTO_MIENTRAS IGUALACION valor_color:v PLECA expresion:n
+                        {: RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_MIENTRAS, v, n); :}
                     ;
 
-valor_color         ::= rgb_estado
-                    | COLOR_HEX
+valor_color         ::= rgb_estado:rg
+                    {: RESULT = rg; :}
+                    | COLOR_HEX:he
+                    {: RESULT = new NodoHexColor(he.toString()); :}
                     ;
 
-config_figura       ::=  FIGURA_MIENTRAS IGUALACION FIGURA
+rgb_estado          ::= expresion:r1 COMA expresion:r2 COMA expresion:r3
+                        {: RESULT = new NodoRGB(r1, r2, r3); :}
+                        ;
+config_figura       ::= FIGURA_MIENTRAS IGUALACION FIGURA:f PLECA expresion:n
+                        {: RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_MIENTRAS, f, n); :}
                     ;
 
 
