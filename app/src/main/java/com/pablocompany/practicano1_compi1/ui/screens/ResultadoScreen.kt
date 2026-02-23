@@ -35,7 +35,7 @@ fun ResultadoScreen(
 ){
     val exito = resultado.exito
 
-    val hayErrores = resultado.erroresDetectados.isNotEmpty()
+    val hayErrores = resultado.erroresLexicos.isNotEmpty() && resultado.erroresSintacticos.isNotEmpty()
 
 
     val gradientBackground = Brush.verticalGradient(

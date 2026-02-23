@@ -3,6 +3,7 @@ package com.pablocompany.practicano1_compi1.domain.usecase
 import com.pablocompany.practicano1_compi1.compiler.backend.ResultadoAnalisis
 import com.pablocompany.practicano1_compi1.compiler.logic.Lexer
 import com.pablocompany.practicano1_compi1.compiler.logic.Parser
+import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion
 import java.io.StringReader
 
 class AnalizarCodigoUseCase {
@@ -35,7 +36,7 @@ class AnalizarCodigoUseCase {
 
             val exito = erroresLexicosList.isEmpty() && erroresSintacticosList.isEmpty()
 
-            val ast = parseResult.value as? List<*>
+            val ast = parseResult.value as? List<NodoInstruccion>
 
             ResultadoAnalisis(
                 exito = exito,
@@ -43,7 +44,7 @@ class AnalizarCodigoUseCase {
                 erroresLexicos = erroresLexicosList,
                 erroresSintacticos = erroresSintacticosList,
                 codigoProcesado = if (exito && ast != null) {
-                    ast.map { it.toString() }
+                    ast
                 } else {
                     emptyList()
                 }
@@ -51,6 +52,7 @@ class AnalizarCodigoUseCase {
 
         } catch (e: Exception) {
 
+            print("error " + e)
             ResultadoAnalisis(
                 exito = false,
                 listaOperadores = emptyList(),
@@ -58,6 +60,7 @@ class AnalizarCodigoUseCase {
                 erroresSintacticos = emptyList(),
                 codigoProcesado = emptyList()
             )
+
         }
     }
 }

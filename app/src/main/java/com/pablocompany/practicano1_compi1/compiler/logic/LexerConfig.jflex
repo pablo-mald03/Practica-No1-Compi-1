@@ -126,7 +126,7 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 /*============CARACTERES ESPECIALES====================*/
 
-"%%%"           {return symbol(sym.SEPARADOR);}
+"%%%%"           {return symbol(sym.SEPARADOR);}
 
 ","             {return symbol(sym.COMA);}
 
@@ -194,11 +194,11 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 "LEER"      {return symbol(sym.LEER);}
 
-"FIN MIENTRAS"       {return symbol(sym.FIN_MIENTRAS);}
+"FIN MIENTRAS"|"FINMIENTRAS"       {return symbol(sym.FIN_MIENTRAS);}
 
 "HACER"      {return symbol(sym.HACER);}
 
-"FIN SI"       {return symbol(sym.FIN_SI);}
+"FIN SI"|"FINSI"       {return symbol(sym.FIN_SI);}
 
 "("       {return symbol(sym.PARENT_APERTURA);}
 
