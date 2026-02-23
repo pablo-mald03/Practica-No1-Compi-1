@@ -1,6 +1,9 @@
-package com.pablocompany.practicano1_compi1.compiler.models;
+package com.pablocompany.practicano1_compi1.compiler.models.operadores.matematicos;
 
-public class NodoSuma extends NodoExpresion{
+import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
+
+public class NodoSuma extends NodoExpresion {
 
     private NodoExpresion izquierda;
     private NodoExpresion derecha;

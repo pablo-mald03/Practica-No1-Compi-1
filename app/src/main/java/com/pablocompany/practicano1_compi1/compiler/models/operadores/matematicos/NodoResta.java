@@ -1,4 +1,7 @@
-package com.pablocompany.practicano1_compi1.compiler.models;
+package com.pablocompany.practicano1_compi1.compiler.models.operadores.matematicos;
+
+import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 
 public class NodoResta extends NodoExpresion {
 

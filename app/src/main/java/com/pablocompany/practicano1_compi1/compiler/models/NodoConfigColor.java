@@ -6,8 +6,8 @@ public class NodoConfigColor extends  NodoConfiguracion {
     private NodoColor color;
     private NodoExpresion nivel;
 
-    public NodoConfigColor(String tipo, NodoColor color, NodoExpresion nivel) {
-        this.tipo = TipoConfiguracion.valueOf(tipo);
+    public NodoConfigColor(TipoConfiguracion tipo, NodoColor color, NodoExpresion nivel) {
+        this.tipo = tipo ;
         this.color = color;
         this.nivel = nivel;
     }
