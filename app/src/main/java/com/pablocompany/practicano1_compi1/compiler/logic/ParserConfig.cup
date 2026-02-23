@@ -4,30 +4,31 @@ package com.pablocompany.practicano1_compi1.compiler.logic;
 
 import java_cup.runtime.*;
 import java.util.*;
+import com.pablocompany.practicano1_compi1.compiler.models.ErrorAnalisis;
 
 /*------------------------------------------------------
                         CUP
 --------------------------------------------------------*/
 parser code {:
 
-    Lexer lex;
-    private List<String> syntaxErrors;
+       Lexer lex;
+       private List<ErrorAnalisis> syntaxErrorList;
 
-    // conexion de parser y lexer
-    public Parser(Lexer lex){
-        super(lex);
-        syntaxErrors = new ArrayList<>();
-    }
+       // conexion de parser y lexer
+       public Parser(Lexer lex){
+           super(lex);
+           this.lex = lex;
+           syntaxErrorList = new ArrayList<>();
+       }
 
-    // getters
-    public Lexer getLexer(){
-        return this.lex;
-    }
+       // Getters
+       public Lexer getLexer(){
+           return this.lex;
+       }
 
-    public List<String> getSyntaxErrors(){
-        return this.syntaxErrors;
-    }
-
+       public List<ErrorAnalisis> getSyntaxErrorList(){
+           return this.syntaxErrorList;
+       }
 
 :}
 
@@ -40,7 +41,8 @@ terminal    SALTO, COLOR_HEX,
             PLECA, IGUALACION,
             IGUALDAD, DIFERENTE, MAYOR, MENOR, MAYOR_IGUAL, MENOR_IGUAL,
             AND, OR, NOT,
-            SUMA, RESTA, MULTIPLICACION, DIVISION,
+            SUMA, RESTA,
+            MULTIPLICACION, DIVISION,
             SEPARADOR, COMA, DEFAULT,
             COLOR_TEXTO_SI, COLOR_SI, FIGURA_SI, LETRA_SI, LERTA_SIZE_SI,
             COLOR_TEXTO_MIENTRAS, COLOR_MIENTRAS, FIGURA_MIENTRAS, LETRA_MIENTRAS, LERTA_SIZE_MIENTRAS,
@@ -54,10 +56,137 @@ terminal    SALTO, COLOR_HEX,
 
 /* no terminales, reglas que nosotros vamos a definir sintacticamente */
 non terminal programa;
+non terminal lista_sentencias;
+non terminal sentencia;
+non terminal seccion_configuracion;
+non terminal lista_configuraciones;
+non terminal si_simple;
+non terminal mientras_simple;
+non terminal declaracion;
+non terminal asignacion;
+non terminal mostrar;
+
+/*===Representacion de una expresion matematica===*/
+non terminal expresion;
+/*non terminal NodoExpresion expresion;*/
+
+/*no terminales para poder detectar errores*/
+non terminal lista_sentencias_simples;
+non terminal sentencia_simple;
+
+/*==Gramatica de personalizacion==*/
+non terminal config_estilos;
+non terminal rgb_estado;
+non terminal valor_color;
+
+/*====Sun region de estados de personalizacion*/
+non terminal config_color;
+non terminal config_figura;
+
+//Gramatica de condiciones
+non terminal condicion;
+
+precedence left SUMA, RESTA;
+precedence left MULTIPLICACION, DIVISION;
+
 
 /* Símbolo inicial */
 start with programa;
 
 
 /* Gramatica: reglas para validacion */
-programa ::= INICIO FIN ;
+programa ::= INICIO lista_sentencias FIN seccion_configuracion
+            ;
+
+lista_sentencias ::= lista_sentencias sentencia
+                    | sentencia
+                    ;
+
+sentencia   ::=  declaracion
+                | asignacion
+                | si_simple
+                | mientras_simple
+                | mostrar
+                ;
+
+declaracion     ::= VAR ID IGUALACION   expresion
+                ;
+
+asignacion      ::= ID IGUALACION expresion
+                ;
+
+
+condicion ::= expresion IGUALDAD expresion
+            | expresion DIFERENTE expresion
+            | expresion MAYOR expresion
+            | expresion MENOR expresion
+            | expresion MAYOR_IGUAL expresion
+            | expresion MENOR_IGUAL expresion
+            ;
+
+
+expresion ::=   expresion:e1 SUMA expresion:e2 {:/*RESULT = new NodoSuma(e1,e2)*/:}
+                | expresion:e1 RESTA expresion:e2 {:/* RESULT = new NodoResta(e1, e2); */:}
+                | expresion:e1 MULTIPLICACION expresion:e2 {:/*RESULT = new NodoMultiplicacion(e1,e2)*/:}
+                | expresion:e1 DIVISION expresion:e2 {:/*RESULT = new NodoDivision(e1,e2)*/:}
+                | PARENT_APERTURA expresion PARENT_CIERRE
+                | ENTERO:e {: /*RESULT = new NodoEntero(e); */:}
+                |DECIMAL
+                |ID
+                ;
+
+
+lista_sentencias_simples ::= lista_sentencias_simples sentencia_simple
+                            | sentencia_simple
+                            ;
+
+sentencia_simple        ::= declaracion
+                        | asignacion
+                        | mostrar
+                        ;
+
+si_simple   ::= SI PARENT_APERTURA condicion PARENT_CIERRE ENTONCES lista_sentencias_simples FIN_SI
+                ;
+
+mientras_simple     ::= MIENTRAS PARENT_APERTURA condicion PARENT_CIERRE HACER lista_sentencias_simples FIN_MIENTRAS
+                        ;
+
+mostrar             ::= MOSTRAR expresion
+                    | MOSTRAR CADENA
+                    ;
+
+/*=====Apartado de gramatica de las configuraciones=====*/
+
+rgb_estado              ::= expresion COMA expresion COMA expresion
+                            ;
+
+seccion_configuracion   ::= SEPARADOR lista_configuraciones
+                            | /* vacío */
+                            ;
+
+lista_configuraciones ::= lista_configuraciones config_estilos
+                        | config_estilos
+                        ;
+
+
+config_estilos        ::= DEFAULT IGUALACION ENTERO
+                        | config_color
+                        | config_figura
+                        ;
+
+/*======Sub region de configuraciones persionalizables*/
+
+config_color        ::= COLOR_TEXTO_SI IGUALACION valor_color PLECA expresion
+                    | COLOR_TEXTO_MIENTRAS IGUALACION valor_color PLECA expresion
+                    ;
+
+valor_color         ::= rgb_estado
+                    | COLOR_HEX
+                    ;
+
+config_figura       ::=  FIGURA_MIENTRAS IGUALACION FIGURA
+                    ;
+
+
+
+
