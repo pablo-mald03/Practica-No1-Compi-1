@@ -1,5 +1,7 @@
 package com.pablocompany.practicano1_compi1.compiler.models;
 
+import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfiguracion;
+
 import java.util.List;
 
 public class NodoPrograma {

@@ -1,13 +1,16 @@
-package com.pablocompany.practicano1_compi1.compiler.models;
+package com.pablocompany.practicano1_compi1.compiler.models.estructuras;
+
+import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
 
 import java.util.List;
-
-public class NodoMientras extends  NodoInstruccion{
-
+/*P*/
+public class NodoSi extends NodoInstruccion {
     private NodoExpresion condicion;
     private List<NodoInstruccion> instrucciones;
 
-    public NodoMientras(NodoExpresion condicion, List<NodoInstruccion> instrucciones) {
+    public NodoSi(NodoExpresion condicion, List<NodoInstruccion> instrucciones) {
         this.condicion = condicion;
         this.instrucciones = instrucciones;
     }
@@ -23,5 +26,4 @@ public class NodoMientras extends  NodoInstruccion{
             }
         }
     }
-
 }

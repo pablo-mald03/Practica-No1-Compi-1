@@ -40,7 +40,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.navigation.NavController
-import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion
 import com.pablocompany.practicano1_compi1.compiler.models.NodoPrograma
 
 

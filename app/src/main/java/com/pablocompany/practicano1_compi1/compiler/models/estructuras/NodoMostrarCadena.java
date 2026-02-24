@@ -1,4 +1,7 @@
-package com.pablocompany.practicano1_compi1.compiler.models;
+package com.pablocompany.practicano1_compi1.compiler.models.estructuras;
+
+import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
 
 public class NodoMostrarCadena extends NodoInstruccion {
 

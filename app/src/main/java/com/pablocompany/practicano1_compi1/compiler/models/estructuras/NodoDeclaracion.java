@@ -1,6 +1,10 @@
-package com.pablocompany.practicano1_compi1.compiler.models;
+package com.pablocompany.practicano1_compi1.compiler.models.estructuras;
 
-public class NodoDeclaracion extends NodoInstruccion{
+import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
+
+public class NodoDeclaracion extends NodoInstruccion {
 
     private String nombre;
     private NodoExpresion expresion;

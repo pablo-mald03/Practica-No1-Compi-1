@@ -1,6 +1,12 @@
-package com.pablocompany.practicano1_compi1.compiler.models;
+package com.pablocompany.practicano1_compi1.compiler.models.configuracion;
+
+import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoColor;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
+import com.pablocompany.practicano1_compi1.compiler.models.TipoConfiguracion;
+
 /*P*/
-public class NodoConfigColor extends  NodoConfiguracion {
+public class NodoConfigColor extends NodoConfiguracion {
 
     private TipoConfiguracion tipo;
     private NodoColor color;

@@ -1,0 +1,7 @@
+package com.pablocompany.practicano1_compi1.compiler.models.configuracion;
+
+import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
+
+public abstract class NodoConfiguracion {
+    public abstract  void aplicar(EntornoValores entorno);
+}
