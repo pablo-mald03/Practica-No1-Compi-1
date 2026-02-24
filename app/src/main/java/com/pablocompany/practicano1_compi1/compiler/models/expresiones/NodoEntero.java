@@ -7,9 +7,11 @@ public class NodoEntero extends NodoExpresion {
 
     private int valor;
 
-    public NodoEntero(int valor){
+    public NodoEntero(int valor, int fila, int columna) {
+        super(fila,columna);
         this.valor = valor;
     }
+
     @Override
     public double evaluar(EntornoValores entorno) {
         return valor;

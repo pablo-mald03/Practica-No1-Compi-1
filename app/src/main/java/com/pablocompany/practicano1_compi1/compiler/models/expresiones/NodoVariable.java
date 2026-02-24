@@ -3,16 +3,18 @@ package com.pablocompany.practicano1_compi1.compiler.models.expresiones;
 import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 
-public class NodoDecimal extends NodoExpresion {
-    private double valor;
+/*P*/
+public class NodoVariable extends NodoExpresion {
 
-    public NodoDecimal(double valor, int fila, int columna){
+    private String nombre;
+
+    public NodoVariable(String nombre, int fila, int columna){
         super(fila,columna);
-        this.valor = valor;
+        this.nombre = nombre;
     }
 
     @Override
-    public double evaluar(EntornoValores entorno) {
-        return valor;
+    public double evaluar(EntornoValores entorno){
+        return entorno.getVariable(nombre);
     }
 }

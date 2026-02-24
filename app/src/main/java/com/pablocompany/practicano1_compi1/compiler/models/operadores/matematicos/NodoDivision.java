@@ -7,7 +7,8 @@ public class NodoDivision extends NodoExpresion {
     private NodoExpresion izquierda;
     private NodoExpresion derecha;
 
-    public NodoDivision(NodoExpresion izquierda, NodoExpresion derecha){
+    public NodoDivision(NodoExpresion izquierda, NodoExpresion derecha, int fila, int columna){
+        super(fila,columna);
         this.izquierda = izquierda;
         this.derecha = derecha;
     }

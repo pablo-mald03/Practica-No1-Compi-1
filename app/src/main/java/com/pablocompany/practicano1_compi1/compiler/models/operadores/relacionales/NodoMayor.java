@@ -6,8 +6,9 @@ import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 public class NodoMayor extends NodoExpresion {
     private NodoExpresion izquierda;
     private NodoExpresion derecha;
-    public NodoMayor(NodoExpresion izq, NodoExpresion der)
+    public NodoMayor(NodoExpresion izq, NodoExpresion der, int fila, int columna)
     {
+        super(fila,columna);
         izquierda = izq;
         derecha = der;
     }

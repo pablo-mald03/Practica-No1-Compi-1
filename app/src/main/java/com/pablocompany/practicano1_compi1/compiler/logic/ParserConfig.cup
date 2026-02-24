@@ -143,37 +143,37 @@ asignacion      ::= ID:id IGUALACION expresion:e
 
 
 condicion ::= expresion:e1 IGUALDAD expresion:e2
-            {: RESULT = new NodoIgual(e1,e2); :}
+            {: RESULT = new NodoIgual(e1,e2,e1left,e1right); :}
             | expresion:e1 DIFERENTE expresion:e2
-            {: RESULT = new NodoDiferente(e1,e2); :}
+            {: RESULT = new NodoDiferente(e1,e2,e1left,e1right); :}
             | expresion:e1 MAYOR expresion:e2
-            {: RESULT = new NodoMayor(e1,e2); :}
+            {: RESULT = new NodoMayor(e1,e2,e1left,e1right); :}
             | expresion:e1 MENOR expresion:e2
-            {: RESULT = new NodoMenor(e1,e2); :}
+            {: RESULT = new NodoMenor(e1,e2,e1left,e1right); :}
             | expresion:e1 MAYOR_IGUAL expresion:e2
-            {: RESULT = new NodoMayorIgual(e1,e2); :}
+            {: RESULT = new NodoMayorIgual(e1,e2,e1left,e1right); :}
             | expresion:e1 MENOR_IGUAL expresion:e2
-            {: RESULT = new NodoMenorIgual(e1,e2); :}
+            {: RESULT = new NodoMenorIgual(e1,e2,e1left,e1right); :}
             ;
 
 condicion_logica ::= condicion:c1 AND condicion:c2
-                   {: RESULT = new NodoAnd(c1,c2); :}
+                   {: RESULT = new NodoAnd(c1,c2,c1left,c1right); :}
                    | condicion:c1 OR condicion:c2
-                   {: RESULT = new NodoOr(c1,c2); :}
+                   {: RESULT = new NodoOr(c1,c2,c1left,c1right); :}
                    | NOT condicion:c
-                   {: RESULT = new NodoNot(c); :}
+                   {: RESULT = new NodoNot(c,cleft,cright); :}
                    | condicion
                    ;
 
 
-expresion ::=   expresion:e1 SUMA expresion:e2 {:RESULT = new NodoSuma(e1,e2); :}
-                | expresion:e1 RESTA expresion:e2 {:RESULT = new NodoResta(e1, e2); :}
-                | expresion:e1 MULTIPLICACION expresion:e2 {: RESULT = new NodoMultiplicacion(e1,e2); :}
-                | expresion:e1 DIVISION expresion:e2 {: RESULT = new NodoDivision(e1,e2); :}
+expresion ::=   expresion:e1 SUMA expresion:e2 {:RESULT = new NodoSuma(e1,e2,e1left,e1right); :}
+                | expresion:e1 RESTA expresion:e2 {:RESULT = new NodoResta(e1, e2,e1left,e1right); :}
+                | expresion:e1 MULTIPLICACION expresion:e2 {: RESULT = new NodoMultiplicacion(e1,e2,e1left,e1right); :}
+                | expresion:e1 DIVISION expresion:e2 {: RESULT = new NodoDivision(e1,e2,e1left,e1right); :}
                 | PARENT_APERTURA expresion PARENT_CIERRE
-                | ENTERO:e {: RESULT = new NodoEntero(e); :}
-                |DECIMAL:d {: RESULT = new NodoDecimal(d); :}
-                |ID:id {: RESULT = new NodoVariable(id.toString()); :}
+                | ENTERO:e {: RESULT = new NodoEntero(e, eleft, eright); :}
+                |DECIMAL:d {: RESULT = new NodoDecimal(d,dleft,dright); :}
+                |ID:id {: RESULT = new NodoVariable(id.toString(),idleft,idright); :}
                 ;
 
 

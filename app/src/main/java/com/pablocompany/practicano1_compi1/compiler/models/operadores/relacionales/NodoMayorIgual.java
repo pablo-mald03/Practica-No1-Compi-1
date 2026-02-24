@@ -5,7 +5,8 @@ import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 
 public class NodoMayorIgual extends NodoExpresion {
     private NodoExpresion izquierda, derecha;
-    public NodoMayorIgual(NodoExpresion izq, NodoExpresion der) {
+    public NodoMayorIgual(NodoExpresion izq, NodoExpresion der,int fila, int columna) {
+        super(fila,columna);
         izquierda = izq;
         derecha = der;
     }
