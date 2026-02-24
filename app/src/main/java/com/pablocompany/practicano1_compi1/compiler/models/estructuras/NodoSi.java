@@ -9,6 +9,7 @@ import com.pablocompany.practicano1_compi1.compiler.models.datos.Indexador;
 import java.util.List;
 
 /*P*/
+//Clase que representa la estructura de control si
 public class NodoSi extends NodoEstructura {
     private NodoExpresion condicion;
 
@@ -16,6 +17,11 @@ public class NodoSi extends NodoEstructura {
         super(instrucciones);
         this.condicion = condicion;
 
+    }
+
+    //Metodo getter de la condicion
+    public NodoExpresion getCondicion() {
+        return condicion;
     }
 
     @Override

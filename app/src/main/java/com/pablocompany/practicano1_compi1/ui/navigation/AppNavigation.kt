@@ -6,8 +6,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pablocompany.practicano1_compi1.data.repository.AnalisisViewModel
+import com.pablocompany.practicano1_compi1.ui.screens.AdvertenciaErroresScreen
 import com.pablocompany.practicano1_compi1.ui.screens.DiagramaScreen
 import com.pablocompany.practicano1_compi1.ui.screens.EditorScreen
+import com.pablocompany.practicano1_compi1.ui.screens.ErrorCriticoScreen
 import com.pablocompany.practicano1_compi1.ui.screens.EstructurasControlScreen
 import com.pablocompany.practicano1_compi1.ui.screens.HomeScreen
 import com.pablocompany.practicano1_compi1.ui.screens.ReporteErroresScreen
@@ -74,6 +76,14 @@ fun AppNavigation() {
             if (resultado != null) {
                 ReporteErroresScreen(navController, resultado )
             }
+        }
+
+        composable("advertencia_errores") {
+            AdvertenciaErroresScreen(navController, viewModel)
+        }
+
+        composable("error_critico") {
+            ErrorCriticoScreen(navController)
         }
 
     }

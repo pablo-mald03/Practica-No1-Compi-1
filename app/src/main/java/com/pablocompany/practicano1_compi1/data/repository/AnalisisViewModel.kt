@@ -12,8 +12,10 @@ class AnalisisViewModel : ViewModel() {
     var resultado by mutableStateOf<ResultadoAnalisis?>(null)
         private set
 
-    fun analizarCodigo(codigo: String) {
+    fun analizarCodigo(codigo: String): ResultadoAnalisis {
         val useCase = AnalizarCodigoUseCase()
-        resultado = useCase(codigo)
+        val resultadoLocal = useCase(codigo)
+        resultado = resultadoLocal
+        return resultadoLocal
     }
 }

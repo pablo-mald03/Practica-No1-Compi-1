@@ -205,9 +205,9 @@ si_simple   ::= SI PARENT_APERTURA condicion_logica:c PARENT_CIERRE ENTONCES lis
                 :}
                 ;
 
-mientras_simple     ::= MIENTRAS PARENT_APERTURA condicion:c PARENT_CIERRE HACER lista_sentencias_simples:l FIN_MIENTRAS
+mientras_simple     ::= MIENTRAS PARENT_APERTURA condicion:c PARENT_CIERRE HACER lista_sentencias_simples:list FIN_MIENTRAS
                         {:
-                            RESULT = new NodoMientras(c, l);
+                            RESULT = new NodoMientras(c, list);
                         :}
                         ;
 

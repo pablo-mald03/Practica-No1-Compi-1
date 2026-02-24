@@ -8,6 +8,7 @@ import com.pablocompany.practicano1_compi1.compiler.models.datos.Indexador;
 
 import java.util.List;
 
+//Representa al ciclo mientrs en una estructura de control
 public class NodoMientras extends NodoEstructura {
 
     private NodoExpresion condicion;
@@ -15,6 +16,11 @@ public class NodoMientras extends NodoEstructura {
     public NodoMientras(NodoExpresion condicion, List<NodoInstruccion> instrucciones) {
         super(instrucciones);
         this.condicion = condicion;
+    }
+
+    //Metodo getter de la condicion
+    public NodoExpresion getCondicion() {
+        return condicion;
     }
 
     @Override

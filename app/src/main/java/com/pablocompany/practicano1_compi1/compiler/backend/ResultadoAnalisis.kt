@@ -8,7 +8,8 @@ data class ResultadoAnalisis(
     val listaOperadores: List<String>,
     val erroresLexicos: List<ErrorAnalisis>,
     val erroresSintacticos: List<ErrorAnalisis>,
-    val codigoProcesado: NodoPrograma
+    val codigoProcesado: NodoPrograma,
+    val esErrorCritico: Boolean = false
 )
 {
 

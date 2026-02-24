@@ -38,6 +38,8 @@ class AnalizarCodigoUseCase {
 
             val ast = parseResult.value as? NodoPrograma ?: NodoPrograma(emptyList(), emptyList())
 
+            ast.indexarInstrucciones();
+
             ResultadoAnalisis(
                 exito = exito,
                 listaOperadores = emptyList(),
@@ -52,7 +54,8 @@ class AnalizarCodigoUseCase {
                 listaOperadores = emptyList(),
                 erroresLexicos = emptyList(),
                 erroresSintacticos = emptyList(),
-                codigoProcesado = NodoPrograma(emptyList(), emptyList())
+                codigoProcesado = NodoPrograma(emptyList(), emptyList()),
+                esErrorCritico = true
             )
         }
     }

@@ -171,8 +171,20 @@ fun EditorScreen(
 
                 Button(
                     onClick = {
-                        viewModel.analizarCodigo(codeText)
-                        navController.navigate("resultado")
+                       val resultado = viewModel.analizarCodigo(codeText)
+                        when {
+                            resultado.esErrorCritico -> {
+                                navController.navigate("error_critico")
+                            }
+
+                            !resultado.exito -> {
+                                navController.navigate("advertencia_errores")
+                            }
+
+                            else -> {
+                                navController.navigate("resultado")
+                            }
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()

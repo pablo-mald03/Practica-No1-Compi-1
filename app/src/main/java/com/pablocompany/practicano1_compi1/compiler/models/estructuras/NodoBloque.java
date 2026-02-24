@@ -8,12 +8,11 @@ import com.pablocompany.practicano1_compi1.compiler.models.datos.Indexador;
 
 import java.util.List;
 
+//Representa los bloques de codigo fuera de estructuras de control
 public class NodoBloque extends NodoEstructura {
 
-    private NodoExpresion condicion;
-    public NodoBloque(NodoExpresion condicion, List<NodoInstruccion> instrucciones) {
+    public NodoBloque(List<NodoInstruccion> instrucciones) {
         super(instrucciones);
-        this.condicion = condicion;
     }
 
     @Override
