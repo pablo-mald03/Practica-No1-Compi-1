@@ -24,7 +24,7 @@ class AnalizarCodigoUseCase {
 
         return try {
             //Primer filtro para evitar caracteres basura
-            val codigoLimpio = codigo.replace(Regex("\\p{C}"), "")
+            val codigoLimpio = codigo
 
             val lexer = Lexer(StringReader(codigoLimpio))
             val parser = Parser(lexer)

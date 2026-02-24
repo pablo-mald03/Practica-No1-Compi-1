@@ -88,6 +88,11 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 {WhiteSpace} { /* ignorar */ }
 
+/* Ignorar caracteres invisibles comunes */
+\u200B        {/* ignorar */ }
+\uFEFF        { /* ignorar */}
+\u200D        { /* ignorar */}
+
 {LineTerminator} { /*ignorar */ }
 
 "#".*      {/*Ignorado*/}
@@ -236,8 +241,6 @@ HexColor = "H"[0-9A-Fa-f]{6}
 {Numero} {return symbol(sym.ENTERO, Integer.parseInt(yytext()));}
 
 {Id} { return symbol(sym.ID, yytext()); }
-
-{WhiteSpace} { /* ignorar */ }
 
 \"      { string.setLength(0); yybegin(STRING); }
 
