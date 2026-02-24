@@ -8,30 +8,22 @@ import com.pablocompany.practicano1_compi1.compiler.models.datos.Indexador;
 
 import java.util.List;
 
-/*P*/
-public class NodoSi extends NodoEstructura {
-    private NodoExpresion condicion;
+public class NodoBloque extends NodoEstructura {
 
-    public NodoSi(NodoExpresion condicion, List<NodoInstruccion> instrucciones) {
+    private NodoExpresion condicion;
+    public NodoBloque(NodoExpresion condicion, List<NodoInstruccion> instrucciones) {
         super(instrucciones);
         this.condicion = condicion;
-
     }
 
     @Override
     public void ejecutar(EntornoValores entorno) {
 
-       /* double valorCondicion = condicion.evaluar(entorno);
-
-        if (valorCondicion != 0) {
-            for (NodoInstruccion instruccion : instrucciones) {
-                instruccion.ejecutar(entorno);
-            }
-        }*/
     }
 
     @Override
     public void indexar(Indexador ctx) {
         ctx.registrarEstructura(this);
     }
+
 }

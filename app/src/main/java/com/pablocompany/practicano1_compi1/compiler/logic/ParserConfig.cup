@@ -11,6 +11,8 @@ import com.pablocompany.practicano1_compi1.compiler.models.operadores.matematico
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.relacionales.*;
 import com.pablocompany.practicano1_compi1.compiler.models.configuracion.*;
 import com.pablocompany.practicano1_compi1.compiler.models.estructuras.*;
+import com.pablocompany.practicano1_compi1.compiler.models.colores.*;
+import com.pablocompany.practicano1_compi1.compiler.models.estrucutrassimples.*;
 
 /*------------------------------------------------------
                         CUP

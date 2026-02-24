@@ -8,7 +8,7 @@ public class NodoEntero extends NodoExpresion {
     private int valor;
 
     public NodoEntero(int valor, int fila, int columna) {
-        super(fila,columna);
+        super(fila, columna);
         this.valor = valor;
     }
 

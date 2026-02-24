@@ -14,6 +14,8 @@ import com.pablocompany.practicano1_compi1.compiler.models.operadores.matematico
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.relacionales.*;
 import com.pablocompany.practicano1_compi1.compiler.models.configuracion.*;
 import com.pablocompany.practicano1_compi1.compiler.models.estructuras.*;
+import com.pablocompany.practicano1_compi1.compiler.models.colores.*;
+import com.pablocompany.practicano1_compi1.compiler.models.estrucutrassimples.*;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
