@@ -1,5 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models;
-
+/*P*/
 public class NodoAsignacion extends NodoInstruccion{
     private String id;
     private NodoExpresion expresion;
@@ -14,4 +14,4 @@ public class NodoAsignacion extends NodoInstruccion{
         double valor = expresion.evaluar(entorno);
         entorno.setVariable(id, valor);
     }
-}
+}/*P*/

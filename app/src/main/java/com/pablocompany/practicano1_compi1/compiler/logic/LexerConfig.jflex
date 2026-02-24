@@ -1,6 +1,6 @@
 /********************** paquetes y otros ***********************/
 package com.pablocompany.practicano1_compi1.compiler.logic;
-
+/*P*/
 import java_cup.runtime.*;
 import java.util.*;
 import com.pablocompany.practicano1_compi1.compiler.models.ErrorAnalisis;
@@ -17,7 +17,7 @@ import com.pablocompany.practicano1_compi1.compiler.models.ErrorAnalisis;
 %ignorecase
 %state STRING
 
-
+/*P*/
 /********************** estados *********************************/
 
 %init{
@@ -76,7 +76,7 @@ HexColor = "H"[0-9A-Fa-f]{6}
          errorLexList.add(new ErrorAnalisis(text,(yyline+1),(yycolumn+1),"Lexico",message));
     }
 
-
+    /*Created by Pablo*/
 %}
 
 
@@ -208,9 +208,25 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 /*============CONFIGURACIONES====================*/
 
-ELIPSE|CIRCULO|PARALELOGRAMO|RECTANGULO|ROMBO|RECTANGULO_REDONDEADO     {return symbol(sym.FIGURA);}
+"ELIPSE"        {return symbol(sym.FIGURA,"ELIPSE");}
 
-ARIAL|TIMES_NEW_ROMAN|COMIC_SANS|VERDANA       {return symbol(sym.FUENTE);}
+"CIRCULO"       {return symbol(sym.FIGURA,"CIRCULO");}
+
+"PARALELOGRAMO" {return symbol(sym.FIGURA,"PARALELOGRAMO");}
+
+"RECTANGULO"    {return symbol(sym.FIGURA,"RECTANGULO");}
+
+"ROMBO"         {return symbol(sym.FIGURA,"ROMBO");}
+
+"RECTANGULO_REDONDEADO"     {return symbol(sym.FIGURA,"RECTANGULO_REDONDEADO");}
+
+"ARIAL"             {return symbol(sym.FUENTE,"ARIAL");}
+
+"TIMES_NEW_ROMAN"   {return symbol(sym.FUENTE,"TIMES_NEW_ROMAN");}
+
+"COMIC_SANS"    {return symbol(sym.FUENTE,"COMIC_SANS");}
+
+"VERDANA"       {return symbol(sym.FUENTE,"VERDANA");}
 
 /*============CONFIGURACIONES====================*/
 

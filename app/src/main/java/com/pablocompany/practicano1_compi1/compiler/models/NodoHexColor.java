@@ -1,5 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models;
-
+/*P*/
 public class NodoHexColor extends NodoColor {
 
     private String hex;
@@ -7,7 +7,7 @@ public class NodoHexColor extends NodoColor {
     public NodoHexColor(String hex) {
         this.hex = hex;
     }
-
+    /*P*/
     @Override
     public int[] evaluar(EntornoValores entorno) {
 

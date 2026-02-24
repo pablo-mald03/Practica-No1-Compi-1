@@ -1,12 +1,11 @@
 /****************** packages and imports **************/
 
 package com.pablocompany.practicano1_compi1.compiler.logic;
-
+/*Created by Pablo*/
 import java_cup.runtime.*;
 import java.util.*;
 import com.pablocompany.practicano1_compi1.compiler.models.*;
 import com.pablocompany.practicano1_compi1.compiler.models.expresiones.*;
-import com.pablocompany.practicano1_compi1.compiler.models.operadores.*;
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.logicos.*;
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.matematicos.*;
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.relacionales.*;
@@ -56,6 +55,7 @@ terminal    COLOR_HEX,
             PARENT_APERTURA, PARENT_CIERRE,
             FIGURA, FUENTE;
 
+/*======Apartado de tipado de tokens que vienen del lexer======*/
 terminal String ID;
 terminal Double DECIMAL;
 terminal Integer ENTERO;
@@ -122,11 +122,11 @@ lista_sentencias ::= lista_sentencias:l sentencia:s
                     :}
                     ;
 
-sentencia   ::=  declaracion
-                | asignacion
-                | si_simple
-                | mientras_simple
-                | mostrar
+sentencia   ::=  declaracion:dec    {: RESULT = dec; :}
+                | asignacion:as     {: RESULT = as; :}
+                | si_simple:si         {: RESULT = si; :}
+                | mientras_simple:mi   {: RESULT = mi; :}
+                | mostrar:mos           {: RESULT = mos; :}
                 ;
 
 declaracion     ::= VAR ID:id IGUALACION expresion:e
@@ -253,7 +253,14 @@ config_color        ::= COLOR_TEXTO_SI IGUALACION valor_color:v PLECA expresion:
                         {: RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_SI, v, n); :}
                     | COLOR_TEXTO_MIENTRAS IGUALACION valor_color:v PLECA expresion:n
                         {: RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_MIENTRAS, v, n); :}
+                    | COLOR_TEXTO_BLOQUE IGUALACION valor_color:v PLECA expresion:n
+                        {: RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_BLOQUE, v, n); :}
                     ;
+
+config_figura       ::= FIGURA_MIENTRAS IGUALACION FIGURA:f PLECA expresion:n
+                        {: RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_MIENTRAS, f.toString(), n); :}
+                    ;
+
 
 valor_color         ::= rgb_estado:rg
                     {: RESULT = rg; :}
@@ -264,9 +271,8 @@ valor_color         ::= rgb_estado:rg
 rgb_estado          ::= expresion:r1 COMA expresion:r2 COMA expresion:r3
                         {: RESULT = new NodoRgb(r1, r2, r3); :}
                         ;
-config_figura       ::= FIGURA_MIENTRAS IGUALACION FIGURA:f PLECA expresion:n
-                        {: RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_MIENTRAS, f.toString(), n); :}
-                    ;
+
+/*Created by Pablo*/
 
 
 

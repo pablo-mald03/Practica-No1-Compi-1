@@ -1,7 +1,7 @@
 package com.pablocompany.practicano1_compi1.compiler.models;
 
 import java.util.List;
-
+/*P*/
 public class NodoSi extends  NodoInstruccion{
     private NodoExpresion condicion;
     private List<NodoInstruccion> instrucciones;

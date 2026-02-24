@@ -1,5 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models;
-
+/*P*/
 public class NodoVariable extends NodoExpresion{
 
     private String nombre;

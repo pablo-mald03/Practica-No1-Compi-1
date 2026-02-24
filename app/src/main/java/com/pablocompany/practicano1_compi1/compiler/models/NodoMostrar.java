@@ -1,5 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models;
-
+/*P*/
 public class NodoMostrar extends NodoInstruccion{
 
     private NodoExpresion expresion;
@@ -12,5 +12,5 @@ public class NodoMostrar extends NodoInstruccion{
     public void ejecutar(EntornoValores entorno){
         double valor = expresion.evaluar(entorno);
     }
-
+    /*P*/
 }

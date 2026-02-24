@@ -6,7 +6,7 @@ public class ErrorAnalisis {
     private int columna;
     private String tipo;
     private String descripcion;
-
+    /*P*/
     public ErrorAnalisis(String lexema, int linea, int columna, String tipo, String descripcion) {
         this.lexema = lexema;
         this.linea = linea;
@@ -50,7 +50,7 @@ public class ErrorAnalisis {
     public String getDescripcion() {
         return this.descripcion;
     }
-
+/*P*/
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
