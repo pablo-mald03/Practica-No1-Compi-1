@@ -1615,7 +1615,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 131: break;
           case 61:
-            { return symbol(sym.LERTA_SIZE_SI);
+            { return symbol(sym.LETRA_SIZE_SI);
             }
           // fall through
           case 132: break;
@@ -1645,7 +1645,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 137: break;
           case 67:
-            { return symbol(sym.LERTA_SIZE_BLOQUE);
+            { return symbol(sym.LETRA_SIZE_BLOQUE);
             }
           // fall through
           case 138: break;
@@ -1655,7 +1655,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 139: break;
           case 69:
-            { return symbol(sym.LERTA_SIZE_MIENTRAS);
+            { return symbol(sym.LETRA_SIZE_MIENTRAS);
             }
           // fall through
           case 140: break;

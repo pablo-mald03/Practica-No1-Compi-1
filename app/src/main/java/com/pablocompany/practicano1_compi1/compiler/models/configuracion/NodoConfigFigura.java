@@ -5,6 +5,7 @@ import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 import com.pablocompany.practicano1_compi1.compiler.models.TipoConfiguracion;
 import com.pablocompany.practicano1_compi1.compiler.models.TipoFigura;
 
+//Clase que permite cambiar la configuracion de la figura
 public class NodoConfigFigura extends NodoConfiguracion {
 
     private TipoConfiguracion tipo;

@@ -8,16 +8,17 @@ package com.pablocompany.practicano1_compi1.compiler.logic;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int COLOR_TEXTO_BLOQUE = 31;
+  public static final int COLOR_TEXTO_BLOQUE = 32;
   public static final int IGUALACION = 4;
+  public static final int LETRA_SIZE_MIENTRAS = 29;
   public static final int ENTERO = 53;
   public static final int MOSTRAR = 42;
   public static final int SI = 39;
-  public static final int FIGURA_BLOQUE = 33;
+  public static final int FIGURA_BLOQUE = 34;
   public static final int DIFERENTE = 6;
   public static final int RESTA = 15;
   public static final int ENTONCES = 40;
-  public static final int LETRA_MIENTRAS = 29;
+  public static final int LETRA_MIENTRAS = 28;
   public static final int PARENT_CIERRE = 48;
   public static final int SEPARADOR = 18;
   public static final int FIN = 37;
@@ -27,27 +28,25 @@ public class sym {
   public static final int IGUALDAD = 5;
   public static final int OR = 12;
   public static final int MIENTRAS = 41;
+  public static final int LETRA_SIZE_BLOQUE = 31;
   public static final int SUMA = 14;
   public static final int ID = 51;
   public static final int COLOR_HEX = 2;
-  public static final int LERTA_SIZE_MIENTRAS = 30;
   public static final int DECIMAL = 52;
   public static final int EOF = 0;
   public static final int error = 1;
   public static final int COMA = 19;
-  public static final int COLOR_BLOQUE = 32;
+  public static final int COLOR_BLOQUE = 33;
   public static final int CADENA = 54;
-  public static final int LERTA_SIZE_SI = 25;
-  public static final int COLOR_MIENTRAS = 27;
+  public static final int COLOR_MIENTRAS = 26;
   public static final int MENOR = 8;
-  public static final int COLOR_TEXTO_MIENTRAS = 26;
+  public static final int COLOR_TEXTO_MIENTRAS = 25;
   public static final int PARENT_APERTURA = 47;
-  public static final int LERTA_SIZE_BLOQUE = 35;
   public static final int FIN_MIENTRAS = 44;
-  public static final int LETRA_BLOQUE = 34;
+  public static final int LETRA_BLOQUE = 35;
   public static final int MAYOR = 7;
   public static final int PLECA = 3;
-  public static final int FIGURA_MIENTRAS = 28;
+  public static final int FIGURA_MIENTRAS = 27;
   public static final int DEFAULT = 20;
   public static final int MAYOR_IGUAL = 9;
   public static final int LEER = 43;
@@ -63,6 +62,7 @@ public class sym {
   public static final int FIGURA = 49;
   public static final int MULTIPLICACION = 16;
   public static final int FUENTE = 50;
+  public static final int LETRA_SIZE_SI = 30;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -89,17 +89,17 @@ public class sym {
   "COLOR_SI",
   "FIGURA_SI",
   "LETRA_SI",
-  "LERTA_SIZE_SI",
   "COLOR_TEXTO_MIENTRAS",
   "COLOR_MIENTRAS",
   "FIGURA_MIENTRAS",
   "LETRA_MIENTRAS",
-  "LERTA_SIZE_MIENTRAS",
+  "LETRA_SIZE_MIENTRAS",
+  "LETRA_SIZE_SI",
+  "LETRA_SIZE_BLOQUE",
   "COLOR_TEXTO_BLOQUE",
   "COLOR_BLOQUE",
   "FIGURA_BLOQUE",
   "LETRA_BLOQUE",
-  "LERTA_SIZE_BLOQUE",
   "INICIO",
   "FIN",
   "VAR",

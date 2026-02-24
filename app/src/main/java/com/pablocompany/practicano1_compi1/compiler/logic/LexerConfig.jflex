@@ -146,7 +146,7 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 "%LETRA_SI"       {return symbol(sym.LETRA_SI);}
 
-"%LETRA_SIZE_SI"       {return symbol(sym.LERTA_SIZE_SI);}
+"%LETRA_SIZE_SI"       {return symbol(sym.LETRA_SIZE_SI);}
 
 /*=============APARTADO DE INSTRUCCIONES DE SI===============*/
 
@@ -160,7 +160,7 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 "%LETRA_MIENTRAS"       {return symbol(sym.LETRA_MIENTRAS);}
 
-"%LETRA_SIZE_MIENTRAS"       {return symbol(sym.LERTA_SIZE_MIENTRAS);}
+"%LETRA_SIZE_MIENTRAS"       {return symbol(sym.LETRA_SIZE_MIENTRAS);}
 
 /*=============APARTADO DE INSTRUCCIONES DE SI===============*/
 
@@ -174,7 +174,7 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 "%LETRA_BLOQUE"       {return symbol(sym.LETRA_BLOQUE);}
 
-"%LETRA_SIZE_BLOQUE"       {return symbol(sym.LERTA_SIZE_BLOQUE);}
+"%LETRA_SIZE_BLOQUE"       {return symbol(sym.LETRA_SIZE_BLOQUE);}
 
 /*=============APARTADO DE INSTRUCCIONES DE SI===============*/
 

@@ -52,9 +52,9 @@ terminal    COLOR_HEX,
             SUMA, RESTA,
             MULTIPLICACION, DIVISION,
             SEPARADOR, COMA, DEFAULT,
-            COLOR_TEXTO_SI, COLOR_SI, FIGURA_SI, LETRA_SI, LERTA_SIZE_SI,
-            COLOR_TEXTO_MIENTRAS, COLOR_MIENTRAS, FIGURA_MIENTRAS, LETRA_MIENTRAS, LERTA_SIZE_MIENTRAS,
-            COLOR_TEXTO_BLOQUE, COLOR_BLOQUE, FIGURA_BLOQUE, LETRA_BLOQUE, LERTA_SIZE_BLOQUE,
+            COLOR_TEXTO_SI, COLOR_SI, FIGURA_SI, LETRA_SI,
+            COLOR_TEXTO_MIENTRAS, COLOR_MIENTRAS, FIGURA_MIENTRAS, LETRA_MIENTRAS, LETRA_SIZE_MIENTRAS,LETRA_SIZE_SI, LETRA_SIZE_BLOQUE,
+            COLOR_TEXTO_BLOQUE, COLOR_BLOQUE, FIGURA_BLOQUE, LETRA_BLOQUE,
             INICIO, FIN, VAR, SI, ENTONCES, MIENTRAS, MOSTRAR, LEER, FIN_MIENTRAS, HACER, FIN_SI,
             PARENT_APERTURA, PARENT_CIERRE,
             FIGURA, FUENTE;
@@ -78,31 +78,55 @@ non terminal NodoInstruccion mientras_simple;
 non terminal NodoInstruccion declaracion;
 non terminal NodoInstruccion asignacion;
 non terminal NodoInstruccion mostrar;
+non terminal NodoInstruccion leer;
 
 /*===Representacion de una expresion matematica===*/
 non terminal NodoExpresion expresion;
-/*non terminal NodoExpresion expresion;*/
 
-/*no terminales para poder detectar errores*/
+/*===Representacion de una expresion matematica===*/
+
+
+
+/*No terminales para poder detectar listados completos de bloques de codigo*/
+
 non terminal List lista_sentencias_simples;
-non terminal List sentencia_simple;
+non terminal NodoInstruccion sentencia_simple;
+
+/*Fin de los no terminales para poder detectar listados completos de bloques de codigo*/
 
 /*==Gramatica de personalizacion==*/
+
 non terminal NodoConfiguracion config_estilos;
 non terminal NodoColor valor_color;
 non terminal NodoRgb rgb_estado;
 
-/*====Sun region de estados de personalizacion*/
+/*==Fin de la Gramatica de personalizacion==*/
+
+
+/*====Sub region de estados de personalizacion*/
+
 non terminal NodoConfiguracion config_color;
 non terminal NodoConfiguracion config_figura;
+non terminal NodoConfiguracion config_fondo;
+non terminal NodoConfiguracion config_size_letra;
+non terminal NodoConfiguracion config_tipo_letra;
 
-//Gramatica de condiciones
+
+/*====Fin de la region de estados de personalizacion====*/
+
+
+//===========Gramatica de condiciones==================
 non terminal NodoExpresion condicion;
 non terminal NodoExpresion condicion_logica;
+
+//===========Fin de la Gramatica de condiciones==================
+
+//===========Presedencia de tipos=====================
 
 precedence left SUMA, RESTA;
 precedence left MULTIPLICACION, DIVISION;
 
+//===========Presedencia de tipos=====================
 
 /* Símbolo inicial */
 start with programa;
@@ -131,6 +155,7 @@ sentencia   ::=  declaracion:dec    {: RESULT = dec; :}
                 | si_simple:si         {: RESULT = si; :}
                 | mientras_simple:mi   {: RESULT = mi; :}
                 | mostrar:mos           {: RESULT = mos; :}
+                | leer:le                {: RESULT = le; :}
                 ;
 
 declaracion     ::= VAR ID:id IGUALACION expresion:e
@@ -197,6 +222,7 @@ lista_sentencias_simples ::= lista_sentencias_simples:l sentencia_simple: s
 sentencia_simple        ::= declaracion
                         | asignacion
                         | mostrar
+                        | leer
                         ;
 
 si_simple   ::= SI PARENT_APERTURA condicion_logica:c PARENT_CIERRE ENTONCES lista_sentencias_simples:lista FIN_SI
@@ -221,11 +247,18 @@ mostrar             ::=  MOSTRAR expresion: e
                         :}
                         ;
 
+leer                ::= LEER ID:id
+                        {:
+                            RESULT = new NodoLeer(id.toString(),idleft,idright);
+                        :}
+                        ;
+
+
 /*=====Apartado de gramatica de las configuraciones=====*/
 
 seccion_configuracion   ::= SEPARADOR lista_configuraciones: l
                             {: RESULT = l; :}
-                            | /* vacío */
+                            | SEPARADOR
                             {: RESULT = new ArrayList(); :}
                             ;
 
@@ -249,9 +282,17 @@ config_estilos        ::=   DEFAULT IGUALACION expresion:e
                             {: RESULT = c; :}
                             | config_figura:f
                             {: RESULT = f; :}
+                            | config_fondo:f
+                            {: RESULT = f; :}
+                            | config_size_letra:figura
+                            {: RESULT = figura; :}
+                            | config_tipo_letra:fuente
+                            {: RESULT = fuente; :}
                             ;
 
 /*======Sub region de configuraciones persionalizables*/
+
+/*====Cambia el color de texto de la instruccion====*/
 
 config_color        ::= COLOR_TEXTO_SI IGUALACION valor_color:v PLECA expresion:n
                         {: RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_SI, v, n); :}
@@ -261,16 +302,56 @@ config_color        ::= COLOR_TEXTO_SI IGUALACION valor_color:v PLECA expresion:
                         {: RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_BLOQUE, v, n); :}
                     ;
 
-config_figura       ::= FIGURA_MIENTRAS IGUALACION FIGURA:f PLECA expresion:n
-                        {: RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_MIENTRAS, f.toString(), n); :}
+/*====Cambia el color de fondo de la instruccion====*/
+
+config_fondo        ::= COLOR_SI IGUALACION valor_color:v PLECA expresion:n
+                        {: RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_SI, v, n); :}
+                    | COLOR_MIENTRAS IGUALACION valor_color:v PLECA expresion:n
+                        {: RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_MIENTRAS, v, n); :}
+                    | COLOR_BLOQUE IGUALACION valor_color:v PLECA expresion:n
+                        {: RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_BLOQUE, v, n); :}
                     ;
 
+
+/*====Cambia la figura de la instruccion====*/
+
+config_figura       ::= FIGURA_MIENTRAS IGUALACION FIGURA:f PLECA expresion:n
+                        {: RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_MIENTRAS, f.toString(), n); :}
+                    | FIGURA_SI IGUALACION FIGURA:f PLECA expresion:n
+                        {: RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_SI, f.toString(), n); :}
+                    | FIGURA_BLOQUE IGUALACION FIGURA:f PLECA expresion:n
+                        {: RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_BLOQUE, f.toString(), n); :}
+                    ;
+
+/*====Cambia el size de la letra de la instruccion====*/
+
+config_size_letra   ::= LETRA_SIZE_MIENTRAS IGUALACION expresion:ex1 PLECA expresion:ex2
+                        {: RESULT = new NodoConfigSizeLetra(TipoConfiguracion.INSTRUCCION_MIENTRAS,ex1, ex2); :}
+                    | LETRA_SIZE_SI IGUALACION expresion:ex1 PLECA expresion:ex2
+                        {: RESULT = new NodoConfigSizeLetra(TipoConfiguracion.INSTRUCCION_SI,ex1, ex2); :}
+                    | LETRA_SIZE_BLOQUE IGUALACION expresion:ex1 PLECA expresion:ex2
+                        {: RESULT = new NodoConfigSizeLetra(TipoConfiguracion.INSTRUCCION_BLOQUE,ex1, ex2); :}
+                    ;
+
+/*====Cambia la fuente de la instruccion====*/
+
+config_tipo_letra   ::= LETRA_MIENTRAS IGUALACION FUENTE:fuente PLECA expresion:n
+                        {: RESULT = new NodoConfigTipoLetra(TipoConfiguracion.INSTRUCCION_MIENTRAS, fuente.toString(), n); :}
+                    | LETRA_SI IGUALACION FUENTE:fuente PLECA expresion:n
+                        {: RESULT = new NodoConfigTipoLetra(TipoConfiguracion.INSTRUCCION_SI, fuente.toString(), n); :}
+                    | LETRA_BLOQUE IGUALACION FUENTE:fuente PLECA expresion:n
+                        {: RESULT = new NodoConfigTipoLetra(TipoConfiguracion.INSTRUCCION_BLOQUE, fuente.toString(), n); :}
+                    ;
+
+/*====Instrucciones que permiten extraer el valor del color====*/
 
 valor_color         ::= rgb_estado:rg
                     {: RESULT = rg; :}
                     | COLOR_HEX:he
                     {: RESULT = new NodoHexColor(he.toString()); :}
                     ;
+
+/*====Instrucciones que permiten extraer el valor de un color RGB====*/
 
 rgb_estado          ::= expresion:r1 COMA expresion:r2 COMA expresion:r3
                         {: RESULT = new NodoRgb(r1, r2, r3); :}

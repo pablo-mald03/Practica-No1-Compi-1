@@ -5,6 +5,7 @@ import com.pablocompany.practicano1_compi1.compiler.models.NodoColor;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 import com.pablocompany.practicano1_compi1.compiler.models.TipoConfiguracion;
 
+//Clase que permite cambiar el color de una instruccion
 /*P*/
 public class NodoConfigColor extends NodoConfiguracion {
 
