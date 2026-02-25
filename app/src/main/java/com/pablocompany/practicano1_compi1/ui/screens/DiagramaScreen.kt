@@ -40,9 +40,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.navigation.NavController
 import com.pablocompany.practicano1_compi1.compiler.backend.clases.NodoDiagrama
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoLetra
 
 
 @Composable
@@ -323,17 +325,25 @@ fun DrawScope.DiagramaCanvas(lista: List<NodoDiagrama>) {
             }
         }
 
-        drawContext.canvas.nativeCanvas.drawText(
-            nodo.texto,
-            posX,
-            posY + 80f,
-            android.graphics.Paint().apply {
+        drawIntoCanvas { canvas ->
+
+            val paint = android.graphics.Paint().apply {
+                isAntiAlias = true
                 textAlign = android.graphics.Paint.Align.CENTER
-                textSize = nodo.sizeLetra.toFloat()
+                textSize = nodo.sizeLetra.takeIf { it > 0 }?.toFloat() ?: 40f
                 color = nodo.colorTexto
-                isFakeBoldText = true
+                typeface = nodo.tipoLetra.toTypeface()
             }
-        )
+
+            val textY = posY + 70f - ((paint.descent() + paint.ascent()) / 2)
+
+            canvas.nativeCanvas.drawText(
+                nodo.texto,
+                posX,
+                textY,
+                paint
+            )
+        }
 
         posiciones.add(posX to posY)
         currentY += verticalSpacing
@@ -356,4 +366,23 @@ fun DrawScope.DiagramaCanvas(lista: List<NodoDiagrama>) {
 //Metodo que permite convertir un entero a Color
 fun Int.toComposeColor(): Color {
     return Color(this)
+}
+//Metodo para poder obtener los tipos de letra configurables
+fun TipoLetra.toTypeface(): android.graphics.Typeface {
+    return when (this) {
+        TipoLetra.ARIAL ->
+            android.graphics.Typeface.SANS_SERIF
+
+        TipoLetra.TIMES_NEW_ROMAN ->
+            android.graphics.Typeface.SERIF
+
+        TipoLetra.COMIC_SANS ->
+            android.graphics.Typeface.create(
+                android.graphics.Typeface.SANS_SERIF,
+                android.graphics.Typeface.NORMAL
+            )
+
+        TipoLetra.VERDANA ->
+            android.graphics.Typeface.SANS_SERIF
+    }
 }

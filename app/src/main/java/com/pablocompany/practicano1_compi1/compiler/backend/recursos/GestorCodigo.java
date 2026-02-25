@@ -7,6 +7,8 @@ import com.pablocompany.practicano1_compi1.compiler.models.NodoSimple;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura;
 import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfiguracion;
 import com.pablocompany.practicano1_compi1.compiler.models.estructuras.NodoBloque;
+import com.pablocompany.practicano1_compi1.compiler.models.estructuras.NodoMientras;
+import com.pablocompany.practicano1_compi1.compiler.models.estructuras.NodoSi;
 import com.pablocompany.practicano1_compi1.compiler.models.estrucutrassimples.*;
 
 import java.util.ArrayList;
@@ -39,22 +41,20 @@ public class GestorCodigo {
         int colorFondoPrograma = android.graphics.Color.rgb(RGB_FONDO_PROGRAMA[0], RGB_FONDO_PROGRAMA[1], RGB_FONDO_PROGRAMA[2]);
 
 
-        NodoDiagrama inicio = new NodoDiagrama(0, 1, 1);
+        NodoDiagrama inicio = new NodoDiagrama(0, -1, -1, "INICIO");
         inicio.setFigura(TipoFigura.RECTANGULO_REDONDEADO);
-        inicio.setTexto("INICIO");
         inicio.setColorFondo(colorFondoPrograma);
         inicio.setColorTexto(colorLetraPrograma);
-        inicio.setSizeLetra(48);
+        inicio.setSizeLetra(50);
         listaDiagrama.add(inicio);
 
         procesarInstrucciones();
 
-        NodoDiagrama fin = new NodoDiagrama(0, 2, 1);
+        NodoDiagrama fin = new NodoDiagrama(0, -1, -1, "FIN");
         fin.setFigura(TipoFigura.RECTANGULO_REDONDEADO);
-        fin.setTexto("FIN");
         fin.setColorFondo(colorFondoPrograma);
         fin.setColorTexto(colorLetraPrograma);
-        fin.setSizeLetra(48);
+        fin.setSizeLetra(50);
         listaDiagrama.add(fin);
     }
 
@@ -70,9 +70,8 @@ public class GestorCodigo {
         this.listaInstrucciones = this.ast.getInstrucciones();
 
         for (int i = 0; i < this.listaInstrucciones.size(); i++) {
-
             NodoInstruccion nodo = this.listaInstrucciones.get(i);
-            
+            instanciarFigura(nodo);
         }
 
         //PENDIENTE FORMA DE ESTRAER COLORES
@@ -86,23 +85,48 @@ public class GestorCodigo {
 
     }
 
+    /*METODO DELEGADO PARA PODER INSTANCIAR LAS FIGURAS DEL DIAGRAMA*/
+    void instanciarFigura(NodoInstruccion nodo) {
+
+        if(nodo instanceof NodoSi){
+            NodoSi nodoSi = (NodoSi) nodo;
+            NodoBloque bloque = nodoSi.getBloque();
+            this.listaDiagrama.add(new NodoDiagrama(0,nodoSi.getIndiceGlobal(),nodoSi.getIndiceInterno(),nodoSi.getString()));
+            this.listaDiagrama.add(new NodoDiagrama(1,bloque.getIndiceGlobal(),bloque.getIndiceInterno(),bloque.getBloqueString()));
+            return;
+        }
+        else if(nodo instanceof NodoMientras){
+            NodoMientras nodoMientras = (NodoMientras) nodo;
+            NodoBloque bloque = nodoMientras.getBloque();
+
+            this.listaDiagrama.add(new NodoDiagrama(0,nodoMientras.getIndiceGlobal(),nodoMientras.getIndiceInterno(),nodoMientras.getString()));
+
+            this.listaDiagrama.add(new NodoDiagrama(1,bloque.getIndiceGlobal(),bloque.getIndiceInterno(),bloque.getBloqueString()));
+            return;
+        }
+        else if(nodo instanceof NodoBloque){
+            NodoBloque nodoBloque = (NodoBloque) nodo;
+            this.listaDiagrama.add(new NodoDiagrama(0,nodoBloque.getIndiceGlobal(),nodoBloque.getIndiceInterno(),nodoBloque.getBloqueString()));
+        }
+    }
+
     /*Metodo delegado para poder limpiar todo lo que genero el parser*/
     public void empaquetarDatos() {
 
         List<NodoInstruccion> listaLimpiada = new ArrayList<>();
 
 
-        for (int i = 0;i < this.listaInstrucciones.size(); i++) {
+        for (int i = 0; i < this.listaInstrucciones.size(); i++) {
             NodoInstruccion nodo = this.listaInstrucciones.get(i);
 
-            if(nodo instanceof NodoSimple){
+            if (nodo instanceof NodoSimple) {
 
                 List<NodoInstruccion> listaAux = new ArrayList<>();
 
                 for (int j = i; j < this.listaInstrucciones.size(); j++) {
 
                     NodoInstruccion nodoAux = this.listaInstrucciones.get(j);
-                    if(!(nodoAux instanceof NodoSimple)){
+                    if (!(nodoAux instanceof NodoSimple)) {
                         break;
                     }
                     listaAux.add(nodoAux);
@@ -110,8 +134,7 @@ public class GestorCodigo {
                 }
                 NodoBloque nodoBloque = new NodoBloque(listaAux);
                 listaLimpiada.add(nodoBloque);
-            }
-            else{
+            } else {
                 listaLimpiada.add(nodo);
             }
 

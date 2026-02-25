@@ -18,10 +18,11 @@ public class NodoDiagrama {
     private int indice;
     private int subIndice;
 
-    public NodoDiagrama(int nivel, int indice, int subIndice) {
+    public NodoDiagrama(int nivel, int indice, int subIndice, String texto) {
         this.nivel = nivel;
         this.indice = indice;
         this.subIndice = subIndice;
+        this.texto = texto;
     }
     /*Metodos Getter y setter*/
     public TipoFigura getFigura() {
