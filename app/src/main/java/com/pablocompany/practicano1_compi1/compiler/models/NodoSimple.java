@@ -9,4 +9,6 @@ public abstract class NodoSimple extends NodoInstruccion{
     public void indexar(Indexador index) {
 
     }
+
+
 }

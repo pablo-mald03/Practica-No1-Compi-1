@@ -25,6 +25,14 @@ public class NodoPrograma {
     public List<NodoConfiguracion> getConfiguraciones() {
         return configuraciones;
     }
+
+    public void setConfiguraciones(List<NodoConfiguracion> configuraciones) {
+        this.configuraciones = configuraciones;
+    }
+
+    public void setInstrucciones(List<NodoInstruccion> instrucciones) {
+        this.instrucciones = instrucciones;
+    }
     //======FIN DEL APARTADO DE METODOS GETTER Y SETTER=======
 
     //======APARTADO DE METODOS DELEGADOS A LA CLASE NodoPrograma=======

@@ -22,4 +22,9 @@ public class NodoAsignacion extends NodoSimple {
         entorno.setVariable(id, valor);*/
     }
 
+    @Override
+    public String getString() {
+        return this.id + expresion.toString();
+    }
+
 }/*P*/

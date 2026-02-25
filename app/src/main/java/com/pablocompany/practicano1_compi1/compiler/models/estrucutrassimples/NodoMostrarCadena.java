@@ -19,5 +19,8 @@ public class NodoMostrarCadena extends NodoSimple {
         //double valor = expresion.evaluar(entorno);
     }
 
-
+    @Override
+    public String getString() {
+        return "MOSTRAR " + this.expresion;
+    }
 }

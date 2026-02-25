@@ -3,8 +3,11 @@ package com.pablocompany.practicano1_compi1.compiler.backend.recursos;
 import com.pablocompany.practicano1_compi1.compiler.backend.clases.NodoDiagrama;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoPrograma;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoSimple;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura;
 import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfiguracion;
+import com.pablocompany.practicano1_compi1.compiler.models.estructuras.NodoBloque;
+import com.pablocompany.practicano1_compi1.compiler.models.estrucutrassimples.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +62,18 @@ public class GestorCodigo {
     /*Metodo principal delegado para procesar las instrucciones obtenidas del ast (parser)*/
     private void procesarInstrucciones() {
 
+        /*Metodo encargado de terminar de empaquetar todo*/
+        empaquetarDatos();
+        this.ast.setInstrucciones(this.listaInstrucciones);
+        this.ast.indexarInstrucciones();
 
+        this.listaInstrucciones = this.ast.getInstrucciones();
+
+        for (int i = 0; i < this.listaInstrucciones.size(); i++) {
+
+            NodoInstruccion nodo = this.listaInstrucciones.get(i);
+            
+        }
 
         //PENDIENTE FORMA DE ESTRAER COLORES
         /*int[] rgb = nodoColor.evaluar(entorno);
@@ -71,6 +85,41 @@ public class GestorCodigo {
         );*/
 
     }
+
+    /*Metodo delegado para poder limpiar todo lo que genero el parser*/
+    public void empaquetarDatos() {
+
+        List<NodoInstruccion> listaLimpiada = new ArrayList<>();
+
+
+        for (int i = 0;i < this.listaInstrucciones.size(); i++) {
+            NodoInstruccion nodo = this.listaInstrucciones.get(i);
+
+            if(nodo instanceof NodoSimple){
+
+                List<NodoInstruccion> listaAux = new ArrayList<>();
+
+                for (int j = i; j < this.listaInstrucciones.size(); j++) {
+
+                    NodoInstruccion nodoAux = this.listaInstrucciones.get(j);
+                    if(!(nodoAux instanceof NodoSimple)){
+                        break;
+                    }
+                    listaAux.add(nodoAux);
+                    i = j;
+                }
+                NodoBloque nodoBloque = new NodoBloque(listaAux);
+                listaLimpiada.add(nodoBloque);
+            }
+            else{
+                listaLimpiada.add(nodo);
+            }
+
+        }
+
+        this.listaInstrucciones = listaLimpiada;
+    }
+
     //==========Fin del apartado de Metodos para poder repartir todas las instrucciones procesadas en el parser=========
 
 

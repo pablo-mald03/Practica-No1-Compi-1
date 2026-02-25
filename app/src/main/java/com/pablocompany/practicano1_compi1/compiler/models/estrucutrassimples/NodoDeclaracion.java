@@ -21,5 +21,10 @@ public class NodoDeclaracion extends NodoSimple {
         /*double valor = expresion.evaluar(entorno);
         entorno.setVariable(nombre, valor);*/
     }
+    @Override
+    public String getString() {
+        return this.nombre + expresion.toString();
+    }
+
 
 }

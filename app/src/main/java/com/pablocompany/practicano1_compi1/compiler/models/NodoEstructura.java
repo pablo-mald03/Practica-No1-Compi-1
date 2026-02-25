@@ -12,4 +12,6 @@ public abstract class NodoEstructura extends NodoInstruccion{
     public void indexar(Indexador index) {
         index.registrarEstructura(this);
     }
+
+    public abstract String getBloqueString();
 }

@@ -3,6 +3,7 @@ package com.pablocompany.practicano1_compi1.compiler.models.operadores.relaciona
 import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 
+//Clase que representa el operador realacional Mayor que
 public class NodoMayor extends NodoExpresion {
     private NodoExpresion izquierda;
     private NodoExpresion derecha;
@@ -16,5 +17,11 @@ public class NodoMayor extends NodoExpresion {
     @Override
     public double evaluar(EntornoValores entorno) {
         return izquierda.evaluar(entorno) > derecha.evaluar(entorno) ? 1 : 0;
+    }
+
+    //METODO QUE RETORNA SU VALOR CONDICIONAL
+    @Override
+    public String getString() {
+        return izquierda.toString() + " > " + derecha.toString();
     }
 }

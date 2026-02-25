@@ -26,6 +26,9 @@ public abstract class NodoInstruccion {
     //Metodos abstractos que heredan sus demas clases hijas
     public abstract void ejecutar(EntornoValores entorno);
 
+    //Metodo que permite indexar una a una cada instruccion
     public abstract void indexar(Indexador index);
+    //Metodo que permite obtener todos los datos almacenados en las jerarquias
+    public abstract String getString();
 
 }

@@ -17,8 +17,12 @@ public class NodoMostrar extends NodoSimple {
 
     @Override
     public void ejecutar(EntornoValores entorno) {
-        /*double valor = expresion.evaluar(entorno);*/
+        double valor = expresion.evaluar(entorno);
     }
 
+    @Override
+    public String getString() {
+        return "MOSTRAR " + this.expresion.getString();
+    }
     /*P*/
 }

@@ -13,7 +13,13 @@ public class NodoOr extends NodoExpresion {
     }
     @Override
     public double evaluar(EntornoValores entorno) {
-        return (izquierda.evaluar(entorno) != 0 || derecha.evaluar(entorno) != 0) ? 1 : 0;
+        return 0;
+    }
+
+    //Metodo que retorna su valor como string
+    @Override
+    public String getString() {
+        return this.izquierda.getString() + " || " + this.derecha.toString();
     }
 }
 

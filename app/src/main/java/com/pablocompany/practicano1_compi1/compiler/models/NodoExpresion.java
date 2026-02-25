@@ -18,4 +18,6 @@ public abstract class NodoExpresion {
     }
 
     public abstract double evaluar(EntornoValores entorno);
+
+    public abstract String getString();
 }

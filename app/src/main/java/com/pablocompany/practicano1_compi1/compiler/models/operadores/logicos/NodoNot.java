@@ -11,6 +11,12 @@ public class NodoNot extends NodoExpresion {
     }
     @Override
     public double evaluar(EntornoValores entorno) {
-        return expr.evaluar(entorno) == 0 ? 1 : 0;
+        return 0;
+    }
+
+    //Metodo que retorna su valor como string
+    @Override
+    public String getString() {
+        return "!" + this.expr.toString();
     }
 }

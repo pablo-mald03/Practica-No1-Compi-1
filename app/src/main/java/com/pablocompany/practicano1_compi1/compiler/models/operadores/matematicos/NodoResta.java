@@ -19,5 +19,9 @@ public class NodoResta extends NodoExpresion {
         return izquierda.evaluar(entorno) - derecha.evaluar(entorno);
     }
 
+    @Override
+    public String getString() {
+        return "(" + izquierda.toString() + " - " + derecha.toString() + ")";
+    }
 
 }

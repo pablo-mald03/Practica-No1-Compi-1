@@ -4,6 +4,7 @@ import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 
 /*P*/
+//Clase que representa un valor de variable
 public class NodoVariable extends NodoExpresion {
 
     private String nombre;
@@ -16,5 +17,10 @@ public class NodoVariable extends NodoExpresion {
     @Override
     public double evaluar(EntornoValores entorno){
         return entorno.getVariable(nombre);
+    }
+
+    @Override
+    public String getString() {
+        return this.nombre;
     }
 }

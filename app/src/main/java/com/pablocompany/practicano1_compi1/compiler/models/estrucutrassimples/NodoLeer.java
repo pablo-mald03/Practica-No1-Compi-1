@@ -10,7 +10,7 @@ public class NodoLeer extends NodoSimple {
     private NodoExpresion expresion;
 
     public NodoLeer(String expresion, int linea, int columna) {
-        this.expresion = new NodoVariable(expresion,linea,columna);
+        this.expresion = new NodoVariable(expresion, linea, columna);
     }
 
     //====Metodos getter====
@@ -20,7 +20,12 @@ public class NodoLeer extends NodoSimple {
 
     @Override
     public void ejecutar(EntornoValores entorno) {
-        /*double valor = expresion.evaluar(entorno);*/
+        double valor = expresion.evaluar(entorno);
+    }
+
+    @Override
+    public String getString() {
+        return "LEER " + this.expresion.getString();
     }
 
     /*P*/

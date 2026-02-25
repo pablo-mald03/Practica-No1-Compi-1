@@ -38,9 +38,7 @@ class AnalizarCodigoUseCase {
             val exito = erroresLexicosList.isEmpty() && erroresSintacticosList.isEmpty()
 
             val ast = parseResult.value as? NodoPrograma ?: NodoPrograma(emptyList(), emptyList())
-
-            ast.indexarInstrucciones();
-
+            
             //Codigo delegado a backend (PATRON EXPERTO)
             val gestor = GestorCodigo(ast)
             gestor.procesarCodigo()
