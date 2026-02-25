@@ -33,6 +33,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.pointerInput
@@ -40,13 +41,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.navigation.NavController
-import com.pablocompany.practicano1_compi1.compiler.models.NodoPrograma
+import com.pablocompany.practicano1_compi1.compiler.backend.clases.NodoDiagrama
+import com.pablocompany.practicano1_compi1.compiler.models.TipoFigura
 
 
 @Composable
 fun DiagramaScreen(
     navController: NavController,
-    codigoProcesado: NodoPrograma
+    listaDiagrama: List<NodoDiagrama>
 ) {
 
     var scale by remember { mutableStateOf(1f) }
@@ -119,70 +121,7 @@ fun DiagramaScreen(
 
                     Canvas(modifier = Modifier.fillMaxSize()) {
 
-                        val centerX = size.width / 2
-                        var currentY = 150f
-
-                        drawRoundRect(
-                            color = Color.Black,
-                            topLeft = Offset(centerX - 200f, currentY),
-                            size = Size(400f, 120f),
-                            cornerRadius = CornerRadius(100f, 100f),
-                            style = Stroke(width = 6f)
-                        )
-                        drawContext.canvas.nativeCanvas.drawText(
-                            "INICIO",
-                            centerX,
-                            currentY + 75f,
-                            android.graphics.Paint().apply {
-                                textAlign = android.graphics.Paint.Align.CENTER
-                                textSize = 40f
-                                color = android.graphics.Color.WHITE
-                                isFakeBoldText = true
-                            }
-                        )
-
-                        currentY += 250f
-                        //Proceso (rectángulo)
-                        drawRect( color = Color(0xFF1976D2),
-                            topLeft = Offset(centerX - 250f, currentY),
-                            size = Size(500f, 140f),
-                            style = Stroke(width = 6f)
-                        )
-                        drawContext.canvas.nativeCanvas.drawText(
-                            "x = 10",
-                            centerX,
-                            currentY + 85f,
-                            android.graphics.Paint().apply {
-                                textAlign = android.graphics.Paint.Align.CENTER
-                                textSize = 40f
-                                color = android.graphics.Color.WHITE
-                            }
-                        )
-                        currentY += 250f
-                    // Decisión (rombo)
-                    val diamondPath = Path().apply {
-                        moveTo(centerX, currentY)
-                        lineTo(centerX + 250f, currentY + 120f)
-                        lineTo(centerX, currentY + 240f)
-                        lineTo(centerX - 250f, currentY + 120f)
-                        close()
-                    }
-                        drawPath(
-                            path = diamondPath,
-                            color = Color(0xFFFF9800),
-                            style = Stroke(width = 6f),
-                            )
-                        drawContext.canvas.nativeCanvas.drawText(
-                            "x > 5?", centerX,
-                            currentY + 150f,
-                            android.graphics.Paint().apply {
-                                textAlign = android.graphics.Paint.Align.CENTER
-                                textSize = 40f
-                                color = android.graphics.Color.WHITE
-                            }
-                        )
-
-
+                        this.DiagramaCanvas(listaDiagrama)
                     }
                 }
             }
@@ -253,4 +192,168 @@ fun DiagramaScreen(
             Text(if (mostrarConsola) "Ocultar Consola" else "Mostrar Consola")
         }
     }
+}
+
+fun DrawScope.DiagramaCanvas(lista: List<NodoDiagrama>) {
+    val centerX = size.width / 2
+    var currentY = 150f
+    val verticalSpacing = 250f
+    val nivelSpacing = 350f
+
+    val posiciones = mutableListOf<Pair<Float, Float>>()
+
+    lista.forEach { nodo ->
+        val offsetNivel = (nodo.nivel * nivelSpacing)
+        val posX = centerX + offsetNivel
+        val posY = currentY
+
+        when (nodo.figura) {
+
+            TipoFigura.ELIPSE -> {
+
+                // FONDO
+                drawOval(
+                    color = nodo.colorFondo.toComposeColor(),
+                    topLeft = Offset(posX - 200f, posY),
+                    size = Size(400f, 140f)
+                )
+
+                // BORDE
+                drawOval(
+                    color = Color.White,
+                    topLeft = Offset(posX - 200f, posY),
+                    size = Size(400f, 140f),
+                    style = Stroke(width = 6f)
+                )
+            }
+
+            TipoFigura.CIRCULO -> {
+                //FONDO
+                drawCircle(
+                    color = nodo.colorFondo.toComposeColor(),
+                    radius = 120f,
+                    center = Offset(posX, posY + 120f)
+                )
+                //BORDE
+                drawCircle(
+                    color = Color.White,
+                    radius = 120f,
+                    center = Offset(posX, posY + 120f),
+                    style = Stroke(width = 6f)
+                )
+            }
+
+            TipoFigura.PARALELOGRAMO -> {
+                val path = Path().apply {
+                    moveTo(posX - 220f, posY)
+                    lineTo(posX + 220f, posY)
+                    lineTo(posX + 180f, posY + 140f)
+                    lineTo(posX - 260f, posY + 140f)
+                    close()
+                }
+                //FONDO
+                drawPath(
+                    path = path,
+                    color = nodo.colorFondo.toComposeColor()
+                )
+
+                // BORDE
+                drawPath(
+                    path = path,
+                    color = Color.White,
+                    style = Stroke(width = 6f)
+                )
+            }
+
+            TipoFigura.RECTANGULO -> {
+                //FONDO
+                drawRect(
+                    color = nodo.colorFondo.toComposeColor(),
+                    topLeft = Offset(posX - 250f, posY),
+                    size = Size(500f, 140f)
+                )
+                //BORDE
+                drawRect(
+                    color = Color.White,
+                    topLeft = Offset(posX - 250f, posY),
+                    size = Size(500f, 140f),
+                    style = Stroke(width = 6f)
+                )
+            }
+
+            TipoFigura.ROMBO -> {
+                val diamondPath = Path().apply {
+                    moveTo(posX, posY)
+                    lineTo(posX + 250f, posY + 120f)
+                    lineTo(posX, posY + 240f)
+                    lineTo(posX - 250f, posY + 120f)
+                    close()
+                }
+
+                //FONDO
+                drawPath(
+                    path = diamondPath,
+                    color = nodo.colorFondo.toComposeColor()
+                )
+                //BORDE
+                drawPath(
+                    path = diamondPath,
+                    color = Color.White,
+                    style = Stroke(width = 6f)
+                )
+            }
+
+            TipoFigura.RECTANGULO_REDONDEADO -> {
+                // FONDO
+                drawRoundRect(
+                    color = nodo.colorFondo.toComposeColor(),
+                    topLeft = Offset(posX - 250f, posY),
+                    size = Size(500f, 140f),
+                    cornerRadius = CornerRadius(40f, 40f)
+                )
+
+                // BORDE
+                drawRoundRect(
+                    color = Color.White,
+                    topLeft = Offset(posX - 250f, posY),
+                    size = Size(500f, 140f),
+                    cornerRadius = CornerRadius(40f, 40f),
+                    style = Stroke(width = 6f)
+                )
+            }
+        }
+
+        drawContext.canvas.nativeCanvas.drawText(
+            nodo.texto,
+            posX,
+            posY + 80f,
+            android.graphics.Paint().apply {
+                textAlign = android.graphics.Paint.Align.CENTER
+                textSize = nodo.sizeLetra.toFloat()
+                color = nodo.colorTexto
+                isFakeBoldText = true
+            }
+        )
+
+        posiciones.add(posX to posY)
+        currentY += verticalSpacing
+    }
+
+    // Conexiones entre nodos
+    for (i in 0 until posiciones.size - 1) {
+        val (x1, y1) = posiciones[i]
+        val (x2, y2) = posiciones[i + 1]
+
+        drawLine(
+            color = Color.White,
+            start = Offset(x1, y1 + 140f),
+            end = Offset(x2, y2),
+            strokeWidth = 6f
+        )
+    }
+}
+
+//Metodo que
+fun Int.toComposeColor(): Color {
+    return Color(this)
 }

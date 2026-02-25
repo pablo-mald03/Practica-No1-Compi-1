@@ -48,7 +48,7 @@ fun AppNavigation() {
         composable("diagrama") {
             val resultado = viewModel.resultado
             if (resultado != null) {
-                DiagramaScreen(navController, resultado.codigoProcesado)
+                DiagramaScreen(navController, resultado.codigoDiagrama)
             }
         }
         //Ruta para la tabla de operadores matematicos

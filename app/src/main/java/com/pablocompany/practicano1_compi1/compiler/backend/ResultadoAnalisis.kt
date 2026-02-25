@@ -1,5 +1,6 @@
 package com.pablocompany.practicano1_compi1.compiler.backend
 
+import com.pablocompany.practicano1_compi1.compiler.backend.clases.NodoDiagrama
 import com.pablocompany.practicano1_compi1.compiler.models.ErrorAnalisis
 import com.pablocompany.practicano1_compi1.compiler.models.NodoPrograma
 
@@ -8,7 +9,7 @@ data class ResultadoAnalisis(
     val listaOperadores: List<String>,
     val erroresLexicos: List<ErrorAnalisis>,
     val erroresSintacticos: List<ErrorAnalisis>,
-    val codigoProcesado: NodoPrograma,
+    val codigoDiagrama: List<NodoDiagrama>,
     val esErrorCritico: Boolean = false
 )
 {

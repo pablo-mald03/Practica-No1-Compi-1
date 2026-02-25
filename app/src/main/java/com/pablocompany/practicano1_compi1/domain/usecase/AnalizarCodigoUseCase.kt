@@ -1,6 +1,7 @@
 package com.pablocompany.practicano1_compi1.domain.usecase
 
 import com.pablocompany.practicano1_compi1.compiler.backend.ResultadoAnalisis
+import com.pablocompany.practicano1_compi1.compiler.backend.recursos.GestorCodigo
 import com.pablocompany.practicano1_compi1.compiler.logic.Lexer
 import com.pablocompany.practicano1_compi1.compiler.logic.Parser
 import com.pablocompany.practicano1_compi1.compiler.models.NodoPrograma
@@ -18,7 +19,7 @@ class AnalizarCodigoUseCase {
                 listaOperadores = emptyList(),
                 erroresLexicos = emptyList(),
                 erroresSintacticos = emptyList(),
-                codigoProcesado = NodoPrograma(emptyList(), emptyList())
+                codigoDiagrama = emptyList()
             )
         }
 
@@ -40,12 +41,16 @@ class AnalizarCodigoUseCase {
 
             ast.indexarInstrucciones();
 
+            val gestor = GestorCodigo(ast)
+
+            gestor.procesarCodigo(ast)
+
             ResultadoAnalisis(
                 exito = exito,
                 listaOperadores = emptyList(),
                 erroresLexicos = erroresLexicosList,
                 erroresSintacticos = erroresSintacticosList,
-                codigoProcesado = ast
+                codigoDiagrama = gestor.listaDiagrama
             )
 
         } catch (e: Exception) {
@@ -54,7 +59,7 @@ class AnalizarCodigoUseCase {
                 listaOperadores = emptyList(),
                 erroresLexicos = emptyList(),
                 erroresSintacticos = emptyList(),
-                codigoProcesado = NodoPrograma(emptyList(), emptyList()),
+                codigoDiagrama =  emptyList(),
                 esErrorCritico = true
             )
         }
