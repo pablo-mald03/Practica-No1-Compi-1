@@ -19,6 +19,6 @@ public class NodoAnd extends NodoExpresion {
     //Metodo que retorna su valor como string
     @Override
     public String getString() {
-        return this.izquierda.getString() + " && " + this.derecha.toString();
+        return this.izquierda.getString() + " && " + this.derecha.getString();
     }
 }

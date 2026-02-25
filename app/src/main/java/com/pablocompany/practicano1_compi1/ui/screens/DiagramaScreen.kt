@@ -174,7 +174,17 @@ fun DiagramaScreen(
                             text = """
                             >> Compilando...
                             >> Analizando tokens...
-                            >> 3 operadores detectados.
+                            >> ${listaDiagrama.size} estructuras detectadas.
+                            >>
+                            >>
+                            >>
+                            >> Compilacion Exitosa!.
+                            >>
+                            >>
+                            >> Generando Diagrama...
+                            >>
+                            >>
+                            >>
                             >> Diagrama generado correctamente.
                         """.trimIndent(),
                             color = Color(0xFFB0BEC5)
@@ -203,163 +213,153 @@ fun DrawScope.DiagramaCanvas(lista: List<NodoDiagrama>) {
     val nivelSpacing = 350f
 
     val posiciones = mutableListOf<Pair<Float, Float>>()
+    val dimensiones = mutableListOf<Size>()
 
-    lista.forEach { nodo ->
+
+    lista.forEachIndexed { index, nodo ->
         val offsetNivel = (nodo.nivel * nivelSpacing)
         val posX = centerX + offsetNivel
         val posY = currentY
 
+        val paint = android.graphics.Paint().apply {
+            isAntiAlias = true
+            textAlign = android.graphics.Paint.Align.CENTER
+            textSize = nodo.sizeLetra.takeIf { it > 0 }?.toFloat() ?: 40f
+            typeface = nodo.tipoLetra.toTypeface()
+        }
+
+        val lineas = nodo.texto.split("\n")
+        val altoLinea = paint.fontMetrics.descent - paint.fontMetrics.ascent
+        val altoTextoTotal = lineas.size * altoLinea
+
+        val anchoTextoMax = lineas.maxOfOrNull { paint.measureText(it) } ?: 0f
+
+        val paddingWeb = 60f
+        var anchoDinamico = maxOf(400f, anchoTextoMax + paddingWeb * 2)
+        var altoDinamico = maxOf(140f, altoTextoTotal + paddingWeb)
+
+        val halfW = anchoDinamico / 2
+        val halfH = altoDinamico / 2
+
+        if (index > 0) {
+            val (prevX, prevY) = posiciones[index - 1]
+            val prevSize = dimensiones[index - 1]
+            drawLine(
+                color = Color.White,
+                start = Offset(prevX, prevY + prevSize.height), // Sale del fondo de la anterior
+                end = Offset(posX, posY), // Llega al tope de la actual
+                strokeWidth = 6f
+            )
+        }
+
+        val colorFondo = nodo.colorFondo.toComposeColor()
+
         when (nodo.figura) {
-
-            TipoFigura.ELIPSE -> {
-
-                // FONDO
-                drawOval(
-                    color = nodo.colorFondo.toComposeColor(),
-                    topLeft = Offset(posX - 200f, posY),
-                    size = Size(400f, 140f)
-                )
-
-                // BORDE
-                drawOval(
-                    color = Color.White,
-                    topLeft = Offset(posX - 200f, posY),
-                    size = Size(400f, 140f),
-                    style = Stroke(width = 6f)
-                )
+            TipoFigura.RECTANGULO -> {
+                drawRect(color = colorFondo, topLeft = Offset(posX - halfW, posY), size = Size(anchoDinamico, altoDinamico))
+                drawRect(color = Color.White, topLeft = Offset(posX - halfW, posY), size = Size(anchoDinamico, altoDinamico), style = Stroke(6f))
             }
+            TipoFigura.RECTANGULO_REDONDEADO, TipoFigura.ELIPSE -> {
 
-            TipoFigura.CIRCULO -> {
-                //FONDO
-                drawCircle(
-                    color = nodo.colorFondo.toComposeColor(),
-                    radius = 120f,
-                    center = Offset(posX, posY + 120f)
+                val radius = if(nodo.figura == TipoFigura.ELIPSE) CornerRadius(halfH, halfH) else CornerRadius(40f, 40f)
+                drawRoundRect(
+                    color = colorFondo,
+                    topLeft = Offset(posX - halfW, posY),
+                    size = Size(anchoDinamico, altoDinamico),
+                    cornerRadius = radius
                 )
-                //BORDE
-                drawCircle(
+                drawRoundRect(
                     color = Color.White,
-                    radius = 120f,
-                    center = Offset(posX, posY + 120f),
-                    style = Stroke(width = 6f)
+                    topLeft = Offset(posX - halfW, posY),
+                    size = Size(anchoDinamico, altoDinamico),
+                    cornerRadius = radius,
+                    style = Stroke(6f)
                 )
             }
 
             TipoFigura.PARALELOGRAMO -> {
+                val inclinacion = 40f
                 val path = Path().apply {
-                    moveTo(posX - 220f, posY)
-                    lineTo(posX + 220f, posY)
-                    lineTo(posX + 180f, posY + 140f)
-                    lineTo(posX - 260f, posY + 140f)
+                    moveTo(posX - halfW + inclinacion, posY)
+                    lineTo(posX + halfW + inclinacion, posY)
+                    lineTo(posX + halfW - inclinacion, posY + altoDinamico)
+                    lineTo(posX - halfW - inclinacion, posY + altoDinamico)
                     close()
                 }
-                //FONDO
-                drawPath(
-                    path = path,
-                    color = nodo.colorFondo.toComposeColor()
-                )
-
-                // BORDE
-                drawPath(
-                    path = path,
-                    color = Color.White,
-                    style = Stroke(width = 6f)
-                )
-            }
-
-            TipoFigura.RECTANGULO -> {
-                //FONDO
-                drawRect(
-                    color = nodo.colorFondo.toComposeColor(),
-                    topLeft = Offset(posX - 250f, posY),
-                    size = Size(500f, 140f)
-                )
-                //BORDE
-                drawRect(
-                    color = Color.White,
-                    topLeft = Offset(posX - 250f, posY),
-                    size = Size(500f, 140f),
-                    style = Stroke(width = 6f)
-                )
+                drawPath(path, color = colorFondo)
+                drawPath(path, color = Color.White, style = Stroke(6f))
             }
 
             TipoFigura.ROMBO -> {
-                val diamondPath = Path().apply {
+                val path = Path().apply {
                     moveTo(posX, posY)
-                    lineTo(posX + 250f, posY + 120f)
-                    lineTo(posX, posY + 240f)
-                    lineTo(posX - 250f, posY + 120f)
+                    lineTo(posX + halfW + 40f, posY + halfH)
+                    lineTo(posX, posY + altoDinamico)
+                    lineTo(posX - halfW - 40f, posY + halfH)
                     close()
                 }
-
-                //FONDO
-                drawPath(
-                    path = diamondPath,
-                    color = nodo.colorFondo.toComposeColor()
-                )
-                //BORDE
-                drawPath(
-                    path = diamondPath,
-                    color = Color.White,
-                    style = Stroke(width = 6f)
-                )
+                drawPath(path, color = colorFondo)
+                drawPath(path, color = Color.White, style = Stroke(6f))
             }
+            TipoFigura.CIRCULO -> {
+                val diametro = maxOf(anchoDinamico, altoDinamico)
 
-            TipoFigura.RECTANGULO_REDONDEADO -> {
+                val anchoCuadrado = diametro + 40f
+                val altoCuadrado = diametro + 40f
+
+                val radio = anchoCuadrado / 2f
+                val centroCirculo = Offset(posX, posY + radio)
+
                 // FONDO
-                drawRoundRect(
-                    color = nodo.colorFondo.toComposeColor(),
-                    topLeft = Offset(posX - 250f, posY),
-                    size = Size(500f, 140f),
-                    cornerRadius = CornerRadius(40f, 40f)
+                drawCircle(
+                    color = colorFondo,
+                    radius = radio,
+                    center = centroCirculo
                 )
-
                 // BORDE
+                drawCircle(
+                    color = Color.White,
+                    radius = radio,
+                    center = centroCirculo,
+                    style = Stroke(width = 6f)
+                )
+                anchoDinamico = anchoCuadrado
+                altoDinamico = altoCuadrado
+            }
+            TipoFigura.ELIPSE -> {
+                val radioEsquina = altoDinamico / 2f
+
+                drawRoundRect(
+                    color = colorFondo,
+                    topLeft = Offset(posX - halfW, posY),
+                    size = Size(anchoDinamico, altoDinamico),
+                    cornerRadius = CornerRadius(radioEsquina, radioEsquina)
+                )
                 drawRoundRect(
                     color = Color.White,
-                    topLeft = Offset(posX - 250f, posY),
-                    size = Size(500f, 140f),
-                    cornerRadius = CornerRadius(40f, 40f),
+                    topLeft = Offset(posX - halfW, posY),
+                    size = Size(anchoDinamico, altoDinamico),
+                    cornerRadius = CornerRadius(radioEsquina, radioEsquina),
                     style = Stroke(width = 6f)
                 )
             }
+
         }
 
         drawIntoCanvas { canvas ->
+            paint.color = nodo.colorTexto
+            var yActual = posY + (altoDinamico / 2) - (altoTextoTotal / 2) - paint.fontMetrics.ascent
 
-            val paint = android.graphics.Paint().apply {
-                isAntiAlias = true
-                textAlign = android.graphics.Paint.Align.CENTER
-                textSize = nodo.sizeLetra.takeIf { it > 0 }?.toFloat() ?: 40f
-                color = nodo.colorTexto
-                typeface = nodo.tipoLetra.toTypeface()
+            lineas.forEach { linea ->
+                canvas.nativeCanvas.drawText(linea, posX, yActual, paint)
+                yActual += altoLinea
             }
-
-            val textY = posY + 70f - ((paint.descent() + paint.ascent()) / 2)
-
-            canvas.nativeCanvas.drawText(
-                nodo.texto,
-                posX,
-                textY,
-                paint
-            )
         }
 
         posiciones.add(posX to posY)
-        currentY += verticalSpacing
-    }
+        dimensiones.add(Size(anchoDinamico, altoDinamico))
 
-    // Conexiones entre nodos
-    for (i in 0 until posiciones.size - 1) {
-        val (x1, y1) = posiciones[i]
-        val (x2, y2) = posiciones[i + 1]
-
-        drawLine(
-            color = Color.White,
-            start = Offset(x1, y1 + 140f),
-            end = Offset(x2, y2),
-            strokeWidth = 6f
-        )
+        currentY += altoDinamico + verticalSpacing
     }
 }
 

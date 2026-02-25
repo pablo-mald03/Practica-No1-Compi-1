@@ -21,7 +21,7 @@ public class ConfiguracionPredeterminada {
     //Apartado de figuras predeterminadas
     private final TipoFigura FIGURA_BLOQUE = TipoFigura.PARALELOGRAMO;
     private final TipoFigura FIGURA_SI = TipoFigura.ROMBO;
-    private final TipoFigura FIGURA_MIENTRAS = TipoFigura.CIRCULO;
+    private final TipoFigura FIGURA_MIENTRAS = TipoFigura.ELIPSE;
 
     //APARTADO LETRA PREDETERMINADA DE FIGURAS
     private final TipoLetra LETRA_BLOQUE = TipoLetra.ARIAL;
@@ -29,9 +29,9 @@ public class ConfiguracionPredeterminada {
     private final TipoLetra LETRA_MIENTRAS = TipoLetra.TIMES_NEW_ROMAN;
 
     //APARTADO TAMANIO DE LETRA PREDETERMINADA DE INSTRUCCIONES
-    private final double SIZE_BLOQUE = 12;
-    private final double SIZE_SI = 15;
-    private final double SIZE_MIENTRAS = 15;
+    private final double SIZE_BLOQUE = 40;
+    private final double SIZE_SI = 40;
+    private final double SIZE_MIENTRAS = 40;
 
 
     public ConfiguracionPredeterminada() {

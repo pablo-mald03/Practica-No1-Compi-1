@@ -18,13 +18,11 @@ public class NodoAsignacion extends NodoSimple {
 
     @Override
     public void ejecutar(EntornoValores entorno){
-        /*double valor = expresion.evaluar(entorno);
-        entorno.setVariable(id, valor);*/
     }
 
     @Override
     public String getString() {
-        return this.id + expresion.toString();
+        return this.id +" = "+ expresion.getString();
     }
 
 }/*P*/

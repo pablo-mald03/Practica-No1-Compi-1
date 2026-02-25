@@ -20,6 +20,6 @@ public class NodoIgual extends NodoExpresion {
     //METODO QUE RETORNA SU VALOR CONDICIONAL
     @Override
     public String getString() {
-        return izquierda.toString() + " == " + derecha.toString();
+        return "(" + izquierda.getString() + " == " + derecha.getString() + ")";
     }
 }

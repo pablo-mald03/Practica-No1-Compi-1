@@ -18,12 +18,12 @@ public class NodoDeclaracion extends NodoSimple {
 
     @Override
     public void ejecutar(EntornoValores entorno){
-        /*double valor = expresion.evaluar(entorno);
-        entorno.setVariable(nombre, valor);*/
+
     }
+    //Metodo que permite obtener el texto que hay dentro
     @Override
     public String getString() {
-        return this.nombre + expresion.toString();
+        return  "VAR "+ this.nombre +" = "+ expresion.getString();
     }
 
 

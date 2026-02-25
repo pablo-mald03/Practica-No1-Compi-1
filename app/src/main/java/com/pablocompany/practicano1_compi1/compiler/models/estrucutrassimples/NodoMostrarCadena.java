@@ -21,6 +21,6 @@ public class NodoMostrarCadena extends NodoSimple {
 
     @Override
     public String getString() {
-        return "MOSTRAR " + this.expresion;
+        return "MOSTRAR " + "\" " + this.expresion  + " \"";
     }
 }

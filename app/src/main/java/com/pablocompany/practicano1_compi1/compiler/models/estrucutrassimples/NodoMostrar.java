@@ -20,6 +20,7 @@ public class NodoMostrar extends NodoSimple {
         double valor = expresion.evaluar(entorno);
     }
 
+    //Metodo que permite obtener el texto que hay dentro
     @Override
     public String getString() {
         return "MOSTRAR " + this.expresion.getString();

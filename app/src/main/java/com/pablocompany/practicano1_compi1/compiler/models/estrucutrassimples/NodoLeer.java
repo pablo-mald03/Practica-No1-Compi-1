@@ -22,7 +22,7 @@ public class NodoLeer extends NodoSimple {
     public void ejecutar(EntornoValores entorno) {
         double valor = expresion.evaluar(entorno);
     }
-
+    //Metodo que permite obtener el texto que hay dentro
     @Override
     public String getString() {
         return "LEER " + this.expresion.getString();

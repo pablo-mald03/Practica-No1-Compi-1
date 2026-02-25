@@ -17,6 +17,6 @@ public class NodoNot extends NodoExpresion {
     //Metodo que retorna su valor como string
     @Override
     public String getString() {
-        return "!" + this.expr.toString();
+        return "!" + this.expr.getString();
     }
 }

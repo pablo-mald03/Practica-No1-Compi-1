@@ -21,7 +21,7 @@ public class NodoResta extends NodoExpresion {
 
     @Override
     public String getString() {
-        return "(" + izquierda.toString() + " - " + derecha.toString() + ")";
+        return "(" + izquierda.getString() + " - " + derecha.getString() + ")";
     }
 
 }
