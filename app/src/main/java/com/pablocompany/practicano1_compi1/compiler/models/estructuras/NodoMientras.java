@@ -11,16 +11,20 @@ import java.util.List;
 //Representa al ciclo mientrs en una estructura de control
 public class NodoMientras extends NodoEstructura {
 
+    //Representa la condicion
     private NodoExpresion condicion;
 
-    public NodoMientras(NodoExpresion condicion, List<NodoInstruccion> instrucciones) {
-        super(instrucciones);
-        this.condicion = condicion;
-    }
+    //Representa bloques de codigo dentro de la estructura
+    private NodoBloque bloque;
 
-    //Metodo getter de la condicion
-    public NodoExpresion getCondicion() {
-        return condicion;
+    //Constructor
+    public NodoMientras(NodoExpresion condicion, NodoBloque bloque) {
+        this.condicion = condicion;
+        this.bloque = bloque;
+    }
+    //Retorna el bloque de instrucciones que vienen dentro
+    public NodoBloque getBloque() {
+        return bloque;
     }
 
     @Override
@@ -34,9 +38,10 @@ public class NodoMientras extends NodoEstructura {
             }
         }*/
     }
-
+    //Metodo que permite indexar a las estructuras
     @Override
     public void indexar(Indexador ctx) {
         ctx.registrarEstructura(this);
+        this.bloque.indexar(ctx);
     }
 }

@@ -70,8 +70,6 @@ terminal String CADENA;
 
 /* no terminales, reglas que nosotros vamos a definir sintacticamente */
 non terminal NodoPrograma programa;
-non terminal List lista_sentencias;
-non terminal NodoInstruccion sentencia;
 non terminal List seccion_configuracion;
 non terminal List lista_configuraciones;
 non terminal NodoInstruccion si_simple;
@@ -92,6 +90,9 @@ non terminal NodoExpresion expresion;
 
 non terminal List lista_sentencias_simples;
 non terminal NodoInstruccion sentencia_simple;
+
+non terminal NodoInstruccion estructura;
+non terminal List lista_estructuras;
 
 /*Fin de los no terminales para poder detectar listados completos de bloques de codigo*/
 
@@ -134,30 +135,57 @@ start with programa;
 
 
 /* Gramatica: reglas para validacion */
-programa ::= INICIO lista_sentencias:l FIN seccion_configuracion:c
+
+programa ::= INICIO lista_estructuras:l FIN seccion_configuracion:c
             {: RESULT = new NodoPrograma(l, c); :}
             ;
 
-lista_sentencias ::= lista_sentencias:l sentencia:s
+/*===Agrupamiento de sentencias y gramatica principal de reconocimiento====*/
+/*lista_sentencias ::= lista_sentencias:list estructura:es
                     {:
-                        l.add(s);
-                        RESULT = l;
+                        list.add(es);
+                        RESULT = list;
                     :}
-                    | sentencia: s
+                    | estructura: es
                     {:
                         List lista = new ArrayList();
-                        lista.add(s);
+                        lista.add(es);
                         RESULT = lista;
                     :}
                     ;
+*/
+/*===Agrupamiento de sentencias y gramatica principal de reconocimiento====*/
 
-sentencia   ::=  declaracion:dec    {: RESULT = dec; :}
-                | asignacion:as     {: RESULT = as; :}
-                | si_simple:si         {: RESULT = si; :}
-                | mientras_simple:mi   {: RESULT = mi; :}
-                | mostrar:mos           {: RESULT = mos; :}
-                | leer:le                {: RESULT = le; :}
+
+/*===Agrupamiento de sentencias por bloques====*/
+
+lista_estructuras   ::= lista_estructuras:list estructura:es
+                        {:
+                            list.add(es);
+                            RESULT = list;
+                        :}
+                        | estructura:es
+                        {:
+                            List lista = new ArrayList();
+                            lista.add(es);
+                            RESULT = lista;
+                        :}
+                        ;
+
+
+
+estructura      ::= sentencia_simple:s
+                {: RESULT = s; :}
+                | si_simple:si
+                {: RESULT = si; :}
+                | mientras_simple:m
+                {: RESULT = m; :}
                 ;
+
+/*===Agrupamiento de sentencias por bloques====*/
+
+
+/*===Reconocimiento de sentencias simples====*/
 
 declaracion     ::= VAR ID:id IGUALACION expresion:e
                 {:
@@ -195,17 +223,24 @@ condicion_logica ::= condicion:c1 AND condicion:c2
                    | condicion
                    ;
 
+/*===Reconocimiento de sentencias simples====*/
+
+/*===Reconocimiento de expresiones matematicas sin SHIFT REDUCE====*/
 
 expresion ::=   expresion:e1 SUMA expresion:e2 {:RESULT = new NodoSuma(e1,e2,e1left,e1right); :}
                 | expresion:e1 RESTA expresion:e2 {:RESULT = new NodoResta(e1, e2,e1left,e1right); :}
                 | expresion:e1 MULTIPLICACION expresion:e2 {: RESULT = new NodoMultiplicacion(e1,e2,e1left,e1right); :}
                 | expresion:e1 DIVISION expresion:e2 {: RESULT = new NodoDivision(e1,e2,e1left,e1right); :}
-                | PARENT_APERTURA expresion PARENT_CIERRE
+                | PARENT_APERTURA expresion:e PARENT_CIERRE {: RESULT = e; :}
                 | ENTERO:e {: RESULT = new NodoEntero(e, eleft, eright); :}
                 |DECIMAL:d {: RESULT = new NodoDecimal(d,dleft,dright); :}
                 |ID:id {: RESULT = new NodoVariable(id.toString(),idleft,idright); :}
                 ;
 
+/*===Reconocimiento de expresiones matematicas sin SHIFT REDUCE====*/
+
+
+/*===Reconocimiento de sentencias que pueden contener varias instrucciones====*/
 
 lista_sentencias_simples ::= lista_sentencias_simples:l sentencia_simple: s
                             {:
@@ -220,25 +255,37 @@ lista_sentencias_simples ::= lista_sentencias_simples:l sentencia_simple: s
                             :}
                             ;
 
-sentencia_simple        ::= declaracion
-                        | asignacion
-                        | mostrar
-                        | leer
+sentencia_simple        ::= declaracion:d
+                        {: RESULT = d; :}
+                        | asignacion:a
+                        {: RESULT = a; :}
+                        | mostrar:m
+                        {: RESULT = m; :}
+                        | leer:l
+                        {: RESULT = l; :}
                         ;
+
+/*===Reconocimiento de sentencias que pueden contener varias instrucciones====*/
+
+
+/*===Reconocimiento base de cilos y condicionales====*/
 
 si_simple   ::= SI PARENT_APERTURA condicion_logica:c PARENT_CIERRE ENTONCES lista_sentencias_simples:lista FIN_SI
                 {:
-                    RESULT = new NodoSi(c, lista);
+                    RESULT = new NodoSi(c, new NodoBloque(lista));
                 :}
                 ;
 
-mientras_simple     ::= MIENTRAS PARENT_APERTURA condicion:c PARENT_CIERRE HACER lista_sentencias_simples:list FIN_MIENTRAS
+mientras_simple     ::= MIENTRAS PARENT_APERTURA condicion_logica:c PARENT_CIERRE HACER lista_sentencias_simples:list FIN_MIENTRAS
                         {:
-                            RESULT = new NodoMientras(c, list);
+                            RESULT = new NodoMientras(c, new NodoBloque(list));
                         :}
                         ;
 
-mostrar             ::=  MOSTRAR expresion: e
+/*===Reconocimiento base de cilos y condicionales====*/
+
+/*===Reconocimiento de salidas y entradas====*/
+mostrar             ::=  MOSTRAR expresion:e
                          {:
                             RESULT = new NodoMostrar(e);
                         :}
@@ -253,6 +300,8 @@ leer                ::= LEER ID:id
                             RESULT = new NodoLeer(id.toString(),idleft,idright);
                         :}
                         ;
+
+/*===Reconocimiento de salidas y entradas====*/
 
 
 /*=====Apartado de gramatica de las configuraciones=====*/

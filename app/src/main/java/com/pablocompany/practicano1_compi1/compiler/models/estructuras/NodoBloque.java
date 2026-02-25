@@ -11,15 +11,28 @@ import java.util.List;
 //Representa los bloques de codigo fuera de estructuras de control
 public class NodoBloque extends NodoEstructura {
 
+    //Lista de todas las instrucciones que estan dentro del bloque del codigo
+    protected List<NodoInstruccion> instrucciones;
+
+    //Constructor
     public NodoBloque(List<NodoInstruccion> instrucciones) {
-        super(instrucciones);
+        this.instrucciones = instrucciones;
+    }
+
+    //Retorna la lista de todas las instrucciones
+    public List<NodoInstruccion> getInstrucciones() {
+        return instrucciones;
     }
 
     @Override
     public void ejecutar(EntornoValores entorno) {
-
+        //EN ANALISIS AUN
+       /* for (NodoInstruccion ins : instrucciones) {
+            ins.ejecutar(entorno);
+        }*/
     }
 
+    //Metodo que permite indexar a las estructuras
     @Override
     public void indexar(Indexador ctx) {
         ctx.registrarEstructura(this);

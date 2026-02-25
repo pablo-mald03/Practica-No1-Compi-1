@@ -13,20 +13,23 @@ import java.util.List;
 public class NodoSi extends NodoEstructura {
     private NodoExpresion condicion;
 
-    public NodoSi(NodoExpresion condicion, List<NodoInstruccion> instrucciones) {
-        super(instrucciones);
-        this.condicion = condicion;
+    //Representa bloques de codigo dentro de la estructura
+    private NodoBloque bloque;
 
+    //Constructor
+    public NodoSi(NodoExpresion condicion, NodoBloque bloque) {
+        this.condicion = condicion;
+        this.bloque = bloque;
     }
 
-    //Metodo getter de la condicion
-    public NodoExpresion getCondicion() {
-        return condicion;
+    //Retorna el bloque de instrucciones que vienen dentro
+    public NodoBloque getBloque() {
+        return bloque;
     }
 
     @Override
     public void ejecutar(EntornoValores entorno) {
-
+        //EN ANALISIS AUN
        /* double valorCondicion = condicion.evaluar(entorno);
 
         if (valorCondicion != 0) {
@@ -36,8 +39,10 @@ public class NodoSi extends NodoEstructura {
         }*/
     }
 
+    //Metodo que permite indexar a las estructuras
     @Override
     public void indexar(Indexador ctx) {
         ctx.registrarEstructura(this);
+        this.bloque.indexar(ctx);
     }
 }
