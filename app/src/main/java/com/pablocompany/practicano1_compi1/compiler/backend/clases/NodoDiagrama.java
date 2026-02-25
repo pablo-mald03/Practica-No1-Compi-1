@@ -1,5 +1,6 @@
 package com.pablocompany.practicano1_compi1.compiler.backend.clases;
 
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoLetra;
 
@@ -18,13 +19,21 @@ public class NodoDiagrama {
     private int indice;
     private int subIndice;
 
-    public NodoDiagrama(int nivel, int indice, int subIndice, String texto) {
+    private TipoConfiguracion tipoInstruccion;
+
+    public NodoDiagrama(int nivel, int indice, int subIndice, String texto, TipoConfiguracion tipo) {
         this.nivel = nivel;
         this.indice = indice;
         this.subIndice = subIndice;
         this.texto = texto;
+        this.tipoInstruccion = tipo;
     }
     /*Metodos Getter y setter*/
+
+    public TipoConfiguracion getTipoInstruccion() {
+        return tipoInstruccion;
+    }
+
     public TipoFigura getFigura() {
         return figura;
     }

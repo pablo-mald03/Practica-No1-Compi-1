@@ -368,7 +368,10 @@ fun Int.toComposeColor(): Color {
     return Color(this)
 }
 //Metodo para poder obtener los tipos de letra configurables
-fun TipoLetra.toTypeface(): android.graphics.Typeface {
+fun TipoLetra?.toTypeface(): android.graphics.Typeface {
+
+    if (this == null) return android.graphics.Typeface.DEFAULT
+
     return when (this) {
         TipoLetra.ARIAL ->
             android.graphics.Typeface.SANS_SERIF

@@ -4,8 +4,10 @@ import com.pablocompany.practicano1_compi1.compiler.backend.clases.NodoDiagrama;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoPrograma;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoSimple;
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura;
 import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfiguracion;
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoLetra;
 import com.pablocompany.practicano1_compi1.compiler.models.estructuras.NodoBloque;
 import com.pablocompany.practicano1_compi1.compiler.models.estructuras.NodoMientras;
 import com.pablocompany.practicano1_compi1.compiler.models.estructuras.NodoSi;
@@ -25,12 +27,16 @@ public class GestorCodigo {
     List<NodoInstruccion> listaInstrucciones;
     List<NodoConfiguracion> listaConfiguraciones;
 
+    ConfiguracionPredeterminada configuracionPredeterminada;
+
+
     //Constructor de la clase que permite inicializar el ast
     public GestorCodigo(NodoPrograma ast) {
         this.listaDiagrama = new ArrayList<>(500);
         this.ast = ast;
         this.listaInstrucciones = ast.getInstrucciones();
         this.listaConfiguraciones = ast.getConfiguraciones();
+        this.configuracionPredeterminada = new ConfiguracionPredeterminada();
     }
 
     //Metodo principal que permite convertir el codigo devuelto por el parser a codigo para poder generar las vistas
@@ -41,19 +47,21 @@ public class GestorCodigo {
         int colorFondoPrograma = android.graphics.Color.rgb(RGB_FONDO_PROGRAMA[0], RGB_FONDO_PROGRAMA[1], RGB_FONDO_PROGRAMA[2]);
 
 
-        NodoDiagrama inicio = new NodoDiagrama(0, -1, -1, "INICIO");
+        NodoDiagrama inicio = new NodoDiagrama(0, -1, -1, "INICIO",TipoConfiguracion.INICIO);
         inicio.setFigura(TipoFigura.RECTANGULO_REDONDEADO);
         inicio.setColorFondo(colorFondoPrograma);
         inicio.setColorTexto(colorLetraPrograma);
         inicio.setSizeLetra(50);
+        inicio.setTipoLetra(TipoLetra.TIMES_NEW_ROMAN);
         listaDiagrama.add(inicio);
 
         procesarInstrucciones();
 
-        NodoDiagrama fin = new NodoDiagrama(0, -1, -1, "FIN");
+        NodoDiagrama fin = new NodoDiagrama(0, -1, -1, "FIN",TipoConfiguracion.FIN);
         fin.setFigura(TipoFigura.RECTANGULO_REDONDEADO);
         fin.setColorFondo(colorFondoPrograma);
         fin.setColorTexto(colorLetraPrograma);
+        fin.setTipoLetra(TipoLetra.TIMES_NEW_ROMAN);
         fin.setSizeLetra(50);
         listaDiagrama.add(fin);
     }
@@ -73,40 +81,82 @@ public class GestorCodigo {
             NodoInstruccion nodo = this.listaInstrucciones.get(i);
             instanciarFigura(nodo);
         }
+        System.out.println("tamanio lista dibujos "+ this.listaDiagrama.size());
+        darConfiguracionPredeterminada();
+    }
 
-        //PENDIENTE FORMA DE ESTRAER COLORES
-        /*int[] rgb = nodoColor.evaluar(entorno);
+    /*METODO QUE PERMITE CONFIGURAR LAS FIGURAS DEL DIAGRAMA CON SU CONFIGURACION PREDETERMINADA*/
+    void darConfiguracionPredeterminada() {
+        for (int i = 0; i < this.listaDiagrama.size(); i++) {
+            NodoDiagrama nodo = this.listaDiagrama.get(i);
+
+            if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_BLOQUE) {
+
+                nodo.setFigura(configuracionPredeterminada.getFiguraBloque());
+                nodo.setColorFondo(getColor(configuracionPredeterminada.getRgbBloqueFondo()));
+                nodo.setColorTexto(getColor(configuracionPredeterminada.getRgbBloqueLetra()));
+                nodo.setSizeLetra(configuracionPredeterminada.getSizeBloque());
+                nodo.setTipoLetra(configuracionPredeterminada.getLetraBloque());
+            }
+            else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_MIENTRAS) {
+
+                nodo.setFigura(configuracionPredeterminada.getFiguraMientras());
+                nodo.setColorFondo(getColor(configuracionPredeterminada.getRgbMientrasFondo()));
+                nodo.setColorTexto(getColor(configuracionPredeterminada.getRgbMientrasLetra()));
+                nodo.setSizeLetra(configuracionPredeterminada.getSizeMientras());
+                nodo.setTipoLetra(configuracionPredeterminada.getLetraMientras());
+            }
+            else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_SI) {
+
+                nodo.setFigura(configuracionPredeterminada.getFiguraSi());
+                nodo.setColorFondo(getColor(configuracionPredeterminada.getRgbSiFondo()));
+                nodo.setColorTexto(getColor(configuracionPredeterminada.getRgbSiLetra()));
+                nodo.setSizeLetra(configuracionPredeterminada.getSizeSi());
+                nodo.setTipoLetra(configuracionPredeterminada.getLetraSi());
+            }
+            else{
+                if (nodo.getTipoLetra() == null) {
+                    nodo.setTipoLetra(TipoLetra.ARIAL);
+                }
+            }
+
+        }
+
+    }
+
+    /*METODO QUE PERMITE OBTENER EL ARREGLO RGB DE LOS COLORES*/
+    int getColor(int[] rgb) {
 
         int color = android.graphics.Color.rgb(
                 rgb[0],
                 rgb[1],
-                rgb[2]
-        );*/
+                rgb[2]);
+
+        return color;
 
     }
+
 
     /*METODO DELEGADO PARA PODER INSTANCIAR LAS FIGURAS DEL DIAGRAMA*/
     void instanciarFigura(NodoInstruccion nodo) {
 
-        if(nodo instanceof NodoSi){
+        if (nodo instanceof NodoSi) {
             NodoSi nodoSi = (NodoSi) nodo;
             NodoBloque bloque = nodoSi.getBloque();
-            this.listaDiagrama.add(new NodoDiagrama(0,nodoSi.getIndiceGlobal(),nodoSi.getIndiceInterno(),nodoSi.getString()));
-            this.listaDiagrama.add(new NodoDiagrama(1,bloque.getIndiceGlobal(),bloque.getIndiceInterno(),bloque.getBloqueString()));
+            this.listaDiagrama.add(new NodoDiagrama(0, nodoSi.getIndiceGlobal(), nodoSi.getIndiceInterno(), nodoSi.getString(), TipoConfiguracion.INSTRUCCION_SI));
+            this.listaDiagrama.add(new NodoDiagrama(1, bloque.getIndiceGlobal(), bloque.getIndiceInterno(), bloque.getBloqueString(), TipoConfiguracion.INSTRUCCION_BLOQUE));
             return;
-        }
-        else if(nodo instanceof NodoMientras){
+        } else if (nodo instanceof NodoMientras) {
             NodoMientras nodoMientras = (NodoMientras) nodo;
             NodoBloque bloque = nodoMientras.getBloque();
 
-            this.listaDiagrama.add(new NodoDiagrama(0,nodoMientras.getIndiceGlobal(),nodoMientras.getIndiceInterno(),nodoMientras.getString()));
+            this.listaDiagrama.add(new NodoDiagrama(0, nodoMientras.getIndiceGlobal(), nodoMientras.getIndiceInterno(), nodoMientras.getString(), TipoConfiguracion.INSTRUCCION_MIENTRAS));
 
-            this.listaDiagrama.add(new NodoDiagrama(1,bloque.getIndiceGlobal(),bloque.getIndiceInterno(),bloque.getBloqueString()));
+            this.listaDiagrama.add(new NodoDiagrama(1, bloque.getIndiceGlobal(), bloque.getIndiceInterno(), bloque.getBloqueString(), TipoConfiguracion.INSTRUCCION_BLOQUE));
             return;
-        }
-        else if(nodo instanceof NodoBloque){
+        } else if (nodo instanceof NodoBloque) {
             NodoBloque nodoBloque = (NodoBloque) nodo;
-            this.listaDiagrama.add(new NodoDiagrama(0,nodoBloque.getIndiceGlobal(),nodoBloque.getIndiceInterno(),nodoBloque.getBloqueString()));
+            this.listaDiagrama.add(new NodoDiagrama(0, nodoBloque.getIndiceGlobal(), nodoBloque.getIndiceInterno(), nodoBloque.getBloqueString(), TipoConfiguracion.INSTRUCCION_BLOQUE));
         }
     }
 
@@ -114,7 +164,6 @@ public class GestorCodigo {
     public void empaquetarDatos() {
 
         List<NodoInstruccion> listaLimpiada = new ArrayList<>();
-
 
         for (int i = 0; i < this.listaInstrucciones.size(); i++) {
             NodoInstruccion nodo = this.listaInstrucciones.get(i);

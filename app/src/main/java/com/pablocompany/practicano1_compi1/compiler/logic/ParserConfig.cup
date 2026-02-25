@@ -127,6 +127,9 @@ non terminal NodoExpresion condicion_logica;
 
 precedence left SUMA, RESTA;
 precedence left MULTIPLICACION, DIVISION;
+precedence left OR;
+precedence left AND;
+precedence right NOT;
 
 //===========Presedencia de tipos=====================
 
@@ -214,13 +217,14 @@ condicion ::= expresion:e1 IGUALDAD expresion:e2
             {: RESULT = new NodoMenorIgual(e1,e2,e1left,e1right); :}
             ;
 
-condicion_logica ::= condicion:c1 AND condicion:c2
-                   {: RESULT = new NodoAnd(c1,c2,c1left,c1right); :}
-                   | condicion:c1 OR condicion:c2
-                   {: RESULT = new NodoOr(c1,c2,c1left,c1right); :}
-                   | NOT condicion:c
-                   {: RESULT = new NodoNot(c,cleft,cright); :}
-                   | condicion
+condicion_logica ::= condicion_logica:cl AND condicion:c2
+                   {: RESULT = new NodoAnd(cl,c2,clleft,clright); :}
+                   | condicion_logica:cl OR condicion:c2
+                   {: RESULT = new NodoOr(cl,c2,clleft,clright); :}
+                   | NOT condicion_logica:cl
+                   {: RESULT = new NodoNot(cl,clleft,clright); :}
+                   | condicion:c
+                   {: RESULT = c; :}
                    ;
 
 /*===Reconocimiento de sentencias simples====*/

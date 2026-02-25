@@ -1,5 +1,6 @@
 package com.pablocompany.practicano1_compi1.domain.usecase
 
+import android.util.Log
 import com.pablocompany.practicano1_compi1.compiler.backend.ResultadoAnalisis
 import com.pablocompany.practicano1_compi1.compiler.backend.recursos.GestorCodigo
 import com.pablocompany.practicano1_compi1.compiler.logic.Lexer
@@ -38,10 +39,17 @@ class AnalizarCodigoUseCase {
             val exito = erroresLexicosList.isEmpty() && erroresSintacticosList.isEmpty()
 
             val ast = parseResult.value as? NodoPrograma ?: NodoPrograma(emptyList(), emptyList())
-            
+
             //Codigo delegado a backend (PATRON EXPERTO)
             val gestor = GestorCodigo(ast)
-            gestor.procesarCodigo()
+            //gestor.procesarCodigo()
+
+            try {
+                gestor.procesarCodigo()
+
+            } catch (e: Exception) {
+                Log.e("ERROR_GESTOR", "Error procesando AST: ${e.message}")
+            }
 
             ResultadoAnalisis(
                 exito = exito,
