@@ -41,9 +41,9 @@ class AnalizarCodigoUseCase {
 
             ast.indexarInstrucciones();
 
+            //Codigo delegado a backend (PATRON EXPERTO)
             val gestor = GestorCodigo(ast)
-
-            gestor.procesarCodigo(ast)
+            gestor.procesarCodigo()
 
             ResultadoAnalisis(
                 exito = exito,

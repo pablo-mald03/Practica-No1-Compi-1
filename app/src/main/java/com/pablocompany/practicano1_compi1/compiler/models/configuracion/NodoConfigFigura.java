@@ -2,8 +2,8 @@ package com.pablocompany.practicano1_compi1.compiler.models.configuracion;
 
 import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
-import com.pablocompany.practicano1_compi1.compiler.models.TipoConfiguracion;
-import com.pablocompany.practicano1_compi1.compiler.models.TipoFigura;
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion;
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura;
 
 //Clase que permite cambiar la configuracion de la figura
 public class NodoConfigFigura extends NodoConfiguracion {

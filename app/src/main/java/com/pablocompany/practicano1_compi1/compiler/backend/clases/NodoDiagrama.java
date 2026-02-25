@@ -1,23 +1,20 @@
 package com.pablocompany.practicano1_compi1.compiler.backend.clases;
 
-import android.graphics.Color;
-
-import com.pablocompany.practicano1_compi1.compiler.models.TipoFigura;
-import com.pablocompany.practicano1_compi1.compiler.models.TipoLetra;
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura;
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoLetra;
 
 
 //Esta clase permite retornar a frontend todas las caracterisitcas e instrucciones que tiene que seguir cada figura que se va a crear
 public class NodoDiagrama {
 
+    /*Atributos*/
     private String texto;
     private TipoFigura figura;
-
     private int colorFondo;
     private int colorTexto;
     private TipoLetra tipoLetra;
     private double sizeLetra;
     private int nivel;
-
     private int indice;
     private int subIndice;
 
@@ -26,7 +23,7 @@ public class NodoDiagrama {
         this.indice = indice;
         this.subIndice = subIndice;
     }
-
+    /*Metodos Getter y setter*/
     public TipoFigura getFigura() {
         return figura;
     }

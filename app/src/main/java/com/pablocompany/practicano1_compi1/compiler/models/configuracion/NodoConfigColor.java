@@ -3,7 +3,7 @@ package com.pablocompany.practicano1_compi1.compiler.models.configuracion;
 import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoColor;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
-import com.pablocompany.practicano1_compi1.compiler.models.TipoConfiguracion;
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion;
 
 //Clase que permite cambiar el color de una instruccion
 /*P*/

@@ -9,6 +9,7 @@ import com.pablocompany.practicano1_compi1.compiler.models.expresiones.*;
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.logicos.*;
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.matematicos.*;
 import com.pablocompany.practicano1_compi1.compiler.models.operadores.relacionales.*;
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.*;
 import com.pablocompany.practicano1_compi1.compiler.models.configuracion.*;
 import com.pablocompany.practicano1_compi1.compiler.models.estructuras.*;
 import com.pablocompany.practicano1_compi1.compiler.models.colores.*;

@@ -2,8 +2,8 @@ package com.pablocompany.practicano1_compi1.compiler.models.configuracion;
 
 import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
-import com.pablocompany.practicano1_compi1.compiler.models.TipoConfiguracion;
-import com.pablocompany.practicano1_compi1.compiler.models.TipoLetra;
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion;
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoLetra;
 
 /*Clase que permite configurar el tipo de letra de la instruccion*/
 public class NodoConfigTipoLetra extends NodoConfiguracion {

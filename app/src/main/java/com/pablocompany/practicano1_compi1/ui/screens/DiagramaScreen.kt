@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.navigation.NavController
 import com.pablocompany.practicano1_compi1.compiler.backend.clases.NodoDiagrama
-import com.pablocompany.practicano1_compi1.compiler.models.TipoFigura
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura
 
 
 @Composable
@@ -353,7 +353,7 @@ fun DrawScope.DiagramaCanvas(lista: List<NodoDiagrama>) {
     }
 }
 
-//Metodo que
+//Metodo que permite convertir un entero a Color
 fun Int.toComposeColor(): Color {
     return Color(this)
 }
