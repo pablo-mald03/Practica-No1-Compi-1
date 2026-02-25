@@ -19,20 +19,22 @@ public class NodoConfigTipoLetra extends NodoConfiguracion {
     }
 
     /*==========APARTADO DE METODOS GETTER==========*/
+    //Metodo que permite obtener a que instruccion se le va a aplicar
     public TipoConfiguracion getTipo() {
         return tipo;
     }
 
-    public NodoExpresion getNivel() {
-        return this.nivel;
+    //Metodo que permite retornar el indice de aplicacion del estilo
+    public int getIndice() {
+        return Integer.parseInt(this.nivel.getString());
     }
-
+    //Metodo que permite obtener el tipo de letra
     public TipoLetra getTipoLetra() {
         return this.tipoLetra;
     }
 
     @Override
-    public void aplicar(EntornoValores entorno) {
+    public void aplicar() {
 
     }
 }

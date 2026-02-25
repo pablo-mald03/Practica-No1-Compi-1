@@ -18,11 +18,27 @@ public class NodoConfigColor extends NodoConfiguracion {
         this.color = color;
         this.nivel = nivel;
     }
+    /*===METODOS GETTER===*/
+
+    //Permite obtener el indice de aplicacion del estilo
+    public int getIndice() {
+        return Integer.parseInt(this.nivel.getString());
+    }
+
+    //Permite tomar el color de la configuracion
+    public int [] getColorConfig(){
+        return  this.color.evaluar();
+    }
+    //Metodo que permite obtener a que instruccion se le va a aplicar
+    public TipoConfiguracion getTipoConfig(){
+        return  this.tipo;
+    }
+
+
 
     @Override
-    public void aplicar(EntornoValores entorno) {
-        int[] rgb = color.evaluar(entorno);
-        int intensidad = (int) nivel.evaluar(entorno);
+    public void aplicar() {
+
 
     }
 }

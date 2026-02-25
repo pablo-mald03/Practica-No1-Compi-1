@@ -16,12 +16,13 @@ public class NodoRgb extends NodoColor {
         this.green = g;
         this.blue = b;
     }
+    //Metodo que retorna su valor de color via arreglo
     @Override
-    public int[] evaluar(EntornoValores entorno) {
+    public int[] evaluar() {
         return new int[] {
-                (int) red.evaluar(entorno),
-                (int) green.evaluar(entorno),
-                (int) blue.evaluar(entorno)
+                Integer.parseInt(this.red.getString()),
+                Integer.parseInt(this.green.getString()),
+                Integer.parseInt(this.blue.getString())
         };
     }
 

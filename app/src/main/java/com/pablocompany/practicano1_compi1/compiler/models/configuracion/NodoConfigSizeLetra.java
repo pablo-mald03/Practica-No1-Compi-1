@@ -14,7 +14,7 @@ public class NodoConfigSizeLetra extends NodoConfiguracion {
     private TipoConfiguracion tipo;
     /*P*/
 
-    public NodoConfigSizeLetra( TipoConfiguracion tipo, NodoExpresion size, NodoExpresion indice) {
+    public NodoConfigSizeLetra(TipoConfiguracion tipo, NodoExpresion size, NodoExpresion indice) {
         this.indice = indice;
         this.size = size;
         this.tipo = tipo;
@@ -22,22 +22,23 @@ public class NodoConfigSizeLetra extends NodoConfiguracion {
     }
     /*==========APARTADO DE METODOS GETTER==========*/
 
-    public NodoExpresion getIndice() {
-        return this.indice;
+    //Metodo que permite obtener el indice donde se aplica el color
+    public int getIndice() {
+        return Integer.parseInt(this.indice.getString());
     }
 
-    public NodoExpresion getSize() {
-        return this.size;
+    //Metodo que permite obtener el size de la letra
+    public double getSize() {
+        return Double.parseDouble(this.size.getString());
     }
 
-    public TipoConfiguracion getTipo() {
+    //Metodo que permite obtener a que configuracion se va a aplicar
+    public TipoConfiguracion getTipo()
+    {
         return this.tipo;
     }
 
     @Override
-    public void aplicar(EntornoValores entorno) {
-       /* int[] rgb = color.evaluar(entorno);
-        int intensidad = (int) indice.evaluar(entorno);
-*/
+    public void aplicar() {
     }
 }

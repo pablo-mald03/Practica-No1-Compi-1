@@ -81,9 +81,17 @@ public class GestorCodigo {
             NodoInstruccion nodo = this.listaInstrucciones.get(i);
             instanciarFigura(nodo);
         }
-        System.out.println("tamanio lista dibujos "+ this.listaDiagrama.size());
         darConfiguracionPredeterminada();
+        darEstilosPersonalizados();
     }
+
+    /*METODO UTILIZADO PARA DAR LA CONFIGURACION PERSONALIZADA*/
+    private void darEstilosPersonalizados(){
+
+
+
+    }
+
 
     /*METODO QUE PERMITE CONFIGURAR LAS FIGURAS DEL DIAGRAMA CON SU CONFIGURACION PREDETERMINADA*/
     void darConfiguracionPredeterminada() {

@@ -11,9 +11,12 @@ public class NodoConfigDefault extends NodoConfiguracion {
         this.valor = valor;
     }
 
+    //Permite obtener el indice de aplicacion del estilo
+    public int getIndice() {
+        return Integer.parseInt(this.valor.getString());
+    }
     @Override
-    public void aplicar(EntornoValores entorno) {
-        int nivel = (int) valor.evaluar(entorno);
-        //entorno.setDefaultNivel(nivel);
+    public void aplicar() {
+
     }
 }

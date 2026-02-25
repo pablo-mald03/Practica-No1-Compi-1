@@ -12,8 +12,9 @@ public class NodoHexColor extends NodoColor {
         this.hex = hex;
     }
     /*P*/
+    //Metodo que retorna su valor de color via arreglo
     @Override
-    public int[] evaluar(EntornoValores entorno) {
+    public int[] evaluar() {
 
         int red = Integer.parseInt(hex.substring(1,3), 16);
         int green = Integer.parseInt(hex.substring(3,5), 16);

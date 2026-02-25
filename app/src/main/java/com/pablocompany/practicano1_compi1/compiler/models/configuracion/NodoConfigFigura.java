@@ -19,7 +19,7 @@ public class NodoConfigFigura extends NodoConfiguracion {
     }
 
     @Override
-    public void aplicar(EntornoValores entorno) {
+    public void aplicar() {
 
     }
 }

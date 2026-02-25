@@ -19,14 +19,18 @@ public class NodoConfigFondo extends NodoConfiguracion {
     }
 
     /*==========APARTADO DE METODOS GETTER==========*/
-    public NodoColor getColor() {
-        return color;
+
+    //Permite obtener el indice de aplicacion del estilo
+    public int getIndice() {
+        return Integer.parseInt(this.indice.getString());
     }
 
-    public NodoExpresion getIndice() {
-        return indice;
+    //Permite tomar el color de la configuracion
+    public int [] getColorConfig(){
+        return  this.color.evaluar();
     }
 
+    //Metodo que permite obtener a que instruccion se le va a aplicar
     public TipoConfiguracion getTipo() {
         return tipo;
     }
@@ -34,9 +38,7 @@ public class NodoConfigFondo extends NodoConfiguracion {
     /*==========APARTADO DE METODOS GETTER==========*/
 
     @Override
-    public void aplicar(EntornoValores entorno) {
-       /* int[] rgb = color.evaluar(entorno);
-        int intensidad = (int) indice.evaluar(entorno);
-*/
+    public void aplicar() {
+
     }
 }
