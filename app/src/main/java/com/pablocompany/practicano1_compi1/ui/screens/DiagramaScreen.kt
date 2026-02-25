@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.navigation.NavController
 import com.pablocompany.practicano1_compi1.compiler.backend.clases.NodoDiagrama
+import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoLetra
 
@@ -206,15 +207,19 @@ fun DiagramaScreen(
     }
 }
 
+//Metodo que permite dibujar el diagrama en el canvas
 fun DrawScope.DiagramaCanvas(lista: List<NodoDiagrama>) {
     val centerX = size.width / 2
     var currentY = 150f
-    val verticalSpacing = 250f
+    val verticalSpacing = 200f
     val nivelSpacing = 350f
 
     val posiciones = mutableListOf<Pair<Float, Float>>()
     val dimensiones = mutableListOf<Size>()
 
+    // Variables de control para estructuras
+    var nodoOrigenBucleIdx: Int? = null
+    val saltosPendientes = mutableListOf<Pair<Int, Offset>>()
 
     lista.forEachIndexed { index, nodo ->
         val offsetNivel = (nodo.nivel * nivelSpacing)
@@ -231,125 +236,153 @@ fun DrawScope.DiagramaCanvas(lista: List<NodoDiagrama>) {
         val lineas = nodo.texto.split("\n")
         val altoLinea = paint.fontMetrics.descent - paint.fontMetrics.ascent
         val altoTextoTotal = lineas.size * altoLinea
-
         val anchoTextoMax = lineas.maxOfOrNull { paint.measureText(it) } ?: 0f
 
-        val paddingWeb = 60f
-        var anchoDinamico = maxOf(400f, anchoTextoMax + paddingWeb * 2)
-        var altoDinamico = maxOf(140f, altoTextoTotal + paddingWeb)
+        val padding = 60f
+        var anchoDinamico = maxOf(400f, anchoTextoMax + padding * 2)
+        var altoDinamico = maxOf(140f, altoTextoTotal + padding)
+
+        if (nodo.figura == TipoFigura.CIRCULO) {
+            val diametro = maxOf(anchoDinamico, altoDinamico) + 40f
+            anchoDinamico = diametro
+            altoDinamico = diametro
+        }
 
         val halfW = anchoDinamico / 2
         val halfH = altoDinamico / 2
 
         if (index > 0) {
+            val prevNodo = lista[index - 1]
             val (prevX, prevY) = posiciones[index - 1]
-            val prevSize = dimensiones[index - 1]
-            drawLine(
-                color = Color.White,
-                start = Offset(prevX, prevY + prevSize.height), // Sale del fondo de la anterior
-                end = Offset(posX, posY), // Llega al tope de la actual
-                strokeWidth = 6f
-            )
+            val prevDim = dimensiones[index - 1]
+
+            when {
+                prevNodo.nivel == 0 && nodo.nivel == 1 -> {
+                    drawLine(Color.White, Offset(prevX, prevY + prevDim.height), Offset(posX, posY), 6f)
+                }
+                prevNodo.nivel == 1 && nodo.nivel == 0 -> {
+                    val pathRetorno = androidx.compose.ui.graphics.Path().apply {
+                        moveTo(prevX, prevY + prevDim.height)
+                        lineTo(prevX, posY - verticalSpacing / 2)
+                        lineTo(posX, posY - verticalSpacing / 2)
+                        lineTo(posX, posY)
+                    }
+                    drawPath(pathRetorno, Color.White, style = Stroke(6f))
+                }
+                else -> {
+                    drawLine(Color.White, Offset(prevX, prevY + prevDim.height), Offset(posX, posY), 6f)
+                }
+            }
         }
 
+        val saltosHoy = saltosPendientes.filter { it.first == index }
+        saltosHoy.forEach { salto ->
+            val inicio = salto.second
+            val pathFalso = androidx.compose.ui.graphics.Path().apply {
+                val escapeX = centerX + nivelSpacing + 450f
+
+                moveTo(inicio.x, inicio.y)
+                lineTo(escapeX, inicio.y)
+                lineTo(escapeX, posY - verticalSpacing / 2)
+                lineTo(posX, posY - verticalSpacing / 2)
+                lineTo(posX, posY)
+            }
+            drawPath(pathFalso, Color.White, style = Stroke(6f))
+
+            val punta = androidx.compose.ui.graphics.Path().apply {
+                moveTo(posX - 15f, posY - 20f)
+                lineTo(posX, posY)
+                lineTo(posX + 15f, posY - 20f)
+                close()
+            }
+            drawPath(punta, Color.White)
+        }
+        saltosPendientes.removeAll(saltosHoy)
+
         val colorFondo = nodo.colorFondo.toComposeColor()
+        val topLeft = Offset(posX - halfW, posY)
+        val sizeFigura = Size(anchoDinamico, altoDinamico)
 
         when (nodo.figura) {
             TipoFigura.RECTANGULO -> {
-                drawRect(color = colorFondo, topLeft = Offset(posX - halfW, posY), size = Size(anchoDinamico, altoDinamico))
-                drawRect(color = Color.White, topLeft = Offset(posX - halfW, posY), size = Size(anchoDinamico, altoDinamico), style = Stroke(6f))
+                drawRect(colorFondo, topLeft, sizeFigura)
+                drawRect(Color.White, topLeft, sizeFigura, style = Stroke(6f))
             }
-            TipoFigura.RECTANGULO_REDONDEADO, TipoFigura.ELIPSE -> {
-
-                val radius = if(nodo.figura == TipoFigura.ELIPSE) CornerRadius(halfH, halfH) else CornerRadius(40f, 40f)
-                drawRoundRect(
-                    color = colorFondo,
-                    topLeft = Offset(posX - halfW, posY),
-                    size = Size(anchoDinamico, altoDinamico),
-                    cornerRadius = radius
-                )
-                drawRoundRect(
-                    color = Color.White,
-                    topLeft = Offset(posX - halfW, posY),
-                    size = Size(anchoDinamico, altoDinamico),
-                    cornerRadius = radius,
-                    style = Stroke(6f)
-                )
-            }
-
-            TipoFigura.PARALELOGRAMO -> {
-                val inclinacion = 40f
-                val path = Path().apply {
-                    moveTo(posX - halfW + inclinacion, posY)
-                    lineTo(posX + halfW + inclinacion, posY)
-                    lineTo(posX + halfW - inclinacion, posY + altoDinamico)
-                    lineTo(posX - halfW - inclinacion, posY + altoDinamico)
-                    close()
-                }
-                drawPath(path, color = colorFondo)
-                drawPath(path, color = Color.White, style = Stroke(6f))
-            }
-
             TipoFigura.ROMBO -> {
-                val path = Path().apply {
+                val path = androidx.compose.ui.graphics.Path().apply {
                     moveTo(posX, posY)
                     lineTo(posX + halfW + 40f, posY + halfH)
                     lineTo(posX, posY + altoDinamico)
                     lineTo(posX - halfW - 40f, posY + halfH)
                     close()
                 }
-                drawPath(path, color = colorFondo)
-                drawPath(path, color = Color.White, style = Stroke(6f))
+                drawPath(path, colorFondo)
+                drawPath(path, Color.White, style = Stroke(6f))
             }
             TipoFigura.CIRCULO -> {
-                val diametro = maxOf(anchoDinamico, altoDinamico)
-
-                val anchoCuadrado = diametro + 40f
-                val altoCuadrado = diametro + 40f
-
-                val radio = anchoCuadrado / 2f
-                val centroCirculo = Offset(posX, posY + radio)
-
-                // FONDO
-                drawCircle(
-                    color = colorFondo,
-                    radius = radio,
-                    center = centroCirculo
-                )
-                // BORDE
-                drawCircle(
-                    color = Color.White,
-                    radius = radio,
-                    center = centroCirculo,
-                    style = Stroke(width = 6f)
-                )
-                anchoDinamico = anchoCuadrado
-                altoDinamico = altoCuadrado
+                drawCircle(colorFondo, halfW, Offset(posX, posY + halfW))
+                drawCircle(Color.White, halfW, Offset(posX, posY + halfW), style = Stroke(6f))
             }
-            TipoFigura.ELIPSE -> {
-                val radioEsquina = altoDinamico / 2f
+            TipoFigura.PARALELOGRAMO -> {
+                val inc = 40f
+                val path = androidx.compose.ui.graphics.Path().apply {
+                    moveTo(posX - halfW + inc, posY)
+                    lineTo(posX + halfW + inc, posY)
+                    lineTo(posX + halfW - inc, posY + altoDinamico)
+                    lineTo(posX - halfW - inc, posY + altoDinamico)
+                    close()
+                }
+                drawPath(path, colorFondo)
+                drawPath(path, Color.White, style = Stroke(6f))
+            }
+            else -> { // Elipse y Redondeado
+                val rad = if(nodo.figura == TipoFigura.ELIPSE) CornerRadius(halfH, halfH) else CornerRadius(40f, 40f)
+                drawRoundRect(colorFondo, topLeft, sizeFigura, rad)
+                drawRoundRect(Color.White, topLeft, sizeFigura, rad, style = Stroke(6f))
+            }
+        }
 
-                drawRoundRect(
-                    color = colorFondo,
-                    topLeft = Offset(posX - halfW, posY),
-                    size = Size(anchoDinamico, altoDinamico),
-                    cornerRadius = CornerRadius(radioEsquina, radioEsquina)
-                )
-                drawRoundRect(
-                    color = Color.White,
-                    topLeft = Offset(posX - halfW, posY),
-                    size = Size(anchoDinamico, altoDinamico),
-                    cornerRadius = CornerRadius(radioEsquina, radioEsquina),
-                    style = Stroke(width = 6f)
-                )
+        if (nodo.tipoInstruccion == TipoConfiguracion.INSTRUCCION_SI ||
+            nodo.tipoInstruccion == TipoConfiguracion.INSTRUCCION_MIENTRAS) {
+
+            if (nodo.tipoInstruccion == TipoConfiguracion.INSTRUCCION_MIENTRAS) {
+                nodoOrigenBucleIdx = index
             }
 
+            // Programar salto del "Falso" al siguiente nivel 0
+            val sigCeroIdx = lista.drop(index + 1).indexOfFirst { it.nivel == 0 }
+            if (sigCeroIdx != -1) {
+                val destinoIdx = index + 1 + sigCeroIdx
+                saltosPendientes.add(destinoIdx to Offset(posX + halfW + 40f, posY + halfH))
+            }
+        }
+
+        if (nodo.tipoInstruccion == TipoConfiguracion.INSTRUCCION_BLOQUE && nodoOrigenBucleIdx != null) {
+            val (origX, origY) = posiciones[nodoOrigenBucleIdx!!]
+            val origDim = dimensiones[nodoOrigenBucleIdx!!]
+
+            val pathRegreso = androidx.compose.ui.graphics.Path().apply {
+                moveTo(posX - halfW, posY + halfH)
+                val escapeX = minOf(posX - halfW, origX - (origDim.width / 2)) - 80f
+                lineTo(escapeX, posY + halfH)
+                lineTo(escapeX, origY + (origDim.height / 2))
+                lineTo(origX - (origDim.width / 2), origY + (origDim.height / 2))
+            }
+            drawPath(pathRegreso, Color.White, style = Stroke(6f))
+
+            val entX = origX - (origDim.width / 2)
+            val entY = origY + (origDim.height / 2)
+            val punta = androidx.compose.ui.graphics.Path().apply {
+                moveTo(entX - 15f, entY - 10f); lineTo(entX, entY); lineTo(entX - 15f, entY + 10f); close()
+            }
+            drawPath(punta, Color.White)
+
+            nodoOrigenBucleIdx = null
         }
 
         drawIntoCanvas { canvas ->
             paint.color = nodo.colorTexto
             var yActual = posY + (altoDinamico / 2) - (altoTextoTotal / 2) - paint.fontMetrics.ascent
-
             lineas.forEach { linea ->
                 canvas.nativeCanvas.drawText(linea, posX, yActual, paint)
                 yActual += altoLinea
@@ -358,11 +391,9 @@ fun DrawScope.DiagramaCanvas(lista: List<NodoDiagrama>) {
 
         posiciones.add(posX to posY)
         dimensiones.add(Size(anchoDinamico, altoDinamico))
-
         currentY += altoDinamico + verticalSpacing
     }
 }
-
 //Metodo que permite convertir un entero a Color
 fun Int.toComposeColor(): Color {
     return Color(this)
