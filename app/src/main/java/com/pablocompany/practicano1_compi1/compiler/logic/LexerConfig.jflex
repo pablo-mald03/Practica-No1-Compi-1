@@ -14,7 +14,6 @@ import com.pablocompany.practicano1_compi1.compiler.models.ErrorAnalisis;
 %cup
 %line
 %column
-%ignorecase
 %state STRING
 
 /*P*/
