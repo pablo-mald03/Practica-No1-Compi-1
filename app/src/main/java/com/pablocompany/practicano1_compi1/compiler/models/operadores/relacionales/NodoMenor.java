@@ -1,6 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models.operadores.relacionales;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 
 //Clase que representa el operador realacional menor que
@@ -12,14 +11,21 @@ public class NodoMenor extends NodoExpresion {
         derecha = der;
     }
 
-    @Override
-    public double evaluar(EntornoValores entorno) {
-        return izquierda.evaluar(entorno) < derecha.evaluar(entorno) ? 1 : 0;
-    }
 
     //METODO QUE RETORNA SU VALOR CONDICIONAL
     @Override
     public String getString() {
         return "(" + izquierda.getString() + " < " + derecha.getString() + ")";
+    }
+
+    //Metodos que permiten obtener los valores numericos procesados de las instrucciones
+    @Override
+    public int getValorEntero() {
+        return 0;
+    }
+
+    @Override
+    public double getValorDecimal() {
+        return 0;
     }
 }

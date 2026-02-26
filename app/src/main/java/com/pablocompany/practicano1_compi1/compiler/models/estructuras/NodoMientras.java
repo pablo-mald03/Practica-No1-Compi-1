@@ -1,6 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models.estructuras;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoEstructura;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
@@ -27,17 +26,6 @@ public class NodoMientras extends NodoEstructura {
         return bloque;
     }
 
-    @Override
-    public void ejecutar(EntornoValores entorno) {
-
-        /*double valorCondicion = condicion.evaluar(entorno);
-
-        if (valorCondicion != 0) {
-            for (NodoInstruccion instruccion : instrucciones) {
-                instruccion.ejecutar(entorno);
-            }
-        }*/
-    }
 
     //METODO QUE RETORNA SU VALOR CONDICIONAL
     @Override

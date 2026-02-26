@@ -1,6 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models.configuracion;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura;
@@ -16,6 +15,21 @@ public class NodoConfigFigura extends NodoConfiguracion {
         this.figura = TipoFigura.valueOf(figura);
         this.nivel = nivel;
         this.tipo = tipo;
+    }
+
+    /*==========APARTADO DE METODOS GETTER==========*/
+    //Metodo que permite obtener a que instruccion se le va a aplicar
+    public TipoConfiguracion getTipo() {
+        return tipo;
+    }
+
+    //Metodo que permite retornar el indice de aplicacion del estilo
+    public int getIndice() {
+        return this.nivel.getValorEntero();
+    }
+    //Metodo que permite obtener el tipo de letra
+    public TipoFigura getTipoFigura() {
+        return this.figura;
     }
 
     @Override

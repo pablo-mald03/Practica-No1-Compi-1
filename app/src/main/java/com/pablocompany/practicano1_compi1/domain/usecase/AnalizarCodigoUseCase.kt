@@ -25,8 +25,10 @@ class AnalizarCodigoUseCase {
         }
 
         return try {
-            //Primer filtro para evitar caracteres basura
-            val codigoLimpio = codigo
+            //ER que sirve para quitar valores basura que vienen al usar android
+            val regexBasura = Regex("[\\u200B-\\u200D\\uFEFF\\p{C}&&[^\\n\\r\\t]]")
+
+            val codigoLimpio = codigo.replace(regexBasura, "")
 
             val lexer = Lexer(StringReader(codigoLimpio))
             val parser = Parser(lexer)
@@ -42,13 +44,14 @@ class AnalizarCodigoUseCase {
 
             //Codigo delegado a backend (PATRON EXPERTO)
             val gestor = GestorCodigo(ast)
-            //gestor.procesarCodigo()
-
             try {
                 gestor.procesarCodigo()
 
             } catch (e: Exception) {
-                Log.e("ERROR_GESTOR", "Error procesando AST: ${e.message}")
+                Log.e("ERROR_GESTOR", "Error: ${e.message}")
+                Log.e("ERROR_GESTOR", "Error : ${e.printStackTrace()}")
+
+                e.printStackTrace()
             }
 
             ResultadoAnalisis(

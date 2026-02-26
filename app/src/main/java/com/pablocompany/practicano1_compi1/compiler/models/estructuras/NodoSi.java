@@ -1,6 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models.estructuras;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoEstructura;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
@@ -26,19 +25,6 @@ public class NodoSi extends NodoEstructura {
     public NodoBloque getBloque() {
         return bloque;
     }
-
-    @Override
-    public void ejecutar(EntornoValores entorno) {
-        //EN ANALISIS AUN
-       /* double valorCondicion = condicion.evaluar(entorno);
-
-        if (valorCondicion != 0) {
-            for (NodoInstruccion instruccion : instrucciones) {
-                instruccion.ejecutar(entorno);
-            }
-        }*/
-    }
-
 
     //Metodo que permite indexar a las estructuras
     @Override

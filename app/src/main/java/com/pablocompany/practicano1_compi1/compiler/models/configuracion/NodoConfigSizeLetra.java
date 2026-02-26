@@ -1,6 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models.configuracion;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion;
 
@@ -24,12 +23,12 @@ public class NodoConfigSizeLetra extends NodoConfiguracion {
 
     //Metodo que permite obtener el indice donde se aplica el color
     public int getIndice() {
-        return Integer.parseInt(this.indice.getString());
+        return this.indice.getValorEntero();
     }
 
     //Metodo que permite obtener el size de la letra
     public double getSize() {
-        return Double.parseDouble(this.size.getString());
+        return this.size.getValorDecimal();
     }
 
     //Metodo que permite obtener a que configuracion se va a aplicar

@@ -1,6 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models.configuracion;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoColor;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion;
@@ -22,7 +21,7 @@ public class NodoConfigColor extends NodoConfiguracion {
 
     //Permite obtener el indice de aplicacion del estilo
     public int getIndice() {
-        return Integer.parseInt(this.nivel.getString());
+        return this.nivel.getValorEntero();
     }
 
     //Permite tomar el color de la configuracion
@@ -33,8 +32,6 @@ public class NodoConfigColor extends NodoConfiguracion {
     public TipoConfiguracion getTipoConfig(){
         return  this.tipo;
     }
-
-
 
     @Override
     public void aplicar() {

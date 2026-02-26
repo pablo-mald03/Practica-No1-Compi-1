@@ -1,6 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models.colores;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoColor;
 
 /*P*/

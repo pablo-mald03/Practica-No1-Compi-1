@@ -23,8 +23,6 @@ public abstract class NodoInstruccion {
         return this.indiceInterno;
     }
 
-    //Metodos abstractos que heredan sus demas clases hijas
-    public abstract void ejecutar(EntornoValores entorno);
 
     //Metodo que permite indexar una a una cada instruccion
     public abstract void indexar(Indexador index);

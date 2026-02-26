@@ -1,6 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models.operadores.matematicos;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 
 public class NodoResta extends NodoExpresion {
@@ -15,13 +14,20 @@ public class NodoResta extends NodoExpresion {
     }
 
     @Override
-    public double evaluar(EntornoValores entorno){
-        return izquierda.evaluar(entorno) - derecha.evaluar(entorno);
-    }
-
-    @Override
     public String getString() {
         return "(" + izquierda.getString() + " - " + derecha.getString() + ")";
     }
+
+    //Metodos que permiten obtener los valores numericos procesados de las instrucciones
+    @Override
+    public int getValorEntero() {
+        return this.izquierda.getValorEntero() - this.derecha.getValorEntero();
+    }
+
+    @Override
+    public double getValorDecimal() {
+        return this.izquierda.getValorDecimal() - this.derecha.getValorDecimal();
+    }
+
 
 }

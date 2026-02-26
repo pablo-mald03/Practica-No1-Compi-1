@@ -17,7 +17,11 @@ public abstract class NodoExpresion {
         return columna;
     }
 
-    public abstract double evaluar(EntornoValores entorno);
 
     public abstract String getString();
+
+    //Metodos que permiten obtener los valors de las expresiones
+    public abstract int getValorEntero();
+
+    public abstract double getValorDecimal();
 }

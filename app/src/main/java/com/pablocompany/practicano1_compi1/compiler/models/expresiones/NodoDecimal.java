@@ -1,6 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models.expresiones;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 
 //Clase que representa un valor decimal
@@ -13,12 +12,18 @@ public class NodoDecimal extends NodoExpresion {
     }
 
     @Override
-    public double evaluar(EntornoValores entorno) {
-        return valor;
+    public String getString() {
+        return String.valueOf(valor);
+    }
+
+    //Metodos que permiten obtener su valor procesado
+    @Override
+    public int getValorEntero() {
+        return (int)this.valor;
     }
 
     @Override
-    public String getString() {
-        return String.valueOf(valor);
+    public double getValorDecimal() {
+        return this.valor;
     }
 }

@@ -1,10 +1,7 @@
 package com.pablocompany.practicano1_compi1.compiler.models.estrucutrassimples;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
-import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoSimple;
-import com.pablocompany.practicano1_compi1.compiler.models.datos.Indexador;
 
 /*P*/
 public class NodoAsignacion extends NodoSimple {
@@ -16,9 +13,6 @@ public class NodoAsignacion extends NodoSimple {
         this.expresion = expresion;
     }
 
-    @Override
-    public void ejecutar(EntornoValores entorno){
-    }
 
     @Override
     public String getString() {

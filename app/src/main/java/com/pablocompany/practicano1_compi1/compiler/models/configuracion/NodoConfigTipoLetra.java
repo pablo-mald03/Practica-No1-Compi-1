@@ -1,6 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models.configuracion;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoLetra;
@@ -26,7 +25,7 @@ public class NodoConfigTipoLetra extends NodoConfiguracion {
 
     //Metodo que permite retornar el indice de aplicacion del estilo
     public int getIndice() {
-        return Integer.parseInt(this.nivel.getString());
+        return this.nivel.getValorEntero();
     }
     //Metodo que permite obtener el tipo de letra
     public TipoLetra getTipoLetra() {

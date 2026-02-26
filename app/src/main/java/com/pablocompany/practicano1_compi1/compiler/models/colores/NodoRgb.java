@@ -1,6 +1,5 @@
 package com.pablocompany.practicano1_compi1.compiler.models.colores;
 
-import com.pablocompany.practicano1_compi1.compiler.models.EntornoValores;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoColor;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 
@@ -20,9 +19,9 @@ public class NodoRgb extends NodoColor {
     @Override
     public int[] evaluar() {
         return new int[] {
-                Integer.parseInt(this.red.getString()),
-                Integer.parseInt(this.green.getString()),
-                Integer.parseInt(this.blue.getString())
+                this.red.getValorEntero(),
+                this.green.getValorEntero(),
+                this.blue.getValorEntero()
         };
     }
 

@@ -4,6 +4,7 @@ import com.pablocompany.practicano1_compi1.compiler.backend.clases.NodoDiagrama;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoPrograma;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoSimple;
+import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfigDefault;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura;
 import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfiguracion;
@@ -27,8 +28,7 @@ public class GestorCodigo {
     List<NodoInstruccion> listaInstrucciones;
     List<NodoConfiguracion> listaConfiguraciones;
 
-    ConfiguracionPredeterminada configuracionPredeterminada;
-
+    private GestorConfiguracion configuracion;
 
     //Constructor de la clase que permite inicializar el ast
     public GestorCodigo(NodoPrograma ast) {
@@ -36,7 +36,6 @@ public class GestorCodigo {
         this.ast = ast;
         this.listaInstrucciones = ast.getInstrucciones();
         this.listaConfiguraciones = ast.getConfiguraciones();
-        this.configuracionPredeterminada = new ConfiguracionPredeterminada();
     }
 
     //Metodo principal que permite convertir el codigo devuelto por el parser a codigo para poder generar las vistas
@@ -54,6 +53,8 @@ public class GestorCodigo {
         inicio.setSizeLetra(50);
         inicio.setTipoLetra(TipoLetra.TIMES_NEW_ROMAN);
         listaDiagrama.add(inicio);
+
+        System.out.println("procea antes de procesar");
 
         procesarInstrucciones();
 
@@ -75,75 +76,29 @@ public class GestorCodigo {
         this.ast.setInstrucciones(this.listaInstrucciones);
         this.ast.indexarInstrucciones();
 
+        System.out.println("llega despues de indexar");
         this.listaInstrucciones = this.ast.getInstrucciones();
 
         for (int i = 0; i < this.listaInstrucciones.size(); i++) {
             NodoInstruccion nodo = this.listaInstrucciones.get(i);
             instanciarFigura(nodo);
         }
-        darConfiguracionPredeterminada();
-        darEstilosPersonalizados();
+
+        for (int i = 0; i < this.listaDiagrama.size(); i++) {
+
+            System.out.println("Nodo: " + this.listaDiagrama.get(i).getTexto());
+            System.out.println("Indice: " + this.listaDiagrama.get(i).getIndice());
+            System.out.println("SubIndice: " + this.listaDiagrama.get(i).getSubIndice());
+        }
+
+        darEstilos();
     }
 
     /*METODO UTILIZADO PARA DAR LA CONFIGURACION PERSONALIZADA*/
-    private void darEstilosPersonalizados(){
-
-
-
+    private void darEstilos(){
+        this.configuracion= new GestorConfiguracion(this.listaConfiguraciones);
+        this.listaDiagrama = configuracion.setEstilos(this.listaDiagrama);
     }
-
-
-    /*METODO QUE PERMITE CONFIGURAR LAS FIGURAS DEL DIAGRAMA CON SU CONFIGURACION PREDETERMINADA*/
-    void darConfiguracionPredeterminada() {
-        for (int i = 0; i < this.listaDiagrama.size(); i++) {
-            NodoDiagrama nodo = this.listaDiagrama.get(i);
-
-            if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_BLOQUE) {
-
-                nodo.setFigura(configuracionPredeterminada.getFiguraBloque());
-                nodo.setColorFondo(getColor(configuracionPredeterminada.getRgbBloqueFondo()));
-                nodo.setColorTexto(getColor(configuracionPredeterminada.getRgbBloqueLetra()));
-                nodo.setSizeLetra(configuracionPredeterminada.getSizeBloque());
-                nodo.setTipoLetra(configuracionPredeterminada.getLetraBloque());
-            }
-            else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_MIENTRAS) {
-
-                nodo.setFigura(configuracionPredeterminada.getFiguraMientras());
-                nodo.setColorFondo(getColor(configuracionPredeterminada.getRgbMientrasFondo()));
-                nodo.setColorTexto(getColor(configuracionPredeterminada.getRgbMientrasLetra()));
-                nodo.setSizeLetra(configuracionPredeterminada.getSizeMientras());
-                nodo.setTipoLetra(configuracionPredeterminada.getLetraMientras());
-            }
-            else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_SI) {
-
-                nodo.setFigura(configuracionPredeterminada.getFiguraSi());
-                nodo.setColorFondo(getColor(configuracionPredeterminada.getRgbSiFondo()));
-                nodo.setColorTexto(getColor(configuracionPredeterminada.getRgbSiLetra()));
-                nodo.setSizeLetra(configuracionPredeterminada.getSizeSi());
-                nodo.setTipoLetra(configuracionPredeterminada.getLetraSi());
-            }
-            else{
-                if (nodo.getTipoLetra() == null) {
-                    nodo.setTipoLetra(TipoLetra.ARIAL);
-                }
-            }
-
-        }
-
-    }
-
-    /*METODO QUE PERMITE OBTENER EL ARREGLO RGB DE LOS COLORES*/
-    int getColor(int[] rgb) {
-
-        int color = android.graphics.Color.rgb(
-                rgb[0],
-                rgb[1],
-                rgb[2]);
-
-        return color;
-
-    }
-
 
     /*METODO DELEGADO PARA PODER INSTANCIAR LAS FIGURAS DEL DIAGRAMA*/
     void instanciarFigura(NodoInstruccion nodo) {
@@ -209,6 +164,3 @@ public class GestorCodigo {
     }
 
 }
-
-
-
