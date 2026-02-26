@@ -523,13 +523,58 @@ config_fondo        ::= COLOR_SI IGUALACION valor_color:v PLECA expresion:n
                     {:
                         RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_SI, v, n);
                     :}
+                    | COLOR_SI IGUALACION valor_color:v error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_SI", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | COLOR_SI IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir colores. Use HEX o RGB."));
+                        RESULT = null;
+                    :}
+                    | COLOR_SI IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_SI", eleft, eright, "Sintáctico", "Se esperaban los parámetros de color después del \"=\""));
+                        RESULT = null;
+                    :}
                     | COLOR_MIENTRAS IGUALACION valor_color:v PLECA expresion:n
                     {:
                         RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_MIENTRAS, v, n);
                     :}
+                    | COLOR_MIENTRAS IGUALACION valor_color:v error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_MIENTRAS", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | COLOR_MIENTRAS IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir colores. Use HEX o RGB."));
+                        RESULT = null;
+                    :}
+                    | COLOR_MIENTRAS IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_MIENTRAS", eleft, eright, "Sintáctico", "Se esperaban los parámetros de color después del \"=\""));
+                        RESULT = null;
+                    :}
                     | COLOR_BLOQUE IGUALACION valor_color:v PLECA expresion:n
                     {:
                         RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_BLOQUE, v, n);
+                    :}
+                    | COLOR_BLOQUE IGUALACION valor_color:v error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_BLOQUE", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | COLOR_BLOQUE IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir colores. Use HEX o RGB."));
+                        RESULT = null;
+                    :}
+                    | COLOR_BLOQUE IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_BLOQUE", eleft, eright, "Sintáctico", "Se esperaban los parámetros de color después del \"=\""));
+                        RESULT = null;
                     :}
                     ;
 
@@ -537,31 +582,184 @@ config_fondo        ::= COLOR_SI IGUALACION valor_color:v PLECA expresion:n
 /*====Cambia la figura de la instruccion====*/
 
 config_figura       ::= FIGURA_MIENTRAS IGUALACION FIGURA:f PLECA expresion:n
-                        {: RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_MIENTRAS, f.toString(), n); :}
+                    {:
+                        RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_MIENTRAS, f.toString(), n);
+                    :}
+                    | FIGURA_MIENTRAS IGUALACION FIGURA:f error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%FIGURA_MIENTRAS", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | FIGURA_MIENTRAS IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir figuras."));
+                        RESULT = null;
+                    :}
+                    | FIGURA_MIENTRAS IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%FIGURA_MIENTRAS", eleft, eright, "Sintáctico", "Se esperaban los parámetros de figura después del \"=\""));
+                        RESULT = null;
+                    :}
                     | FIGURA_SI IGUALACION FIGURA:f PLECA expresion:n
-                        {: RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_SI, f.toString(), n); :}
+                    {:
+                        RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_SI, f.toString(), n);
+                    :}
+                    | FIGURA_SI IGUALACION FIGURA:f error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%FIGURA_SI", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | FIGURA_SI IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir figuras."));
+                        RESULT = null;
+                    :}
+                    | FIGURA_SI IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%FIGURA_SI", eleft, eright, "Sintáctico", "Se esperaban los parámetros de figura después del \"=\""));
+                        RESULT = null;
+                    :}
                     | FIGURA_BLOQUE IGUALACION FIGURA:f PLECA expresion:n
-                        {: RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_BLOQUE, f.toString(), n); :}
+                    {:
+                        RESULT = new NodoConfigFigura(TipoConfiguracion.INSTRUCCION_BLOQUE, f.toString(), n);
+                    :}
+                    | FIGURA_BLOQUE IGUALACION FIGURA:f error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%FIGURA_BLOQUE", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | FIGURA_BLOQUE IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir figuras."));
+                        RESULT = null;
+                    :}
+                    | FIGURA_BLOQUE IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%FIGURA_BLOQUE", eleft, eright, "Sintáctico", "Se esperaban los parámetros de figura después del \"=\""));
+                        RESULT = null;
+                    :}
                     ;
 
 /*====Cambia el size de la letra de la instruccion====*/
 
 config_size_letra   ::= LETRA_SIZE_MIENTRAS IGUALACION expresion:ex1 PLECA expresion:ex2
-                        {: RESULT = new NodoConfigSizeLetra(TipoConfiguracion.INSTRUCCION_MIENTRAS,ex1, ex2); :}
+                    {:
+                        if (ex1 instanceof NodoVariable) {
+                            syntaxErrorList.add(new ErrorAnalisis("ID", ex1left, ex1right, "Sintáctico", "No se permiten variables para definir size."));
+                            RESULT = null;
+                        } else {
+                            RESULT = new NodoConfigSizeLetra(TipoConfiguracion.INSTRUCCION_MIENTRAS, ex1, ex2);
+                        }
+                    :}
+                    | LETRA_SIZE_MIENTRAS IGUALACION expresion:ex1 error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_SIZE_MIENTRAS", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | LETRA_SIZE_MIENTRAS IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_SIZE_MIENTRAS", eleft, eright, "Sintáctico", "Se esperaban los parámetros de numericos después del \"=\""));
+                        RESULT = null;
+                    :}
                     | LETRA_SIZE_SI IGUALACION expresion:ex1 PLECA expresion:ex2
-                        {: RESULT = new NodoConfigSizeLetra(TipoConfiguracion.INSTRUCCION_SI,ex1, ex2); :}
+                    {:
+                        if (ex1 instanceof NodoVariable) {
+                            syntaxErrorList.add(new ErrorAnalisis("ID", ex1left, ex1right, "Sintáctico", "No se permiten variables para definir size."));
+                            RESULT = null;
+                        } else {
+                            RESULT = new NodoConfigSizeLetra(TipoConfiguracion.INSTRUCCION_SI,ex1, ex2);
+                        }
+                    :}
+                    | LETRA_SIZE_SI IGUALACION expresion:ex1 error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_SIZE_SI", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | LETRA_SIZE_SI IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_SIZE_SI", eleft, eright, "Sintáctico", "Se esperaban los parámetros numericos después del \"=\""));
+                        RESULT = null;
+                    :}
                     | LETRA_SIZE_BLOQUE IGUALACION expresion:ex1 PLECA expresion:ex2
-                        {: RESULT = new NodoConfigSizeLetra(TipoConfiguracion.INSTRUCCION_BLOQUE,ex1, ex2); :}
+                    {:
+                        if (ex1 instanceof NodoVariable) {
+                            syntaxErrorList.add(new ErrorAnalisis("ID", ex1left, ex1right, "Sintáctico", "No se permiten variables para definir size."));
+                            RESULT = null;
+                        } else {
+                            RESULT = new NodoConfigSizeLetra(TipoConfiguracion.INSTRUCCION_BLOQUE,ex1, ex2);
+                        }
+                    :}
+                    | LETRA_SIZE_BLOQUE IGUALACION expresion:ex1 error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_SIZE_BLOQUE", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | LETRA_SIZE_BLOQUE IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_SIZE_BLOQUE", eleft, eright, "Sintáctico", "Se esperaban los parámetros de numericos después del \"=\""));
+                        RESULT = null;
+                    :}
                     ;
 
 /*====Cambia la fuente de la instruccion====*/
 
 config_tipo_letra   ::= LETRA_MIENTRAS IGUALACION FUENTE:fuente PLECA expresion:n
-                        {: RESULT = new NodoConfigTipoLetra(TipoConfiguracion.INSTRUCCION_MIENTRAS, fuente.toString(), n); :}
+                    {:
+                        RESULT = new NodoConfigTipoLetra(TipoConfiguracion.INSTRUCCION_MIENTRAS, fuente.toString(), n);
+                    :}
+                    | LETRA_MIENTRAS IGUALACION FUENTE:fuente error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_MIENTRAS", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | LETRA_MIENTRAS IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir Fuentes de letra."));
+                        RESULT = null;
+                    :}
+                    | LETRA_MIENTRAS IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_MIENTRAS", eleft, eright, "Sintáctico", "Se esperaban los parámetros de Fuentes de letra después del \"=\""));
+                        RESULT = null;
+                    :}
                     | LETRA_SI IGUALACION FUENTE:fuente PLECA expresion:n
-                        {: RESULT = new NodoConfigTipoLetra(TipoConfiguracion.INSTRUCCION_SI, fuente.toString(), n); :}
+                    {:
+                        RESULT = new NodoConfigTipoLetra(TipoConfiguracion.INSTRUCCION_SI, fuente.toString(), n);
+                    :}
+                    | LETRA_SI IGUALACION FUENTE:fuente error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_SI", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | LETRA_SI IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir Fuentes de letra."));
+                        RESULT = null;
+                    :}
+                    | LETRA_SI IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_SI", eleft, eright, "Sintáctico", "Se esperaban los parámetros de Fuentes de letra después del \"=\""));
+                        RESULT = null;
+                    :}
                     | LETRA_BLOQUE IGUALACION FUENTE:fuente PLECA expresion:n
-                        {: RESULT = new NodoConfigTipoLetra(TipoConfiguracion.INSTRUCCION_BLOQUE, fuente.toString(), n); :}
+                    {:
+                        RESULT = new NodoConfigTipoLetra(TipoConfiguracion.INSTRUCCION_BLOQUE, fuente.toString(), n);
+                    :}
+                    | LETRA_BLOQUE IGUALACION FUENTE:fuente error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_BLOQUE", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | LETRA_BLOQUE IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir Fuentes de letra."));
+                        RESULT = null;
+                    :}
+                    | LETRA_BLOQUE IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%LETRA_BLOQUE", eleft, eright, "Sintáctico", "Se esperaban los parámetros de Fuentes de letra después del \"=\""));
+                        RESULT = null;
+                    :}
                     ;
 
 /*====Instrucciones que permiten extraer el valor del color====*/
