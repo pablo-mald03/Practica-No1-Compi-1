@@ -10,6 +10,12 @@ public class NodoConfigDefault extends NodoConfiguracion {
         this.valor = valor;
     }
 
+    /*=====GETTERS ESPECIALES QUE PERMITEN OBTENER EL VALOR DEL NODO===========*/
+    public NodoExpresion getExpresionIndice() {
+        return valor;
+    }
+    /*=====GETTERS ESPECIALES QUE PERMITEN OBTENER EL VALOR DEL NODO===========*/
+
     //Permite obtener el indice de aplicacion del estilo
     public int getIndice() {
         return this.valor.getValorEntero();

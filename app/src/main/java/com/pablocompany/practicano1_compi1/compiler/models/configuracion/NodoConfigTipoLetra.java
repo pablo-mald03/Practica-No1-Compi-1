@@ -17,6 +17,12 @@ public class NodoConfigTipoLetra extends NodoConfiguracion {
         this.tipo = tipo;
     }
 
+    /*=====GETTERS ESPECIALES QUE PERMITEN OBTENER EL VALOR DEL NODO===========*/
+    public NodoExpresion getExpresionIndice() {
+        return nivel;
+    }
+    /*=====GETTERS ESPECIALES QUE PERMITEN OBTENER EL VALOR DEL NODO===========*/
+
     /*==========APARTADO DE METODOS GETTER==========*/
     //Metodo que permite obtener a que instruccion se le va a aplicar
     public TipoConfiguracion getTipoConfig() {

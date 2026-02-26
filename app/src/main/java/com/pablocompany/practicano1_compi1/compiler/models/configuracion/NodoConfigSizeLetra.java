@@ -19,6 +19,16 @@ public class NodoConfigSizeLetra extends NodoConfiguracion {
         this.tipo = tipo;
 
     }
+
+    /*=====GETTERS ESPECIALES QUE PERMITEN OBTENER EL VALOR DEL NODO===========*/
+    public NodoExpresion getExpresionIndice() {
+        return indice;
+    }
+    public NodoExpresion getExpresionSize() {
+        return size;
+    }
+    /*=====GETTERS ESPECIALES QUE PERMITEN OBTENER EL VALOR DEL NODO===========*/
+
     /*==========APARTADO DE METODOS GETTER==========*/
 
     //Metodo que permite obtener el indice donde se aplica el color

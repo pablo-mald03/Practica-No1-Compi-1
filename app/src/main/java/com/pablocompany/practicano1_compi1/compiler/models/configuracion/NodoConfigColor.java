@@ -17,6 +17,19 @@ public class NodoConfigColor extends NodoConfiguracion {
         this.color = color;
         this.nivel = nivel;
     }
+
+    /*=====GETTERS ESPECIALES QUE PERMITEN OBTENER EL VALOR DEL NODO===========*/
+
+    //Metodo que retorna el nodo del color
+    public NodoColor getNodoColor() {
+        return color;
+    }
+    public NodoExpresion getExpresionIndice() {
+        return nivel;
+    }
+    /*=====GETTERS ESPECIALES QUE PERMITEN OBTENER EL VALOR DEL NODO===========*/
+
+
     /*===METODOS GETTER===*/
 
     //Permite obtener el indice de aplicacion del estilo

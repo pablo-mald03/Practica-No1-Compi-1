@@ -17,6 +17,16 @@ public class NodoConfigFondo extends NodoConfiguracion {
         this.indice = indice;
     }
 
+    /*=====GETTERS ESPECIALES QUE PERMITEN OBTENER EL VALOR DEL NODO===========*/
+    public NodoExpresion getExpresionIndice() {
+        return indice;
+    }
+    //Metodo que retorna el nodo del color
+    public NodoColor getNodoColor() {
+        return color;
+    }
+    /*=====GETTERS ESPECIALES QUE PERMITEN OBTENER EL VALOR DEL NODO===========*/
+
     /*==========APARTADO DE METODOS GETTER==========*/
 
     //Permite obtener el indice de aplicacion del estilo

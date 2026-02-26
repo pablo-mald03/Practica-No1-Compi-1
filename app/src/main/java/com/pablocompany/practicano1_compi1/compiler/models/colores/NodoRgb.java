@@ -15,6 +15,19 @@ public class NodoRgb extends NodoColor {
         this.green = g;
         this.blue = b;
     }
+    /*=======METODO GETTER ESPECIAL QUE PERMITE SABER LOS VALORES DE LOS NODOS=======*/
+    public NodoExpresion getNodoRed() {
+        return red;
+    }
+    public NodoExpresion getNodoGreen() {
+        return green;
+    }
+
+    public NodoExpresion getNodoBlue() {
+        return blue;
+    }
+    /*=======METODO GETTER ESPECIAL QUE PERMITE SABER LOS VALORES DE LOS NODOS=======*/
+
     //Metodo que retorna su valor de color via arreglo
     @Override
     public int[] evaluar() {

@@ -3,11 +3,18 @@ package com.pablocompany.practicano1_compi1.compiler.backend.recursos;
 import com.pablocompany.practicano1_compi1.compiler.backend.clases.NodoDiagrama;
 import com.pablocompany.practicano1_compi1.compiler.backend.clases.ReporteEstructuraControl;
 import com.pablocompany.practicano1_compi1.compiler.backend.clases.ReportesOperadores;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoColor;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoPrograma;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoSimple;
+import com.pablocompany.practicano1_compi1.compiler.models.colores.NodoRgb;
+import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfigColor;
 import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfigDefault;
+import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfigFigura;
+import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfigFondo;
+import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfigSizeLetra;
+import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfigTipoLetra;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoConfiguracion;
 import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoFigura;
 import com.pablocompany.practicano1_compi1.compiler.models.configuracion.NodoConfiguracion;
@@ -147,6 +154,54 @@ public class GestorCodigo {
                 this.agregarOperador(nodoBloque);
             }
         }
+        for (int i = 0; i < this.listaConfiguraciones.size(); i++) {
+            NodoConfiguracion nodo = this.listaConfiguraciones.get(i);
+
+            if (nodo instanceof NodoConfigDefault) {
+                NodoConfigDefault nodoConfigDefault = (NodoConfigDefault) nodo;
+                this.obtenerInformacionNodo(nodoConfigDefault.getExpresionIndice());
+            }
+            if (nodo instanceof NodoConfigColor) {
+                NodoConfigColor nodoConfigColor = (NodoConfigColor) nodo;
+                this.obtenerInformacionNodo(nodoConfigColor.getExpresionIndice());
+
+                NodoColor color = nodoConfigColor.getNodoColor();
+                if(color instanceof NodoRgb){
+                    NodoRgb nodoRgb = (NodoRgb) color;
+                    this.obtenerInformacionNodo(nodoRgb.getNodoBlue());
+                    this.obtenerInformacionNodo(nodoRgb.getNodoGreen());
+                    this.obtenerInformacionNodo(nodoRgb.getNodoRed());
+                }
+            }
+            if (nodo instanceof NodoConfigSizeLetra) {
+                NodoConfigSizeLetra nodoConfigSizeLetra = (NodoConfigSizeLetra) nodo;
+                this.obtenerInformacionNodo(nodoConfigSizeLetra.getExpresionIndice());
+                this.obtenerInformacionNodo(nodoConfigSizeLetra.getExpresionSize());
+            }
+            if (nodo instanceof NodoConfigTipoLetra) {
+                NodoConfigTipoLetra nodoConfigTipoLetra = (NodoConfigTipoLetra) nodo;
+                this.obtenerInformacionNodo(nodoConfigTipoLetra.getExpresionIndice());
+            }
+            if (nodo instanceof NodoConfigFigura) {
+                NodoConfigFigura nodoConfigFigura = (NodoConfigFigura) nodo;
+                this.obtenerInformacionNodo(nodoConfigFigura.getExpresionIndice());
+            }
+            if (nodo instanceof NodoConfigFondo) {
+                NodoConfigFondo nodoConfigFondo = (NodoConfigFondo) nodo;
+                this.obtenerInformacionNodo(nodoConfigFondo.getExpresionIndice());
+
+                NodoColor color = nodoConfigFondo.getNodoColor();
+                if(color instanceof NodoRgb){
+                    NodoRgb nodoRgb = (NodoRgb) color;
+                    this.obtenerInformacionNodo(nodoRgb.getNodoBlue());
+                    this.obtenerInformacionNodo(nodoRgb.getNodoGreen());
+                    this.obtenerInformacionNodo(nodoRgb.getNodoRed());
+                }
+            }
+        }
+
+
+
     }
 
     /*===METODO INTERMEDIO PARA EVALUAR LAS EXPRESIONES QUE ESTAN DENTRO DE UNA CONDICION DE UNA ESTRUCTURA DE CONTROL====*/
@@ -232,26 +287,43 @@ public class GestorCodigo {
 
     //Submetodo delegado para poder obtener la informacion de los nodos
     private void obtenerInformacionNodo(NodoExpresion expresion) {
+        // Caso base: si la expresión es nula o no es un nodo de operación, dejamos de explorar
+        if (expresion == null) return;
+
         if (expresion instanceof NodoSuma) {
-            NodoSuma nodoSuma = (NodoSuma) expresion;
-            this.listaOperadoresMatematicos.add(new ReportesOperadores("SUMA", nodoSuma.getLinea(), nodoSuma.getColumna(), nodoSuma.getString()));
+            NodoSuma nodo = (NodoSuma) expresion;
+            this.listaOperadoresMatematicos.add(new ReportesOperadores("SUMA", nodo.getLinea(), nodo.getColumna(), nodo.getString()));
+
+            obtenerInformacionNodo(nodo.getIzquierda());
+            obtenerInformacionNodo(nodo.getDerecha());
             return;
-        }
-        if (expresion instanceof NodoResta) {
-            NodoResta nodoResta = (NodoResta) expresion;
-            this.listaOperadoresMatematicos.add(new ReportesOperadores("RESTA", nodoResta.getLinea(), nodoResta.getColumna(), nodoResta.getString()));
-            return;
-        }
-        if (expresion instanceof NodoMultiplicacion) {
-            NodoMultiplicacion nodoMultiplicacion = (NodoMultiplicacion) expresion;
-            this.listaOperadoresMatematicos.add(new ReportesOperadores("MULTIPLICACION", nodoMultiplicacion.getLinea(), nodoMultiplicacion.getColumna(), nodoMultiplicacion.getString()));
-            return;
-        }
-        if (expresion instanceof NodoDivision) {
-            NodoDivision nodoDivision = (NodoDivision) expresion;
-            this.listaOperadoresMatematicos.add(new ReportesOperadores("DIVISION", nodoDivision.getLinea(), nodoDivision.getColumna(), nodoDivision.getString()));
         }
 
+        if (expresion instanceof NodoResta) {
+            NodoResta nodo = (NodoResta) expresion;
+            this.listaOperadoresMatematicos.add(new ReportesOperadores("RESTA", nodo.getLinea(), nodo.getColumna(), nodo.getString()));
+
+            obtenerInformacionNodo(nodo.getIzquierda());
+            obtenerInformacionNodo(nodo.getDerecha());
+            return;
+        }
+
+        if (expresion instanceof NodoMultiplicacion) {
+            NodoMultiplicacion nodo = (NodoMultiplicacion) expresion;
+            this.listaOperadoresMatematicos.add(new ReportesOperadores("MULTIPLICACION", nodo.getLinea(), nodo.getColumna(), nodo.getString()));
+
+            obtenerInformacionNodo(nodo.getIzquierda());
+            obtenerInformacionNodo(nodo.getDerecha());
+            return;
+        }
+
+        if (expresion instanceof NodoDivision) {
+            NodoDivision nodo = (NodoDivision) expresion;
+            this.listaOperadoresMatematicos.add(new ReportesOperadores("DIVISION", nodo.getLinea(), nodo.getColumna(), nodo.getString()));
+
+            obtenerInformacionNodo(nodo.getIzquierda());
+            obtenerInformacionNodo(nodo.getDerecha());
+        }
     }
     /*-----------------FIN DE LA REGION DE METODOS QUE PERMITE --------------------*/
 

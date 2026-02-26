@@ -12,6 +12,17 @@ public class NodoDivision extends NodoExpresion {
         this.derecha = derecha;
     }
 
+    /*===Metodos getters utilizados para poder obtener las expresiones en reportes===*/
+    public NodoExpresion getDerecha() {
+        return derecha;
+    }
+
+    public NodoExpresion getIzquierda() {
+        return izquierda;
+    }
+    /*===Metodos getters utilizados para poder obtener las expresiones en reportes===*/
+
+
     //Metodo que permite obtener su valor como string
     @Override
     public String getString() {

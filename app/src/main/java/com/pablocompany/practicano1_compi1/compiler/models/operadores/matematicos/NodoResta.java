@@ -13,6 +13,17 @@ public class NodoResta extends NodoExpresion {
         this.derecha = derecha;
     }
 
+    /*===Metodos getters utilizados para poder obtener las expresiones en reportes===*/
+    public NodoExpresion getDerecha() {
+        return derecha;
+    }
+
+    public NodoExpresion getIzquierda() {
+        return izquierda;
+    }
+    /*===Metodos getters utilizados para poder obtener las expresiones en reportes===*/
+
+
     @Override
     public String getString() {
         return "(" + izquierda.getString() + " - " + derecha.getString() + ")";
