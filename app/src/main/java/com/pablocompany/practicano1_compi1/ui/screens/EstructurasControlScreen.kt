@@ -113,6 +113,17 @@ fun EstructurasControlScreen(
                         }
                     }
 
+                    if (listaReporteEstructuras.isEmpty()) {
+                        item {
+                            Text(
+                                text = "No se encontraron estructuras de control en tu codigo!",
+                                color = Color.White,
+                                modifier = Modifier.padding(24.dp).fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+
 
                 }
 

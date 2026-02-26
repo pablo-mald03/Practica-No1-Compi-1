@@ -39,6 +39,35 @@ parser code {:
            return this.syntaxErrorList;
        }
 
+        //Metodo que permite retornar los errores sintacticos
+        public void syntax_error(Symbol cur_token) {
+            List<Integer> ids = expected_token_ids();
+            StringBuilder esperados = new StringBuilder();
+
+            for (Integer id : ids) {
+                esperados.append("'").append(sym.terminalNames[id]).append("' ");
+            }
+
+            String encontrado = (cur_token.value != null) ? cur_token.value.toString() : sym.terminalNames[cur_token.sym];
+
+            String descripcion = "Error de sintaxis en: " + encontrado;
+            if (!ids.isEmpty()) {
+                descripcion += "Se esperaba un: " + encontrado.toString();
+            }
+
+            syntaxErrorList.add(new ErrorAnalisis(
+                encontrado,
+                cur_token.left,
+                cur_token.right,
+                "Sintáctico",
+                encontrado
+            ));
+        }
+        //Error del que no se pudo recuperar el parser
+        public void unrecovered_syntax_error(Symbol cur_token) {
+            System.err.println("No se pudo recuperar de:" + cur_token.left);
+        }
+
 :}
 
 /*----------------------------------------------------------
@@ -46,8 +75,7 @@ parser code {:
 -----------------------------------------------------------*/
 
 /* Terminales: tokens que el parser nos retorna */
-terminal    COLOR_HEX,
-            PLECA, IGUALACION,
+terminal    PLECA, IGUALACION,
             IGUALDAD, DIFERENTE, MAYOR, MENOR, MAYOR_IGUAL, MENOR_IGUAL,
             AND, OR, NOT,
             SUMA, RESTA,
@@ -61,7 +89,7 @@ terminal    COLOR_HEX,
             FIGURA, FUENTE;
 
 /*======Apartado de tipado de tokens que vienen del lexer======*/
-terminal String ID;
+terminal String ID, COLOR_HEX;
 terminal Double DECIMAL;
 terminal Integer ENTERO;
 terminal String CADENA;
@@ -141,6 +169,11 @@ start with programa;
 
 programa ::= INICIO lista_estructuras:l FIN seccion_configuracion:c
             {: RESULT = new NodoPrograma(l, c); :}
+            | INICIO lista_estructuras:l error:e seccion_configuracion:c
+            {:
+                syntaxErrorList.add(new ErrorAnalisis("FIN", eleft, eright, "Sintactico", "Falta la palabra clave FIN antes de %%%%"));
+                RESULT = new NodoPrograma(l, c);
+            :}
             ;
 
 /*===Agrupamiento de sentencias y gramatica principal de reconocimiento====*/
@@ -173,6 +206,8 @@ lista_estructuras   ::= lista_estructuras:list estructura:es
                             lista.add(es);
                             RESULT = lista;
                         :}
+                        | lista_estructuras:list error
+                        {: RESULT = new ArrayList(); :}
                         ;
 
 
@@ -193,6 +228,10 @@ estructura      ::= sentencia_simple:s
 declaracion     ::= VAR ID:id IGUALACION expresion:e
                 {:
                     RESULT = new NodoDeclaracion(id.toString(), e);
+                :}
+                | VAR ID:id
+                {:
+                    RESULT = new NodoDeclarado(id.toString());
                 :}
                 ;
 
@@ -278,12 +317,19 @@ si_simple   ::= SI PARENT_APERTURA condicion_logica:c PARENT_CIERRE ENTONCES lis
                 {:
                     RESULT = new NodoSi(c, new NodoBloque(lista));
                 :}
+                | SI error FIN_SI
+                {:
+                    syntaxErrorList.add(new ErrorAnalisis("SI", 0, 0, "Sintactico", "Estructura de SI mal formada."));
+                    RESULT = new NodoSi(null, null);
+                :}
                 ;
 
 mientras_simple     ::= MIENTRAS PARENT_APERTURA condicion_logica:c PARENT_CIERRE HACER lista_sentencias_simples:list FIN_MIENTRAS
                         {:
                             RESULT = new NodoMientras(c, new NodoBloque(list));
                         :}
+                        | MIENTRAS error FIN_MIENTRAS
+                        {: RESULT = new NodoMientras(null, null); :}
                         ;
 
 /*===Reconocimiento base de cilos y condicionales====*/
@@ -312,8 +358,6 @@ leer                ::= LEER ID:id
 
 seccion_configuracion   ::= SEPARADOR lista_configuraciones: l
                             {: RESULT = l; :}
-                            | SEPARADOR
-                            {: RESULT = new ArrayList(); :}
                             ;
 
 lista_configuraciones ::= lista_configuraciones:l config_estilos:c
@@ -327,6 +371,8 @@ lista_configuraciones ::= lista_configuraciones:l config_estilos:c
                             lista.add(c);
                             RESULT = lista;
                         :}
+                        | lista_configuraciones:l error
+                        {: RESULT = new ArrayList(); :}
                         ;
 
 
@@ -402,7 +448,7 @@ config_tipo_letra   ::= LETRA_MIENTRAS IGUALACION FUENTE:fuente PLECA expresion:
 valor_color         ::= rgb_estado:rg
                     {: RESULT = rg; :}
                     | COLOR_HEX:he
-                    {: RESULT = new NodoHexColor(he.toString()); :}
+                    {: RESULT = new NodoHexColor(he); :}
                     ;
 
 /*====Instrucciones que permiten extraer el valor de un color RGB====*/

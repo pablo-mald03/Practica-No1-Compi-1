@@ -109,6 +109,17 @@ fun ReporteOperadoresScreen(
                         }
                     }
 
+                    if (resultado.isEmpty()) {
+                        item {
+                            Text(
+                                text = "No se encontraron operadores matemáticos en tu codigo!",
+                                color = Color.White,
+                                modifier = Modifier.padding(24.dp).fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+
 
 
             }

@@ -97,7 +97,7 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 "#".*      {/*Ignorado*/}
 
-{HexColor} { return symbol(sym.COLOR_HEX); }
+{HexColor} { return symbol(sym.COLOR_HEX, yytext()); }
 
 "|"     {return symbol(sym.PLECA);}
 
