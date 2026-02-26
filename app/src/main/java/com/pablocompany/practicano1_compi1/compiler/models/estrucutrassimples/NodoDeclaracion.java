@@ -13,6 +13,11 @@ public class NodoDeclaracion extends NodoSimple {
         this.expresion = expresion;
     }
 
+    //Metodo que retonra la expresion dentro de la instruccion
+    public NodoExpresion getExpresion(){
+        return this.expresion;
+    }
+
     //Metodo que permite obtener el texto que hay dentro
     @Override
     public String getString() {

@@ -11,6 +11,16 @@ public class NodoAnd extends NodoExpresion {
         derecha = der;
     }
 
+    /*===Metodos getters utilizados para poder obtener las expresiones===*/
+    public NodoExpresion getDerecha() {
+        return derecha;
+    }
+
+    public NodoExpresion getIzquierda() {
+        return izquierda;
+    }
+    /*===Metodos getters utilizados para poder obtener las expresiones===*/
+
     //Metodo que retorna su valor como string
     @Override
     public String getString() {

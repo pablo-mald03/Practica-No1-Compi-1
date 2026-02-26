@@ -54,7 +54,7 @@ class AnalizarCodigoUseCase {
 
             ResultadoAnalisis(
                 exito = exito,
-                listaOperadores = emptyList(),
+                listaOperadores = gestor.listaOperadoresMatematicos,
                 listaEstructurasControl = gestor.listaEstructurasControl,
                 erroresLexicos = erroresLexicosList,
                 erroresSintacticos = erroresSintacticosList,

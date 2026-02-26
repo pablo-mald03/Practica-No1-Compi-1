@@ -1,5 +1,6 @@
 package com.pablocompany.practicano1_compi1.compiler.models.estrucutrassimples;
 
+import com.pablocompany.practicano1_compi1.compiler.models.NodoExpresion;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoSimple;
 
 public class NodoMostrarCadena extends NodoSimple {

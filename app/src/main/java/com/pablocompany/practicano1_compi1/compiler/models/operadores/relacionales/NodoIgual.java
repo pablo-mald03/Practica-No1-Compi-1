@@ -11,6 +11,16 @@ public class NodoIgual extends NodoExpresion {
         derecha = der;
     }
 
+    /*===Metodos getters utilizados para poder obtener las expresiones en reportes===*/
+    public NodoExpresion getDerecha() {
+        return derecha;
+    }
+
+    public NodoExpresion getIzquierda() {
+        return izquierda;
+    }
+    /*===Metodos getters utilizados para poder obtener las expresiones en reportes===*/
+
     //METODO QUE RETORNA SU VALOR CONDICIONAL
     @Override
     public String getString() {

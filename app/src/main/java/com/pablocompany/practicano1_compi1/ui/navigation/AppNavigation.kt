@@ -56,7 +56,7 @@ fun AppNavigation() {
             val resultado = viewModel.resultado
 
             if (resultado != null) {
-                ReporteOperadoresScreen(navController, resultado )
+                ReporteOperadoresScreen(navController, resultado.listaOperadores )
             }
         }
 

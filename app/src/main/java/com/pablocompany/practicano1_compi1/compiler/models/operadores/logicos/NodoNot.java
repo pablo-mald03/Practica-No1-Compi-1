@@ -8,6 +8,13 @@ public class NodoNot extends NodoExpresion {
         super(linea, columna);
         expr = e;
     }
+
+    /*===Metodos getters utilizados para poder obtener las expresiones===*/
+    public NodoExpresion getExpresion() {
+        return this.expr;
+    }
+    /*===Metodos getters utilizados para poder obtener las expresiones===*/
+
     //Metodo que retorna su valor como string
     @Override
     public String getString() {

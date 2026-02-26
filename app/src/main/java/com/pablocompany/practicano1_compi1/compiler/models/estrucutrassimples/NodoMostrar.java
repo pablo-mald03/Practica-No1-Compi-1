@@ -17,5 +17,11 @@ public class NodoMostrar extends NodoSimple {
     public String getString() {
         return "MOSTRAR " + this.expresion.getString();
     }
+
+    //Metodo que retonra la expresion dentro de la instruccion
+    public NodoExpresion getExpresion(){
+        return this.expresion;
+    }
+
     /*P*/
 }

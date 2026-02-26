@@ -12,7 +12,9 @@ public class NodoAsignacion extends NodoSimple {
         this.id = id;
         this.expresion = expresion;
     }
-
+    public NodoExpresion getExpresion(){
+        return this.expresion;
+    }
 
     @Override
     public String getString() {

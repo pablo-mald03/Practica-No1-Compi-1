@@ -10,6 +10,17 @@ public class NodoDiferente extends NodoExpresion {
         izquierda = izq;
         derecha = der;
     }
+
+    /*===Metodos getters utilizados para poder obtener las expresiones===*/
+    public NodoExpresion getDerecha() {
+        return derecha;
+    }
+
+    public NodoExpresion getIzquierda() {
+        return izquierda;
+    }
+    /*===Metodos getters utilizados para poder obtener las expresiones===*/
+
     //METODO QUE RETORNA SU VALOR CONDICIONAL
     @Override
     public String getString() {

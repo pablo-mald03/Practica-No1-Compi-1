@@ -28,12 +28,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.pablocompany.practicano1_compi1.compiler.backend.ResultadoAnalisis
+import com.pablocompany.practicano1_compi1.compiler.backend.clases.ReportesOperadores
 
 @Composable
 fun ReporteOperadoresScreen(
     navController: NavController,
-    resultado: ResultadoAnalisis
+    resultado: List<ReportesOperadores>
 ) {
 
     val gradientBackground = Brush.verticalGradient(
@@ -44,7 +44,6 @@ fun ReporteOperadoresScreen(
         )
     )
 
-    val lista = resultado.listaOperadores
     val horizontalScroll = rememberScrollState()
 
     Box(
@@ -88,78 +87,25 @@ fun ReporteOperadoresScreen(
                             CeldaHeader("Operador")
                             CeldaHeader("Línea")
                             CeldaHeader("Columna")
-                            CeldaHeader("Condicion")
+                            CeldaHeader("Ocurrencia")
                         }
                     }
 
-                    /*
-                    itemsIndexed(lista) { index, operador ->
+                    itemsIndexed(resultado) { index, operador ->
+                        val backgroundColor = if (index % 2 == 0)
+                            Color(0xFF24273D)
+                        else
+                            Color(0xFF1E332C)
 
-                        val backgroundColor =
-                            if (index % 2 == 0)
-                                Color(0xFF24343D)
-                            else
-                                Color(0xFF1E2A33)
-
-                        Row(
-                            modifier = Modifier
-                                .background(backgroundColor)
-                                .padding(vertical = 12.dp)
-                        ) {
-
-                            Celda("suma")
-                            Celda("1")
-                            Celda("15")
-                            Celda("12 +2")
-
-                            // Cuando uses datos reales:
-                            /*
-                            Celda(operador.simbolo)
-                            Celda(operador.linea.toString())
-                            Celda(operador.columna.toString())
-                            Celda(operador.ocurrencia.toString())
-                            */
-                        }
-                    }
-
-                    */
-/*
-                    itemsIndexed(lista) { index, operador ->
-
-                        val backgroundColor =
-                            if (index % 2 == 0)
-                                Color(0xFF24343D)
-                            else
-                                Color(0xFF1E2A33)
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(backgroundColor)
-                        ) {
-
-                            Celda("suma")
-                            Celda("1")
-                            Celda("15")
-                            Celda("12 +2")
-                        }
-                    }*/
-
-                    items(5) { index ->
                         Row(
                             modifier = Modifier
                                 .horizontalScroll(horizontalScroll)
-                                .background(
-                                    if (index % 2 == 0)
-                                        Color(0xFF24273D)
-                                    else
-                                        Color(0xFF1E332C)
-                                )
+                                .background(backgroundColor)
                         ) {
-                            Celda("suma")
-                            Celda("1")
-                            Celda("15")
-                            Celda("12 +2")
+                            Celda(operador.operador)
+                            Celda(operador.linea.toString())
+                            Celda(operador.columna.toString())
+                            Celda(operador.ocurrencia)
                         }
                     }
 
