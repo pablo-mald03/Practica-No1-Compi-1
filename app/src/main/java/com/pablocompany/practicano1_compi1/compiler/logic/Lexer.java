@@ -857,7 +857,7 @@ public class Lexer implements java_cup.runtime.Scanner {
                    Codigo del lexer
              -------------------------------------------------*/
 
-    private List<ErrorAnalisis> errorLexList;
+    private List<ErrorAnalisis> errorLexList = new ArrayList<>();
 
     public List<ErrorAnalisis> getLexicalErrors(){
         return this.errorLexList;
@@ -1316,6 +1316,7 @@ public class Lexer implements java_cup.runtime.Scanner {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
             { reportError("Simbolo no existe en el leguaje", yytext());
+                return symbol(sym.error, yytext());
             }
           // fall through
           case 72: break;

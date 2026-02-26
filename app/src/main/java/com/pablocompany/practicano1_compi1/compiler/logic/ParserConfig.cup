@@ -42,17 +42,15 @@ parser code {:
         //Metodo que permite retornar los errores sintacticos
         public void syntax_error(Symbol cur_token) {
             List<Integer> ids = expected_token_ids();
-            StringBuilder esperados = new StringBuilder();
-
-            for (Integer id : ids) {
-                esperados.append("'").append(sym.terminalNames[id]).append("' ");
-            }
-
             String encontrado = (cur_token.value != null) ? cur_token.value.toString() : sym.terminalNames[cur_token.sym];
 
-            String descripcion = "Error de sintaxis en: " + encontrado;
+            StringBuilder sugerencias = new StringBuilder();
             if (!ids.isEmpty()) {
-                descripcion += "Se esperaba un: " + encontrado.toString();
+                sugerencias.append(". Se esperaba: ");
+                for (int i = 0; i < ids.size(); i++) {
+                    sugerencias.append(traducirToken(sym.terminalNames[ids.get(i)]));
+                    if (i < ids.size() - 1) sugerencias.append(", ");
+                }
             }
 
             syntaxErrorList.add(new ErrorAnalisis(
@@ -60,14 +58,25 @@ parser code {:
                 cur_token.left,
                 cur_token.right,
                 "Sintáctico",
-                encontrado
+                encontrado + "'" + sugerencias.toString()
             ));
         }
-        //Error del que no se pudo recuperar el parser
-        public void unrecovered_syntax_error(Symbol cur_token) {
-            System.err.println("No se pudo recuperar de:" + cur_token.left);
-        }
 
+        // Método para que el usuario entienda qué falta
+        private String traducirToken(String tecnico) {
+            switch(tecnico) {
+                case "INICIO": return "'INICIO'";
+                case "FIN": return "'FIN'";
+                case "SEPARADOR": return "el separador '%%%%'";
+                case "ID": return "un nombre de variable";
+                case "IGUALACION": return "el signo '='";
+                case "ENTONCES": return "la palabra 'ENTONCES'";
+                case "HACER": return "la palabra 'HACER'";
+                case "PARENT_APERTURA": return "'('";
+                case "PARENT_CIERRE": return "')'";
+                default: return tecnico.toUpperCase();
+            }
+        }
 :}
 
 /*----------------------------------------------------------
@@ -168,11 +177,38 @@ start with programa;
 /* Gramatica: reglas para validacion */
 
 programa ::= INICIO lista_estructuras:l FIN seccion_configuracion:c
-            {: RESULT = new NodoPrograma(l, c); :}
+            {:
+                RESULT = new NodoPrograma(l, c);
+            :}
+            | lista_estructuras:l
+            {:
+                syntaxErrorList.add(new ErrorAnalisis("Código", lleft, lright, "Sintáctico", "Se detectaron instrucciones pero. Se esperaba (INICIO, FIN y %%%%)."));
+                RESULT = new NodoPrograma(l, new ArrayList());
+            :}
             | INICIO lista_estructuras:l error:e seccion_configuracion:c
             {:
-                syntaxErrorList.add(new ErrorAnalisis("FIN", eleft, eright, "Sintactico", "Falta la palabra clave FIN antes de %%%%"));
+                syntaxErrorList.add(new ErrorAnalisis("FIN", eleft, eright, "Sintáctico", "Se esperaba la palabra clave 'FIN' para cerrar el bloque de código antes del separador '%%%%'."));
                 RESULT = new NodoPrograma(l, c);
+            :}
+            | lista_estructuras:l FIN seccion_configuracion:c
+            {:
+                syntaxErrorList.add(new ErrorAnalisis("INICIO", lleft, lright, "Sintáctico", "Falta la palabra clave 'INICIO' al principio del archivo."));
+                RESULT = new NodoPrograma(l, c);
+            :}
+            | lista_estructuras:l seccion_configuracion:c
+            {:
+                syntaxErrorList.add(new ErrorAnalisis("Estructura", lleft, lright, "Sintáctico", "El programa no tiene 'INICIO' ni 'FIN'. El código debe estar encerrado entre estas palabras."));
+                RESULT = new NodoPrograma(l, c);
+            :}
+            | INICIO lista_estructuras:l FIN
+            {:
+                syntaxErrorList.add(new ErrorAnalisis("SEPARADOR", lleft, lright, "Sintáctico", "Anomalía fatal: No se encontró el separador '%%%%' ni la sección de configuración al final."));
+                RESULT = new NodoPrograma(l, new ArrayList());
+            :}
+            | error:e
+            {:
+                syntaxErrorList.add(new ErrorAnalisis("Raiz", eleft, eright, "Sintáctico", "El archivo no tiene una estructura válida de programa. Se esperaba 'INICIO'."));
+                RESULT = null;
             :}
             ;
 
@@ -206,8 +242,6 @@ lista_estructuras   ::= lista_estructuras:list estructura:es
                             lista.add(es);
                             RESULT = lista;
                         :}
-                        | lista_estructuras:list error
-                        {: RESULT = new ArrayList(); :}
                         ;
 
 
@@ -231,6 +265,16 @@ declaracion     ::= VAR ID:id IGUALACION expresion:e
                 :}
                 | VAR ID:id
                 {:
+                    RESULT = new NodoDeclarado(id.toString());
+                :}
+                | VAR IGUALACION error:e
+                {:
+                    syntaxErrorList.add(new ErrorAnalisis("=", eleft, eright, "Sintáctico", "Se esperaba el identificador de la variable después de \"VAR\""));
+                    RESULT = null;
+                :}
+                | VAR ID:id IGUALACION error:e
+                {:
+                    syntaxErrorList.add(new ErrorAnalisis("=", eleft, eright, "Sintáctico", "Se esperaba un valor o expresión después del '=' al declarar '" + id + "'."));
                     RESULT = new NodoDeclarado(id.toString());
                 :}
                 ;
@@ -306,6 +350,11 @@ sentencia_simple        ::= declaracion:d
                         {: RESULT = m; :}
                         | leer:l
                         {: RESULT = l; :}
+                        | error:e
+                        {:
+                            syntaxErrorList.add(new ErrorAnalisis("Sentencia", eleft, eright, "Sintáctico", "Instrucción no reconocida o mal estructurada."));
+                            RESULT = null;
+                        :}
                         ;
 
 /*===Reconocimiento de sentencias que pueden contener varias instrucciones====*/
@@ -358,6 +407,11 @@ leer                ::= LEER ID:id
 
 seccion_configuracion   ::= SEPARADOR lista_configuraciones: l
                             {: RESULT = l; :}
+                            | SEPARADOR error:e
+                            {:
+                                syntaxErrorList.add(new ErrorAnalisis("%%%%", eleft, eright, "Sintáctico", "Se requiere al menos una configuración después de '%%%%'"));
+                                RESULT = new ArrayList();
+                            :}
                             ;
 
 lista_configuraciones ::= lista_configuraciones:l config_estilos:c

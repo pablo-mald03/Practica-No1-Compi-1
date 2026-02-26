@@ -131,7 +131,7 @@ fun FilaError(index: Int, error: ErrorAnalisis, scrollState: ScrollState) {
         Celda(error.lexema)
         Celda(error.linea.toString())
         Celda(error.columna.toString())
-        Celda(error.tipo) // Suponiendo que el objeto tiene el campo 'tipo'
+        Celda(error.tipo)
         Celda(error.descripcion)
     }
 }
