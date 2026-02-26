@@ -1,8 +1,8 @@
 package com.pablocompany.practicano1_compi1.ui.screens
 
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
@@ -28,12 +27,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.pablocompany.practicano1_compi1.compiler.backend.ResultadoAnalisis
+import com.pablocompany.practicano1_compi1.compiler.models.ErrorAnalisis
 
 @Composable
 fun ReporteErroresScreen(
     navController: NavController,
-    resultado: ResultadoAnalisis
+    erroresLexicos: List<ErrorAnalisis>,
+    erroresSintacticos: List<ErrorAnalisis>,
 ) {
 
     val gradientBackground = Brush.verticalGradient(
@@ -44,7 +44,6 @@ fun ReporteErroresScreen(
         )
     )
 
-    val lista = resultado.listaOperadores
     val horizontalScroll = rememberScrollState()
 
     Box(
@@ -93,79 +92,46 @@ fun ReporteErroresScreen(
                     }
                 }
 
-                /*
-                itemsIndexed(lista) { index, operador ->
-
-                    val backgroundColor =
-                        if (index % 2 == 0)
-                            Color(0xFF24343D)
-                        else
-                            Color(0xFF1E2A33)
-
-                    Row(
-                        modifier = Modifier
-                            .background(backgroundColor)
-                            .padding(vertical = 12.dp)
-                    ) {
-
-                        Celda("suma")
-                        Celda("1")
-                        Celda("15")
-                        Celda("12 +2")
-
-                        // Cuando uses datos reales:
-                        /*
-                        Celda(operador.simbolo)
-                        Celda(operador.linea.toString())
-                        Celda(operador.columna.toString())
-                        Celda(operador.ocurrencia.toString())
-                        */
-                    }
+                itemsIndexed(erroresLexicos) { index, error ->
+                    FilaError(index, error, horizontalScroll)
                 }
 
-                */
-                /*
-                                    itemsIndexed(lista) { index, operador ->
+                itemsIndexed(erroresSintacticos) { index, error ->
+                    FilaError(index + erroresLexicos.size, error, horizontalScroll)
+                }
 
-                                        val backgroundColor =
-                                            if (index % 2 == 0)
-                                                Color(0xFF24343D)
-                                            else
-                                                Color(0xFF1E2A33)
-
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .background(backgroundColor)
-                                        ) {
-
-                                            Celda("suma")
-                                            Celda("1")
-                                            Celda("15")
-                                            Celda("12 +2")
-                                        }
-                                    }*/
-
-                items(5) { index ->
-                    Row(
-                        modifier = Modifier
-                            .horizontalScroll(horizontalScroll)
-                            .background(
-                                if (index % 2 == 0)
-                                    Color(0xFF24273D)
-                                else
-                                    Color(0xFF1E332C)
-                            )
-                    ) {
-                        Celda("$")
-                        Celda("2")
-                        Celda("13")
-                        Celda("Lexico")
-                        Celda("No existe simbolo")
+                if (erroresLexicos.isEmpty() && erroresSintacticos.isEmpty()) {
+                    item {
+                        Text(
+                            text = "No se encontraron errores. ¡Buen trabajo!",
+                            color = Color.Green,
+                            modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
 
             }
         }
+    }
+}
+
+@Composable
+fun FilaError(index: Int, error: ErrorAnalisis, scrollState: ScrollState) {
+    val backgroundColor = if (index % 2 == 0)
+        Color(0xFF24273D)
+    else
+        Color(0xFF1E332C)
+
+    Row(
+        modifier = Modifier
+            .horizontalScroll(scrollState)
+            .background(backgroundColor)
+    ) {
+        Celda(error.lexema)
+        Celda(error.linea.toString())
+        Celda(error.columna.toString())
+        Celda(error.tipo) // Suponiendo que el objeto tiene el campo 'tipo'
+        Celda(error.descripcion)
     }
 }

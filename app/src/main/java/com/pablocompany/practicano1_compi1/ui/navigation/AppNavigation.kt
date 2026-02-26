@@ -74,7 +74,7 @@ fun AppNavigation() {
             val resultado = viewModel.resultado
 
             if (resultado != null) {
-                ReporteErroresScreen(navController, resultado )
+                ReporteErroresScreen(navController, resultado.erroresLexicos,resultado.erroresSintacticos )
             }
         }
 
