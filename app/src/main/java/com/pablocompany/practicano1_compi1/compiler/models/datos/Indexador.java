@@ -1,6 +1,9 @@
 package com.pablocompany.practicano1_compi1.compiler.models.datos;
 
 import com.pablocompany.practicano1_compi1.compiler.models.NodoEstructura;
+import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
+import com.pablocompany.practicano1_compi1.compiler.models.estructuras.NodoMientras;
+import com.pablocompany.practicano1_compi1.compiler.models.estructuras.NodoSi;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,18 +11,19 @@ import java.util.Map;
 //Clase utilizada para poder indexar cada una de las instrucciones detectadas
 /*Esto permite reducir la complejidad del codigo*/
 public class Indexador {
-
-    //Evita andar casteando cuando solo se requiere ordenar
     private int contadorGlobal = 0;
-    //hashmap utilizado para poder ir tomando en cuenta cada una de las instancias y enumerarlas de forma independiente (Sin castear)
-    private Map<Class<?>, Integer> contadorPorTipo = new HashMap<>();
+    private Map<String, Integer> contadores = new HashMap<>();
 
-
-    //Permite indexar a cada instruccion de la jerarquia de NodoInstruccion
-    public void registrarEstructura(NodoEstructura nodo) {
+    public void registrarEstructura(NodoInstruccion nodo) {
         contadorGlobal++;
-        Class<?> tipo = nodo.getClass();
-        int interno = contadorPorTipo.getOrDefault(tipo, 0) + 1;
+        String categoria;
+        if (nodo instanceof NodoSi) categoria = "SI";
+        else if (nodo instanceof NodoMientras) categoria = "MIENTRAS";
+        else categoria = "BLOQUE";
+
+        int interno = contadores.getOrDefault(categoria, 0) + 1;
+        contadores.put(categoria, interno);
+
         nodo.setIndices(contadorGlobal, interno);
     }
 

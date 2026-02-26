@@ -15,6 +15,7 @@ import com.pablocompany.practicano1_compi1.compiler.models.enumsprogam.TipoLetra
 import java.util.List;
 
 //Clase delegada para poder repartir las configuraciones indicadas para las instrucciones
+
 public class GestorConfiguracion {
 
     //Atributos
@@ -43,147 +44,99 @@ public class GestorConfiguracion {
                 NodoConfigDefault nodoConfigDefault = (NodoConfigDefault) nodo;
                 int nodoDefaul = nodoConfigDefault.getIndice();
                 darConfiguracionDefault(nodoDefaul, lista);
-            }
-            else if (nodo instanceof NodoConfigColor) {
+            } else if (nodo instanceof NodoConfigColor) {
                 NodoConfigColor nodoConfigColor = (NodoConfigColor) nodo;
-                int indice = nodoConfigColor.getIndice();
+                int indice1 = nodoConfigColor.getIndice();
                 int color[] = nodoConfigColor.getColorConfig();
-                darConfiguracionColorLetra(indice, lista, color);
-            }
-            else if (nodo instanceof NodoConfigFondo) {
+                darConfiguracionColorLetra(indice1, lista, color, nodoConfigColor.getTipoConfig());
+            } else if (nodo instanceof NodoConfigFondo) {
                 NodoConfigFondo nodoConfigFondo = (NodoConfigFondo) nodo;
-                int indice = nodoConfigFondo.getIndice();
+                int indice2 = nodoConfigFondo.getIndice();
                 int color[] = nodoConfigFondo.getColorConfig();
-                darConfiguracionColorFondo(indice, lista, color);
-            }
-            else if (nodo instanceof NodoConfigTipoLetra){
+                darConfiguracionColorFondo(indice2, lista, color, nodoConfigFondo.getTipoConfig());
+            } else if (nodo instanceof NodoConfigTipoLetra) {
                 NodoConfigTipoLetra nodoConfigTipoLetra = (NodoConfigTipoLetra) nodo;
-                int indice = nodoConfigTipoLetra.getIndice();
+                int indice3 = nodoConfigTipoLetra.getIndice();
                 TipoLetra tipoLetra = nodoConfigTipoLetra.getTipoLetra();
-                darConfiguracionTipoLetra(indice, lista, tipoLetra);
-            }
-            else if (nodo instanceof NodoConfigFigura){
+                darConfiguracionTipoLetra(indice3, lista, tipoLetra, nodoConfigTipoLetra.getTipoConfig());
+            } else if (nodo instanceof NodoConfigFigura) {
                 NodoConfigFigura nodoConfigFigura = (NodoConfigFigura) nodo;
-                int indice = nodoConfigFigura.getIndice();
+                int indice4 = nodoConfigFigura.getIndice();
                 TipoFigura tipoFigura = nodoConfigFigura.getTipoFigura();
-                darConfiguracionFigura(indice, lista, tipoFigura);
+                darConfiguracionFigura(indice4, lista, tipoFigura, nodoConfigFigura.getTipoConfig());
 
-            }
-            else if(nodo instanceof NodoConfigSizeLetra){
+            } else if (nodo instanceof NodoConfigSizeLetra) {
                 NodoConfigSizeLetra nodoConfigSizeLetra = (NodoConfigSizeLetra) nodo;
-                int indice = nodoConfigSizeLetra.getIndice();
+                int indice5 = nodoConfigSizeLetra.getIndice();
                 double size = nodoConfigSizeLetra.getSize();
-                darConfiguracionSize(indice, lista, size);
+                darConfiguracionSize(indice5, lista, size, nodoConfigSizeLetra.getTipoConfig());
             }
 
         }
+
         return lista;
     }
 
     //Submetodo que da configuracion de color de fondo a una instruccion
-    private void darConfiguracionSize(int indice, List<NodoDiagrama> lista, double size) {
+    private void darConfiguracionSize(int indice, List<NodoDiagrama> list, double size, TipoConfiguracion tipoObjetivo) {
 
-        for (int i = 0; i < lista.size(); i++) {
-            NodoDiagrama nodo = lista.get(i);
-            if (nodo.getSubIndice() == indice) {
-                if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_SI) {
-                    nodo.setSizeLetra(size);
-                    break;
-                } else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_MIENTRAS) {
-                    nodo.setSizeLetra(size);
-                    break;
-                } else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_BLOQUE) {
-                    nodo.setSizeLetra(size);
-                    break;
-                }
+        for (int i = 0; i < list.size(); i++) {
+            NodoDiagrama nodoDiagrama = list.get(i);
+            if (nodoDiagrama.getSubIndice() == indice && nodoDiagrama.getTipoInstruccion() == tipoObjetivo) {
+                nodoDiagrama.setSizeLetra(size);
+                break;
             }
         }
 
     }
 
     //Submetodo que da configuracion de color de fondo a una instruccion
-    private void darConfiguracionFigura(int indice, List<NodoDiagrama> lista, TipoFigura figura) {
+    private void darConfiguracionFigura(int indice, List<NodoDiagrama> list, TipoFigura figura, TipoConfiguracion tipoObjetivo) {
 
-        for (int i = 0; i < lista.size(); i++) {
-            NodoDiagrama nodo = lista.get(i);
-            if (nodo.getSubIndice() == indice) {
-                if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_SI) {
-                    nodo.setFigura(figura);
-                    break;
-                } else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_MIENTRAS) {
-                    nodo.setFigura(figura);
-                    break;
-                } else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_BLOQUE) {
-                    nodo.setFigura(figura);
-                    break;
-                }
+        for (int i = 0; i < list.size(); i++) {
+            NodoDiagrama nodoDiagrama = list.get(i);
+            if (nodoDiagrama.getSubIndice() == indice && nodoDiagrama.getTipoInstruccion() == tipoObjetivo) {
+                nodoDiagrama.setFigura(figura);
+                break;
             }
         }
 
     }
 
     //Submetodo que da configuracion de color de fondo a una instruccion
-    private void darConfiguracionTipoLetra(int indice, List<NodoDiagrama> lista, TipoLetra tipo) {
+    private void darConfiguracionTipoLetra(int indice, List<NodoDiagrama> list, TipoLetra tipo, TipoConfiguracion tipoObjetivo) {
 
-        for (int i = 0; i < lista.size(); i++) {
-            NodoDiagrama nodo = lista.get(i);
-            if (nodo.getSubIndice() == indice) {
-                if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_SI) {
-                    nodo.setTipoLetra(tipo);
-                    break;
-                } else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_MIENTRAS) {
-                    nodo.setTipoLetra(tipo);
-                    break;
-                } else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_BLOQUE) {
-                    nodo.setTipoLetra(tipo);
-                    break;
-                }
+        for (int i = 0; i < list.size(); i++) {
+            NodoDiagrama nodoDiagrama = list.get(i);
+            if (nodoDiagrama.getSubIndice() == indice && nodoDiagrama.getTipoInstruccion() == tipoObjetivo) {
+                nodoDiagrama.setTipoLetra(tipo);
+                break;
             }
         }
 
     }
 
     //Submetodo que da configuracion de color de fondo a una instruccion
-    private void darConfiguracionColorFondo(int indice, List<NodoDiagrama> lista, int[] color) {
-
+    private void darConfiguracionColorFondo(int indice, List<NodoDiagrama> lista, int[] color, TipoConfiguracion tipoObjetivo) {
         for (int i = 0; i < lista.size(); i++) {
-            NodoDiagrama nodo = lista.get(i);
-            if (nodo.getSubIndice() == indice) {
-                if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_SI) {
-                    nodo.setColorFondo(getColor(color));
-                    break;
-                } else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_MIENTRAS) {
-                    nodo.setColorFondo(getColor(color));
-                    break;
-                } else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_BLOQUE) {
-                    nodo.setColorFondo(getColor(color));
-                    break;
-                }
+            NodoDiagrama nodoDiagrama = lista.get(i);
+            if (nodoDiagrama.getSubIndice() == indice && nodoDiagrama.getTipoInstruccion() == tipoObjetivo) {
+                nodoDiagrama.setColorFondo(getColor(color));
+                break;
             }
         }
-
     }
+
 
     //Submetodo que da configuracion de color de letra a una instruccion
-    private void darConfiguracionColorLetra(int indice, List<NodoDiagrama> lista, int[] color) {
-
+    private void darConfiguracionColorLetra(int indice, List<NodoDiagrama> lista, int[] color, TipoConfiguracion tipoObjetivo) {
         for (int i = 0; i < lista.size(); i++) {
-            NodoDiagrama nodo = lista.get(i);
-            if (nodo.getSubIndice() == indice) {
-
-                if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_SI) {
-                    nodo.setColorTexto(getColor(color));
-                    break;
-                } else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_MIENTRAS) {
-                    nodo.setColorTexto(getColor(color));
-                    break;
-                } else if (nodo.getTipoInstruccion() == TipoConfiguracion.INSTRUCCION_BLOQUE) {
-                    nodo.setColorTexto(getColor(color));
-                    break;
-                }
+            NodoDiagrama nodoDiagrama = lista.get(i);
+            if (nodoDiagrama.getSubIndice() == indice && nodoDiagrama.getTipoInstruccion() == tipoObjetivo) {
+                nodoDiagrama.setColorTexto(getColor(color));
+                break;
             }
         }
-
     }
 
     //Submetodo que permite dar configuracion default a las instrucciones busqueda por indice

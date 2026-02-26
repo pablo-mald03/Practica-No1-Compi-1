@@ -54,8 +54,6 @@ public class GestorCodigo {
         inicio.setTipoLetra(TipoLetra.TIMES_NEW_ROMAN);
         listaDiagrama.add(inicio);
 
-        System.out.println("procea antes de procesar");
-
         procesarInstrucciones();
 
         NodoDiagrama fin = new NodoDiagrama(0, -1, -1, "FIN",TipoConfiguracion.FIN);
@@ -76,21 +74,12 @@ public class GestorCodigo {
         this.ast.setInstrucciones(this.listaInstrucciones);
         this.ast.indexarInstrucciones();
 
-        System.out.println("llega despues de indexar");
         this.listaInstrucciones = this.ast.getInstrucciones();
 
         for (int i = 0; i < this.listaInstrucciones.size(); i++) {
             NodoInstruccion nodo = this.listaInstrucciones.get(i);
             instanciarFigura(nodo);
         }
-
-        for (int i = 0; i < this.listaDiagrama.size(); i++) {
-
-            System.out.println("Nodo: " + this.listaDiagrama.get(i).getTexto());
-            System.out.println("Indice: " + this.listaDiagrama.get(i).getIndice());
-            System.out.println("SubIndice: " + this.listaDiagrama.get(i).getSubIndice());
-        }
-
         darEstilos();
     }
 

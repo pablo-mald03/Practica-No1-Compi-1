@@ -30,7 +30,7 @@ public class NodoConfigFondo extends NodoConfiguracion {
     }
 
     //Metodo que permite obtener a que instruccion se le va a aplicar
-    public TipoConfiguracion getTipo() {
+    public TipoConfiguracion getTipoConfig() {
         return tipo;
     }
 

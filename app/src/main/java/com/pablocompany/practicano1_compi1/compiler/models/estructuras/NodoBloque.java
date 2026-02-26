@@ -28,12 +28,13 @@ public class NodoBloque extends NodoEstructura {
     public void indexar(Indexador ctx) {
         ctx.registrarEstructura(this);
     }
+
     //Metodo que permite obtener el bloque de codigo que esta tiene dentro
     @Override
-    public String getBloqueString(){
+    public String getBloqueString() {
         StringBuilder bloqueTexto = new StringBuilder();
         for (NodoInstruccion ins : this.instrucciones) {
-            bloqueTexto.append( ins.getString());
+            bloqueTexto.append(ins.getString());
             bloqueTexto.append("\n");
         }
         return bloqueTexto.toString();

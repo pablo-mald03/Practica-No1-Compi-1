@@ -32,7 +32,7 @@ public class NodoConfigSizeLetra extends NodoConfiguracion {
     }
 
     //Metodo que permite obtener a que configuracion se va a aplicar
-    public TipoConfiguracion getTipo()
+    public TipoConfiguracion getTipoConfig()
     {
         return this.tipo;
     }

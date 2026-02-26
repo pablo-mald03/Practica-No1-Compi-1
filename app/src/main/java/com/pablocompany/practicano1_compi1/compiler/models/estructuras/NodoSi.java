@@ -30,7 +30,9 @@ public class NodoSi extends NodoEstructura {
     @Override
     public void indexar(Indexador ctx) {
         ctx.registrarEstructura(this);
-        this.bloque.indexar(ctx);
+        if (this.bloque != null) {
+            this.bloque.indexar(ctx);
+        }
     }
 
     //METODO QUE RETORNA SU VALOR CONDICIONAL
@@ -41,10 +43,10 @@ public class NodoSi extends NodoEstructura {
 
     //Metodo que permite obtener el bloque de codigo que esta tiene dentro
     @Override
-    public String getBloqueString(){
+    public String getBloqueString() {
         StringBuilder bloqueTexto = new StringBuilder();
         for (NodoInstruccion ins : this.bloque.getInstrucciones()) {
-            bloqueTexto.append( ins.getString());
+            bloqueTexto.append(ins.getString());
             bloqueTexto.append("\n");
         }
         return bloqueTexto.toString();
