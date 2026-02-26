@@ -30,11 +30,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.pablocompany.practicano1_compi1.compiler.backend.ResultadoAnalisis
+import com.pablocompany.practicano1_compi1.compiler.backend.clases.NodoDiagrama
+import com.pablocompany.practicano1_compi1.compiler.backend.clases.ReporteEstructuraControl
 
 @Composable
 fun EstructurasControlScreen(
     navController: NavController,
-    resultado: ResultadoAnalisis
+    listaReporteEstructuras: List<ReporteEstructuraControl>
 ) {
 
     val gradientBackground = Brush.verticalGradient(
@@ -45,7 +47,6 @@ fun EstructurasControlScreen(
         )
     )
 
-    val lista = resultado.listaOperadores
     val horizontalScroll = rememberScrollState()
 
     Box(
@@ -93,71 +94,22 @@ fun EstructurasControlScreen(
                         }
                     }
 
-                    /*
-                    itemsIndexed(lista) { index, operador ->
 
-                        val backgroundColor =
-                            if (index % 2 == 0)
-                                Color(0xFF24343D)
-                            else
-                                Color(0xFF1E2A33)
+                    itemsIndexed(listaReporteEstructuras) { index, reporte ->
+                        val backgroundColor = if (index % 2 == 0)
+                            Color(0xFF243D35)
+                        else
+                            Color(0xFF1E2A33)
 
                         Row(
                             modifier = Modifier
-                                .background(backgroundColor)
-                                .padding(vertical = 12.dp)
-                        ) {
-
-                            Celda("suma")
-                            Celda("1")
-                            Celda("15")
-                            Celda("12 +2")
-
-                            // Cuando uses datos reales:
-                            /*
-                            Celda(operador.simbolo)
-                            Celda(operador.linea.toString())
-                            Celda(operador.columna.toString())
-                            Celda(operador.ocurrencia.toString())
-                            */
-                        }
-                    }
-
-                    */
-/*
-                    itemsIndexed(lista) { index, operador ->
-
-                        val backgroundColor =
-                            if (index % 2 == 0)
-                                Color(0xFF24343D)
-                            else
-                                Color(0xFF1E2A33)
-                        Row(
-                            modifier = Modifier
+                                .fillMaxWidth()
                                 .horizontalScroll(horizontalScroll)
                                 .background(backgroundColor)
                         ) {
-
-                            CeldaControl("If")
-                            CeldaControl("While")
-                            CeldaControl("x > 5")
-                        }
-                    }*/
-
-                    items(5) { index ->
-                        Row(
-                            modifier = Modifier
-                                .horizontalScroll(horizontalScroll)
-                                .background(
-                                    if (index % 2 == 0)
-                                        Color(0xFF243D35)
-                                    else
-                                        Color(0xFF241E33)
-                                )
-                        ) {
-                            CeldaControl("If")
-                            CeldaControl("While")
-                            CeldaControl("x > 5")
+                            CeldaControl(reporte.objeto)
+                            CeldaControl(reporte.linea.toString())
+                            CeldaControl(reporte.condicion)
                         }
                     }
 

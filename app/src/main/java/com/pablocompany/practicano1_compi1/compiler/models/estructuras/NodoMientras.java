@@ -28,6 +28,11 @@ public class NodoMientras extends NodoEstructura {
     }
 
 
+    //Metodo que retorna la condicion de la estructura
+    public NodoExpresion getCondicion() {
+        return condicion;
+    }
+
     //METODO QUE RETORNA SU VALOR CONDICIONAL
     @Override
     public String getString() {

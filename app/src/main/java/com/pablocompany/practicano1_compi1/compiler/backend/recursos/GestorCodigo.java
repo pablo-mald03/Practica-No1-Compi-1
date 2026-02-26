@@ -1,6 +1,7 @@
 package com.pablocompany.practicano1_compi1.compiler.backend.recursos;
 
 import com.pablocompany.practicano1_compi1.compiler.backend.clases.NodoDiagrama;
+import com.pablocompany.practicano1_compi1.compiler.backend.clases.ReporteEstructuraControl;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoInstruccion;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoPrograma;
 import com.pablocompany.practicano1_compi1.compiler.models.NodoSimple;
@@ -28,11 +29,16 @@ public class GestorCodigo {
     List<NodoInstruccion> listaInstrucciones;
     List<NodoConfiguracion> listaConfiguraciones;
 
+
+    //-------LISTAS DE REPORTES PRINCIPALES---------
+    List<ReporteEstructuraControl> listaEstructurasControl;
+
     private GestorConfiguracion configuracion;
 
     //Constructor de la clase que permite inicializar el ast
     public GestorCodigo(NodoPrograma ast) {
         this.listaDiagrama = new ArrayList<>(500);
+        this.listaEstructurasControl = new ArrayList<>(500);
         this.ast = ast;
         this.listaInstrucciones = ast.getInstrucciones();
         this.listaConfiguraciones = ast.getConfiguraciones();
@@ -81,7 +87,26 @@ public class GestorCodigo {
             instanciarFigura(nodo);
         }
         darEstilos();
+        armarEstructuraControl();
     }
+
+    /*-----------------REGION DE METODOS QUE PERMITE --------------------*/
+    //Metodo que permite generar el reporte de estrucutras de control
+    private void armarEstructuraControl() {
+        for (int i = 0; i < this.listaInstrucciones.size(); i++) {
+            NodoInstruccion nodo = this.listaInstrucciones.get(i);
+            if (nodo instanceof NodoSi) {
+                NodoSi nodoSi = (NodoSi) nodo;
+                this.listaEstructurasControl.add(new ReporteEstructuraControl( "SI", String.valueOf(nodoSi.getCondicion().getLinea()),nodoSi.getString()));
+            }
+            if (nodo instanceof NodoMientras){
+                NodoMientras nodoMientras = (NodoMientras) nodo;
+                this.listaEstructurasControl.add(new ReporteEstructuraControl( "MIENTRAS", String.valueOf(nodoMientras.getCondicion().getLinea()),nodoMientras.getString()));
+            }
+        }
+    }
+
+    /*-----------------FIN DE LA REGION DE METODOS QUE PERMITE --------------------*/
 
     /*METODO UTILIZADO PARA DAR LA CONFIGURACION PERSONALIZADA*/
     private void darEstilos(){
@@ -152,4 +177,7 @@ public class GestorCodigo {
         return listaDiagrama;
     }
 
+    public List<ReporteEstructuraControl> getListaEstructurasControl() {
+        return listaEstructurasControl;
+    }
 }

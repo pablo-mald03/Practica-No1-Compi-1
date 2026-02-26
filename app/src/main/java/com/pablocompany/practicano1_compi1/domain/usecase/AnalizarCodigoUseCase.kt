@@ -18,6 +18,7 @@ class AnalizarCodigoUseCase {
             return ResultadoAnalisis(
                 exito = false,
                 listaOperadores = emptyList(),
+                listaEstructurasControl = emptyList(),
                 erroresLexicos = emptyList(),
                 erroresSintacticos = emptyList(),
                 codigoDiagrama = emptyList()
@@ -49,14 +50,12 @@ class AnalizarCodigoUseCase {
 
             } catch (e: Exception) {
                 Log.e("ERROR_GESTOR", "Error: ${e.message}")
-                Log.e("ERROR_GESTOR", "Error : ${e.printStackTrace()}")
-
-                e.printStackTrace()
             }
 
             ResultadoAnalisis(
                 exito = exito,
                 listaOperadores = emptyList(),
+                listaEstructurasControl = gestor.listaEstructurasControl,
                 erroresLexicos = erroresLexicosList,
                 erroresSintacticos = erroresSintacticosList,
                 codigoDiagrama = gestor.listaDiagrama
@@ -66,6 +65,7 @@ class AnalizarCodigoUseCase {
             ResultadoAnalisis(
                 exito = false,
                 listaOperadores = emptyList(),
+                listaEstructurasControl = emptyList(),
                 erroresLexicos = emptyList(),
                 erroresSintacticos = emptyList(),
                 codigoDiagrama =  emptyList(),

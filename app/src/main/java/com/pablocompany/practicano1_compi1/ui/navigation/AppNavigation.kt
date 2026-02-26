@@ -65,7 +65,7 @@ fun AppNavigation() {
             val resultado = viewModel.resultado
 
             if (resultado != null) {
-                EstructurasControlScreen(navController, resultado )
+                EstructurasControlScreen(navController, resultado.listaEstructurasControl )
             }
         }
 

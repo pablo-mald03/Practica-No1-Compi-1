@@ -26,6 +26,12 @@ public class NodoSi extends NodoEstructura {
         return bloque;
     }
 
+    //Retorna la condicion de la estructura
+    public NodoExpresion getCondicion() {
+        return condicion;
+    }
+
+
     //Metodo que permite indexar a las estructuras
     @Override
     public void indexar(Indexador ctx) {
