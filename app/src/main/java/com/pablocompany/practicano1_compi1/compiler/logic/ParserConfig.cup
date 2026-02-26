@@ -205,11 +205,6 @@ programa ::= INICIO lista_estructuras:l FIN seccion_configuracion:c
                 syntaxErrorList.add(new ErrorAnalisis("SEPARADOR", lleft, lright, "Sintáctico", "Anomalía fatal: No se encontró el separador '%%%%' ni la sección de configuración al final."));
                 RESULT = new NodoPrograma(l, new ArrayList());
             :}
-            | error:e
-            {:
-                syntaxErrorList.add(new ErrorAnalisis("Raiz", eleft, eright, "Sintáctico", "El archivo no tiene una estructura válida de programa. Se esperaba 'INICIO'."));
-                RESULT = null;
-            :}
             ;
 
 /*===Agrupamiento de sentencias y gramatica principal de reconocimiento====*/
@@ -243,8 +238,6 @@ lista_estructuras   ::= lista_estructuras:list estructura:es
                             RESULT = lista;
                         :}
                         ;
-
-
 
 estructura      ::= sentencia_simple:s
                 {: RESULT = s; :}
@@ -431,17 +424,34 @@ lista_configuraciones ::= lista_configuraciones:l config_estilos:c
 
 
 config_estilos        ::=   DEFAULT IGUALACION expresion:e
-                            {: RESULT = new NodoConfigDefault(e); :}
+                            {:
+                                RESULT = new NodoConfigDefault(e);
+                            :}
+                            | DEFAULT IGUALACION error:e
+                            {:
+                                syntaxErrorList.add(new ErrorAnalisis("%DEFAULT", eleft, eright, "Sintáctico", "Se esperaba un valor numérico después de %DEFAULT ="));
+                                RESULT = null;
+                            :}
                             | config_color:c
-                            {: RESULT = c; :}
+                            {:
+                                RESULT = c;
+                            :}
                             | config_figura:f
-                            {: RESULT = f; :}
+                            {:
+                                RESULT = f;
+                            :}
                             | config_fondo:f
-                            {: RESULT = f; :}
+                            {:
+                                RESULT = f;
+                            :}
                             | config_size_letra:figura
-                            {: RESULT = figura; :}
+                            {:
+                                RESULT = figura;
+                            :}
                             | config_tipo_letra:fuente
-                            {: RESULT = fuente; :}
+                            {:
+                                RESULT = fuente;
+                            :}
                             ;
 
 /*======Sub region de configuraciones persionalizables*/
@@ -449,21 +459,78 @@ config_estilos        ::=   DEFAULT IGUALACION expresion:e
 /*====Cambia el color de texto de la instruccion====*/
 
 config_color        ::= COLOR_TEXTO_SI IGUALACION valor_color:v PLECA expresion:n
-                        {: RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_SI, v, n); :}
+                    {:
+                        RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_SI, v, n);
+                    :}
+                    | COLOR_TEXTO_SI IGUALACION valor_color:v error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_TEXTO_SI", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | COLOR_TEXTO_SI IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir colores. Use HEX o RGB."));
+                        RESULT = null;
+                    :}
+                    | COLOR_TEXTO_SI IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_TEXTO_SI", eleft, eright, "Sintáctico", "Se esperaban los parámetros de color después del \"=\""));
+                        RESULT = null;
+                    :}
                     | COLOR_TEXTO_MIENTRAS IGUALACION valor_color:v PLECA expresion:n
-                        {: RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_MIENTRAS, v, n); :}
+                    {:
+                        RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_MIENTRAS, v, n);
+                    :}
+                    | COLOR_TEXTO_MIENTRAS IGUALACION valor_color:v error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_TEXTO_MIENTRAS", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | COLOR_TEXTO_MIENTRAS IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir colores. Use HEX o RGB."));
+                        RESULT = null;
+                    :}
+                    | COLOR_TEXTO_MIENTRAS IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_TEXTO_MIENTRAS", eleft, eright, "Sintáctico", "Se esperaban los parámetros de color después del \"=\""));
+                        RESULT = null;
+                    :}
                     | COLOR_TEXTO_BLOQUE IGUALACION valor_color:v PLECA expresion:n
-                        {: RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_BLOQUE, v, n); :}
+                    {:
+                        RESULT = new NodoConfigColor(TipoConfiguracion.INSTRUCCION_BLOQUE, v, n);
+                    :}
+                    | COLOR_TEXTO_BLOQUE IGUALACION valor_color:v error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_TEXTO_BLOQUE", eleft, eright, "Sintáctico", "Se esperaba '|' seguido de un numero o expresion."));
+                        RESULT = null;
+                    :}
+                    | COLOR_TEXTO_BLOQUE IGUALACION ID:id PLECA expresion:n
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis(id, idleft, idright, "Sintáctico", "No se permiten variables para definir colores. Use HEX o RGB."));
+                        RESULT = null;
+                    :}
+                    | COLOR_TEXTO_BLOQUE IGUALACION error:e
+                    {:
+                        syntaxErrorList.add(new ErrorAnalisis("%COLOR_TEXTO_BLOQUE", eleft, eright, "Sintáctico", "Se esperaban los parámetros de color después del \"=\""));
+                        RESULT = null;
+                    :}
                     ;
 
 /*====Cambia el color de fondo de la instruccion====*/
 
 config_fondo        ::= COLOR_SI IGUALACION valor_color:v PLECA expresion:n
-                        {: RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_SI, v, n); :}
+                    {:
+                        RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_SI, v, n);
+                    :}
                     | COLOR_MIENTRAS IGUALACION valor_color:v PLECA expresion:n
-                        {: RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_MIENTRAS, v, n); :}
+                    {:
+                        RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_MIENTRAS, v, n);
+                    :}
                     | COLOR_BLOQUE IGUALACION valor_color:v PLECA expresion:n
-                        {: RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_BLOQUE, v, n); :}
+                    {:
+                        RESULT = new NodoConfigFondo(TipoConfiguracion.INSTRUCCION_BLOQUE, v, n);
+                    :}
                     ;
 
 
