@@ -359,6 +359,11 @@ si_simple   ::= SI PARENT_APERTURA condicion_logica:c PARENT_CIERRE ENTONCES lis
                 {:
                     RESULT = new NodoSi(c, new NodoBloque(lista));
                 :}
+                | SI PARENT_APERTURA condicion_logica:c PARENT_CIERRE lista_sentencias_simples:lista FIN_SI
+                {:
+                    syntaxErrorList.add(new ErrorAnalisis("ENTONCES", cleft, cright, "Sintáctico", "Se esperaba la palabra 'ENTONCES' después de la condición del SI."));
+                    RESULT = new NodoSi(c, new NodoBloque(lista));
+                :}
                 | SI error FIN_SI
                 {:
                     syntaxErrorList.add(new ErrorAnalisis("SI", 0, 0, "Sintactico", "Estructura de SI mal formada."));
@@ -366,8 +371,13 @@ si_simple   ::= SI PARENT_APERTURA condicion_logica:c PARENT_CIERRE ENTONCES lis
                 :}
                 ;
 
-mientras_simple     ::= MIENTRAS PARENT_APERTURA condicion_logica:c PARENT_CIERRE HACER lista_sentencias_simples:list FIN_MIENTRAS
+mientras_simple         ::= MIENTRAS PARENT_APERTURA condicion_logica:c PARENT_CIERRE HACER lista_sentencias_simples:list FIN_MIENTRAS
                         {:
+                            RESULT = new NodoMientras(c, new NodoBloque(list));
+                        :}
+                        | MIENTRAS PARENT_APERTURA condicion_logica:c PARENT_CIERRE lista_sentencias_simples:list FIN_MIENTRAS
+                        {:
+                            syntaxErrorList.add(new ErrorAnalisis("HACER", cleft, cright, "Sintáctico", "Se esperaba la palabra clave 'HACER' después de la condición del MIENTRAS."));
                             RESULT = new NodoMientras(c, new NodoBloque(list));
                         :}
                         | MIENTRAS error FIN_MIENTRAS

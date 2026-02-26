@@ -276,9 +276,7 @@ HexColor = "H"[0-9A-Fa-f]{6}
 
 
 
-.          {    reportError("Simbolo no existe en el leguaje", yytext());
-                return symbol(sym.error, yytext());
-           }
+.          {    reportError("Simbolo no existe en el leguaje", yytext()); }
 
 <<EOF>>    {
                 return symbol(sym.EOF);
